@@ -1,0 +1,31 @@
+.btn_border{
+    border-radius: 100px !important;
+    cursor: auto !important;
+}
+.paper {
+    padding: 16px;
+    margin: 0  16px;
+  }
+  
+  .text-muted {
+    color: rgba(0, 0, 0, 0.6); /* Adjust as needed for secondary text color */
+    font-weight: bold;
+  }
+  
+  .price {
+    font-size: 1.25rem; /* Equivalent to h5 size */
+  }
+  
+  .bg-primary {
+    background-color: #1976d2; /* Primary color, adjust as needed */
+    border: 1px solid #115293; /* Darker shade of primary color */
+  }
+  
+  .bg-primary:hover {
+    background-color: #115293; /* Darker shade of primary color */
+  }
+  
+  .text-danger {
+    color: #d32f2f; /* Error color, adjust as needed */
+  }
+  

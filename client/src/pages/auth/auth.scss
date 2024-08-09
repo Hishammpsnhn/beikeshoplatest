@@ -1,0 +1,42 @@
+.form-container {
+  width: 25%;
+  margin: auto;
+}
+
+/* Media query for medium screens (up to 1200px) */
+@media (max-width: 1200px) {
+  .form-container {
+      width: 50%;
+  }
+}
+
+/* Media query for small screens (up to 768px) */
+@media (max-width: 768px) {
+  .form-container {
+      width: 85%;
+  }
+}
+
+.no-underline{
+  text-decoration: none;
+}
+.google_img{
+  width: 15px;
+  height: 15px;
+  margin: 0 5px ;
+}
+.hover{
+  // opacity: 70%;
+  background-color: black;
+}
+.sign-input{
+  width: 80%;
+}
+
+.haAclf {
+  width: 100%;
+}
+iframe{
+  margin: auto!important;
+  width: 100%;
+}

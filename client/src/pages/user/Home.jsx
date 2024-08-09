@@ -1,0 +1,51 @@
+import React, { useEffect } from "react";
+import { Container, Typography, Box } from "@mui/material";
+import Header from "../../components/header/Header1";
+import Nav from "../../components/header/Nav";
+import Carouse from "../../components/carousel/Carouse";
+import HomeCategory from "../../components/home-cards/HomeCategory";
+import Footer from "../../components/footer/Footer";
+import ExampleCarouselImage from '../../public/images/banner/D-1.0-UHP-2307204-LA-z20-P1-tommy-mokobara-upto60.webp';
+import Banner2 from '../../public/images/banner/D-1.0-UHP-2307204-LA-z20-P2-panash-trink-under799.webp';
+import Banner3 from '../../public/images/banner/D-1.0-MHP-08082024-emb-z10-p1-GLITO-IVOC-MIN60.webp';
+import Banner4 from '../../public/images/banner/D-1.0-MHP-08082024-emb-z10-p2-VEIRDO-NOBERO-UNDER699.webp';
+import Banner5 from '../../public/images/banner/D-1.0-MHP-08082024-emb-z10-p1-GLITO-IVOC-MIN60.webp';
+import Banner6 from '../../public/images/banner/D-1.0-MHP-08082024-emb-z10-p4-Thomasscott-Beyoung-Min50.webp';
+import strip from '../../public/images/banner/M-21072024-TrendsSIS-fallwinter24strip.jpg';
+import stripService from '../../public/images/banner/Icon Strip-Desktop.jpg';
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { getCategories } from "../../actions/categoryActions";
+function Home() {
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
+
+  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (user?.isAdmin ) navigate("/dashboard");
+  }, []);
+
+ 
+  
+  return (
+    <>
+      <Header />
+      <Nav  />
+      <Carouse Banner1={Banner3} Banner2={Banner2} Banner3={ExampleCarouselImage} />
+      <Box sx={{ bgcolor: 'black', color: 'white', textAlign: 'center', py: 2, mt: 2, borderBottom: 5 }}>
+        <Typography variant="h6">New Today, Gone Tomorrow</Typography>
+      </Box>
+      <Carouse Banner1={Banner6} Banner2={Banner4} Banner3={Banner5} />
+      <Box sx={{ width: '100%', mt: 2 }}>
+        <img className='w-100' src={strip} alt="banner" loading="lazy" />
+      </Box>
+      <HomeCategory />
+      <Box sx={{ width: '100%', mt: 2 }}>
+        <img className='w-100' src={stripService} alt="banner" loading="lazy" />
+      </Box>
+      <Footer />
+    </>
+  );
+}
+
+export default Home;
