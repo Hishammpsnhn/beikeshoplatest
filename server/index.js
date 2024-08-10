@@ -65,6 +65,10 @@ app.use('/api/admin/product',productRoute)
 app.use('/api/admin/category',categoryRoute)
 app.use('/api/admin/user',userRoute)
 app.use('/api/upload',uploadRoute);
+
+app.get('/api/check-server', (req, res) => {
+  res.status(200).send({ message: 'Server is running' });
+});
 // app.use('/admin',adminRoute)
 
 

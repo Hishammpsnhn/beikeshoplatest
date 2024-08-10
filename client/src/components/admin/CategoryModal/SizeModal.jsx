@@ -8,6 +8,7 @@ import {
   TextField,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 function SizeModal({ open, handleClose, selectedSize, onSave, sizes }) {
   const [stock, setStock] = useState("");
@@ -24,7 +25,14 @@ function SizeModal({ open, handleClose, selectedSize, onSave, sizes }) {
   };
 
   const handleSave = () => {
-    // Perform save action with stock and price values
+    if (stock >= 0 || isNaN(stock)) {
+      toast.error("Please Enter valid stock");
+      return;
+    }
+    if (price >= 0 || isNaN(price)  ) {
+      toast.error("Please Enter valid price");
+      return;
+    }
     const productDetails = {
       size: selectedSize,
       stock: parseInt(stock),
@@ -52,6 +60,7 @@ function SizeModal({ open, handleClose, selectedSize, onSave, sizes }) {
         </DialogContentText>
         <TextField
           label="Stock"
+          type="number"
           variant="outlined"
           fullWidth
           value={stock}
@@ -60,9 +69,9 @@ function SizeModal({ open, handleClose, selectedSize, onSave, sizes }) {
         />
         <TextField
           label="Price"
+          type="number"
           variant="outlined"
           fullWidth
-          type="number"
           value={price}
           onChange={handlePriceChange}
           sx={{ marginTop: "20px" }}

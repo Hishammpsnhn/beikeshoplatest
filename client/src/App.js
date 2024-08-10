@@ -1,22 +1,22 @@
-import react, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
+import axios from "axios";
 import Home from "./pages/user/Home";
 import SignupPage from "./pages/auth/SignupPage";
 import Login from "./pages/auth/LoginPage";
 import OtpPage from "./pages/auth/OtpPage";
 import ChangePassword from "./pages/auth/ChangePassword";
 import Products from "./pages/user/Products";
-import { useDispatch, useSelector } from "react-redux";
-import PrivateRoute from "./pages/PrivateRoute";
 import ProductDetails from "./pages/user/ProductDetails";
-import { createMuiTheme, ThemeProvider } from "@mui/material";
 import Dashboard from "./pages/admin/Dashbord";
 import AdminSidebar from "./components/admin/constant/sidebar/AdminSidebar";
-import "./index.css";
 import ProductList from "./pages/admin/ProductList";
 import ProductManagement from "./pages/admin/ProductManagement";
-import { getCategories } from "./actions/categoryActions";
 import UsersManagement from "./pages/admin/UsersManagement";
+import Error500Page from "./pages/Error500"; // Import your custom 500 error page
+import { useDispatch, useSelector } from "react-redux";
+import { createMuiTheme, ThemeProvider } from "@mui/material";
+
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -30,48 +30,71 @@ const theme = createMuiTheme({
     },
   },
 });
+
 function App() {
   const [ForgotPassword, setForgotPassword] = useState(false);
-  const dispatch = useDispatch()
+  const [serverError, setServerError] = useState(false);
 
+  const dispatch = useDispatch();
   const { user, isAuthenticated, loading, error } = useSelector(
     (state) => state.auth
   );
+
+  useEffect(() => {
+    const checkServer = async () => {
+      try {
+        await axios.get("/api/check-server"); 
+      } catch (error) {
+        setServerError(true);
+      }
+    };
+
+    checkServer();
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
       {/* classname app for admin */}
       <div className={user?.isAdmin ? "app" : ""}>
-        {user?.isAdmin && <AdminSidebar />}
+
+        {user?.isAdmin && !serverError && <AdminSidebar />}
         <Routes>
-          {/* Authenication */}
-          <Route path="/signup" element={<SignupPage />} />
-          <Route
-            path="/login"
-            element={
-              <Login
-                forgotPassword={ForgotPassword}
-                setForgotPassword={setForgotPassword}
+          {serverError ? (
+            <Route path="*" element={<Error500Page />} />
+          ) : (
+            <>
+              {/* Authentication Routes */}
+              <Route path="/signup" element={<SignupPage />} />
+              <Route
+                path="/login"
+                element={
+                  <Login
+                    forgotPassword={ForgotPassword}
+                    setForgotPassword={setForgotPassword}
+                  />
+                }
               />
-            }
-          />
-          <Route path="/otp" element={<OtpPage />} />
-          <Route path="/changePassword" element={<ChangePassword />} />
+              <Route path="/otp" element={<OtpPage />} />
+              <Route path="/changePassword" element={<ChangePassword />} />
 
-          {/* user */}
-       
-          <Route path="/" element={<Home />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/productDetails/:id" element={<ProductDetails />} />
+              {/* User Routes */}
+              <Route path="/" element={<Home />} />
+              <Route path="/products" element={<Products />} />
+              <Route path="/productDetails/:id" element={<ProductDetails />} />
 
-          {/* admin */}
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/admin/productlist" element={<ProductList />} />
-          <Route path="/admin/users_management" element={<UsersManagement />} />
-          <Route
-            path="/admin/product_management"
-            element={<ProductManagement />}
-          />
+              {/* Admin Routes */}
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/admin/productlist" element={<ProductList />} />
+              <Route path="/admin/users_management" element={<UsersManagement />} />
+              <Route
+                path="/admin/product_management"
+                element={<ProductManagement />}
+              />
+
+              {/* Catch-all route to handle undefined paths */}
+              <Route path="*" element={<Home />} /> {/* Or redirect to a 404 page */}
+            </>
+          )}
         </Routes>
       </div>
     </ThemeProvider>
