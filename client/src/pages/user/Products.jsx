@@ -61,7 +61,7 @@ function Products() {
                 {products.map((item, index) => (
                   <Grid item xs={2} sm={4} md={4} key={index}>
                     <ProductCard
-                      image={item.images[0]}
+                      image={item?.images[0]}
                       name={item.name}
                       price={item.sizes[0].price}
                       id={item._id}

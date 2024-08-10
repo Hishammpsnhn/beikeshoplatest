@@ -43,7 +43,7 @@ const ProductList = () => {
 
   const handleEdit = async (id) => {
     const data = await dispatch(oneProduct(id));
-    navigate("/admin/product_management", { state: { product: data } });
+    navigate("/admin/product_management", { state: { product: data, } });
   };
 
   const handleDelete = (id) => {

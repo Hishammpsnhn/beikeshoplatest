@@ -7,7 +7,7 @@ function validateFormData(formData) {
     }
   
     // Check if 'categoryId' is present
-    if (!formData.categoryId || formData.categoryId.trim() === "") {
+    if (!formData.category || formData.category.trim() === "") {
       errors.categoryId = "Category ID is required";
     }
   

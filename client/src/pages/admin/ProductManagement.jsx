@@ -9,6 +9,7 @@ import {
   MenuItem,
   Chip,
   CircularProgress,
+  ImageList,
 } from "@mui/material";
 import Header from "../../components/admin/Header/AdminSubHeader";
 import SizeModel from "../../components/admin/CategoryModal/SizeModal";
@@ -22,12 +23,15 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import validateFormData from "../../utils/validation";
+import Cropper from "react-easy-crop";
+import CropperImg from "../../components/cropper/CropperImg";
+import TitlebarImageList from "../../components/imagelist/ImgList";
 
 function ProductManagement() {
   const initialData = {
     name: "",
     // price: "",
-    categoryId: "",
+    category: "",
     // subCategory: "",
     fabric: "",
     description: "",
@@ -46,11 +50,13 @@ function ProductManagement() {
   const { categories } = useSelector((state) => state.category);
   const { loading, error } = useSelector((state) => state.products);
   const { user, isAuthenticated } = useSelector((state) => state.auth);
-
+  const [imageURLs, setImageURLs] = useState([]);
+  const [croppedImage, setCroppedImage] = useState([]);
+  console.log(croppedImage);
   const [imagePreviews, setImagePreviews] = useState(
     productToEdit ? productToEdit.images : []
   );
-  console.log(formData);
+  console.log(selectedFile);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -59,6 +65,8 @@ function ProductManagement() {
     setSelectedSize(size);
     setOpen(true);
   };
+  console.log(productToEdit, formData.category, categories);
+  console.log(categories.find((item) => item._id === formData.category));
 
   const handleClose = () => {
     setOpen(false);
@@ -76,13 +84,31 @@ function ProductManagement() {
     });
   };
 
+  const handleDelete = (src) => {
+    if (formData.images.length <= 3) {
+      alert("ss");
+      toast.error("At least two images are required");
+      return;
+    }
+    alert(src);
+    const updatedImages = formData.images.filter((item) => item != src);
+
+    setFormData({ ...formData, images: updatedImages });
+    console.log(updatedImages);
+  };
+
   const handleFileChange = (e) => {
-    setSelectedFile(e.target.files);
+    const files = Array.from(e.target.files);
+    console.log(files);
+    setSelectedFile(files);
+
+    const urls = files.map((file) => URL.createObjectURL(file));
+    setImageURLs(urls);
   };
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-
+    console.log(formData);
     const errors = validateFormData(formData);
     console.log(errors);
     if (Object.keys(errors).length > 0) {
@@ -93,15 +119,18 @@ function ProductManagement() {
     }
 
     if (productToEdit) {
+      console.log(formData);
       dispatch(editProduct(formData, productToEdit._id));
       navigate("/admin/productList");
     } else {
       //upload images
-      console.log(selectedFile)
-      if (selectedFile === null || selectedFile.length <=2 ) {
+      if (selectedFile === null || selectedFile.length <= 2) {
         toast.error("At least Three image is required");
         return;
       }
+      console.log(selectedFile, croppedImage);
+      selectedFile[0] = croppedImage;
+      console.log(selectedFile);
       const imagePreviews = await uploadFile(
         formData,
         selectedFile,
@@ -109,12 +138,10 @@ function ProductManagement() {
       );
 
       setImagePreviews(imagePreviews.files);
-
       imagePreviews?.files?.map((item) => {
         console.log(item.path);
         formData.images.push(item.path);
       });
-
 
       dispatch(addProduct(formData));
       setFormData(initialData);
@@ -178,8 +205,8 @@ function ProductManagement() {
             <TextField
               select
               label="Category"
-              name="categoryId"
-              value={formData.categoryId}
+              name="category"
+              value={formData.category}
               onChange={handleInputChange}
               helperText="Please select Category"
               sx={{ marginTop: "20px", width: "100%" }}
@@ -214,6 +241,7 @@ function ProductManagement() {
           onChange={handleInputChange}
           sx={{ marginTop: "20px" }}
         />
+
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <Box sx={{ marginTop: "20px" }}>
@@ -258,20 +286,36 @@ function ProductManagement() {
           </Grid>
         </Grid>
         <div>
+          {imageURLs.map((img, index) => (
+            <CropperImg
+              key={index}
+              img={img}
+              index={index}
+              setCroppedImage={setCroppedImage}
+            />
+          ))}
+
           {imagePreviews.length > 0 && (
-            <div>
+            <ImageList sx={{ width: 500, height: 450 }}>
               {imagePreviews.map((file, index) => (
-                <div key={index}>
-                  <img
-                    src={`http://localhost:4000/${
-                      productToEdit ? file : file.path
-                    }`}
-                    alt={`http://localhost:4000/${file.path}`}
-                    style={{ width: "200px", height: "auto", margin: "10px" }}
-                  />
-                </div>
+                <TitlebarImageList
+                  src={`${productToEdit ? file : file.path}`}
+                  handleDelete={handleDelete}
+                />
               ))}
-            </div>
+            </ImageList>
+            //
+            //     // <div key={index}>
+            //     //   <img
+            //     //     src={`http://localhost:4000/${
+            //     //       productToEdit ? file : file.path
+            //     //     }`}
+            //     //     alt={`http://localhost:4000/${file.path}`}
+            //     //     style={{ width: "200px", height: "auto", margin: "10px" }}
+            //     //   />
+            //     // </div>
+            //   ))}
+            // </div>
           )}
         </div>
         {uploadProgress < 100 && (
@@ -288,7 +332,7 @@ function ProductManagement() {
             marginX: "auto",
             display: "flex",
             marginTop: "30px",
-            position: "relative", // Set position to relative to position spinner absolutely
+            position: "unset",
           }}
         >
           {loading && (
