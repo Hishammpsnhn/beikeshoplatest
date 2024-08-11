@@ -5,9 +5,9 @@ import DeleteBtn from "@mui/icons-material/Delete";
 
 function AddressDetails({ cart }) {
   return (
-    <Box>
+    <Box sx={{ marginY: '10px' }}>
       <Paper
-        elevation={5}
+        elevation={2}
         sx={{
           padding: "10px",
           display: "flex",
@@ -26,7 +26,6 @@ function AddressDetails({ cart }) {
         <Box display="flex" alignItems="center">
           {cart ? (
             <>
-              {" "}
               <Button variant="outlined" sx={{ width: "100px" }}>
                 Change
               </Button>
@@ -36,14 +35,14 @@ function AddressDetails({ cart }) {
               <Button
                 variant="outlined"
                 sx={{ width: "100px", marginRight: "10px" }}
-                startIcon={<EditBtn />}
+                startIcon={<EditBtn sx={{ color: "#902F90" }} />} 
               >
                 Edit
               </Button>
               <Button
                 variant="outlined"
                 sx={{ width: "100px" }}
-                startIcon={<DeleteBtn />}
+                startIcon={<DeleteBtn sx={{ color: "#902F90" }} />} 
               >
                 Delete
               </Button>

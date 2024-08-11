@@ -4,6 +4,7 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import image from "../../../public/images/products/n0jzl_400.webp";
+import HoverRating from "../rating/Rating";
 
 function ProdcutBref() {
   const [quantity, setQuantity] = useState(1); // Initialize the quantity state
@@ -19,7 +20,7 @@ function ProdcutBref() {
   };
 
   return (
-    <Box>
+    <Box sx={{marginY:'10px'}}>
       <Paper
       elevation={5}
         sx={{
@@ -47,7 +48,8 @@ function ProdcutBref() {
             </Typography>
           </Box>
         </Box>
-        <Box display="flex" alignItems="center">
+        <HoverRating/>
+        {/* <Box display="flex" alignItems="center">
           <Button
             variant="outlined"
             onClick={handleDecrement}
@@ -65,7 +67,7 @@ function ProdcutBref() {
           >
             +
           </Button>
-        </Box>
+        </Box> */}
       </Paper>
     </Box>
   );

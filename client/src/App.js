@@ -18,6 +18,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { createMuiTheme, ThemeProvider } from "@mui/material";
 import PlaceOrder from "./pages/user/PlaceOrder";
 import Cart from "./pages/user/Cart";
+import Profile from "./pages/user/Profile";
+import ShippingAddress from "./pages/user/ShippingAddress";
 
 const theme = createMuiTheme({
   palette: {
@@ -45,7 +47,7 @@ function App() {
   useEffect(() => {
     const checkServer = async () => {
       try {
-        await axios.get("/api/check-server"); 
+        await axios.get("/api/check-server");
       } catch (error) {
         setServerError(true);
       }
@@ -58,7 +60,6 @@ function App() {
     <ThemeProvider theme={theme}>
       {/* classname app for admin */}
       <div className={user?.isAdmin ? "app" : ""}>
-
         {user?.isAdmin && !serverError && <AdminSidebar />}
         <Routes>
           {serverError ? (
@@ -79,23 +80,35 @@ function App() {
               <Route path="/otp" element={<OtpPage />} />
               <Route path="/changePassword" element={<ChangePassword />} />
 
+
+
               {/* User Routes */}
               <Route path="/" element={<Home />} />
               <Route path="/products" element={<Products />} />
               <Route path="/productDetails/:id" element={<ProductDetails />} />
-              <Route path='/place_order' element={<PlaceOrder />} />
-                <Route path="/cart" element={<Cart />} />
+              <Route path="/place_order" element={<PlaceOrder />} />
+              <Route path="/cart" element={<Cart />} />
+               <Route path='/profile' element={<Profile/>} />
+               <Route path='/shipping_address' element={<ShippingAddress/>}/>
+
+
+
+
+
               {/* Admin Routes */}
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/admin/productlist" element={<ProductList />} />
-              <Route path="/admin/users_management" element={<UsersManagement />} />
+              <Route
+                path="/admin/users_management"
+                element={<UsersManagement />}
+              />
               <Route
                 path="/admin/product_management"
                 element={<ProductManagement />}
               />
 
               {/* Catch-all route to handle undefined paths */}
-              <Route path="*" element={<Home />} /> 
+              <Route path="*" element={<Home />} />
             </>
           )}
         </Routes>
