@@ -16,6 +16,8 @@ import UsersManagement from "./pages/admin/UsersManagement";
 import Error500Page from "./pages/Error500"; // Import your custom 500 error page
 import { useDispatch, useSelector } from "react-redux";
 import { createMuiTheme, ThemeProvider } from "@mui/material";
+import PlaceOrder from "./pages/user/PlaceOrder";
+import Cart from "./pages/user/Cart";
 
 const theme = createMuiTheme({
   palette: {
@@ -81,7 +83,8 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/products" element={<Products />} />
               <Route path="/productDetails/:id" element={<ProductDetails />} />
-
+              <Route path='/place_order' element={<PlaceOrder />} />
+                <Route path="/cart" element={<Cart />} />
               {/* Admin Routes */}
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/admin/productlist" element={<ProductList />} />
@@ -92,7 +95,7 @@ function App() {
               />
 
               {/* Catch-all route to handle undefined paths */}
-              <Route path="*" element={<Home />} /> {/* Or redirect to a 404 page */}
+              <Route path="*" element={<Home />} /> 
             </>
           )}
         </Routes>

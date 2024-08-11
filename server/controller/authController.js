@@ -39,7 +39,7 @@ export const login = async (req, res) => {
     }
 
     bcrypt.compare(password, existingUser.password, function (err, result) {
-      if (err) res.status(500).json({ message: "something went wrong!" });
+      if (err) res.status(500).json({ message: "invalid crediantial!" });
       if (result) {
         const token = generateToken(result);
         res.cookie("token", token, {
@@ -70,7 +70,10 @@ export const signUp = async (req, res) => {
   const { userName, email, password, dob, phoneNumber, confirmPassword } =
     req.body;
 
-  if (!validator.isEmail(email) || !validator.isStrongPassword(password, options)) {
+  if (
+    !validator.isEmail(email) ||
+    !validator.isStrongPassword(password, options)
+  ) {
     res.status(401).json({ message: "Invalid credentials" });
   }
   if (
@@ -83,7 +86,7 @@ export const signUp = async (req, res) => {
   ) {
     return res.status(403).json({ message: "Fill all credentials" });
   }
-  
+
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -94,7 +97,7 @@ export const signUp = async (req, res) => {
     //Generate and send OTP
     const otp = generateOtp();
     await sendOtpSms("+91 " + phoneNumber, otp);
-   // const otp = 1234;
+    // const otp = 1234;
     const expiresAt = new Date(Date.now() + 120 * 1000);
     const otpEntry = Otp({
       email,
@@ -119,7 +122,7 @@ export const verifyOtp = async (req, res) => {
   const { otp } = req.body;
   const { formData } = req.body;
 
-  if (!otp ) {
+  if (!otp) {
     return res.status(400).json({ message: "Please provide valid OTP" });
   }
 
@@ -175,20 +178,24 @@ export const verifyOtp = async (req, res) => {
 // @desc    Google login
 // @route   POST /api/auth/google_verify
 // @access  Public
+
 export const googleLogin = async (req, res) => {
   console.log(req.body);
-  const { email } = req.body;
-  const { name } = req.body;
+  const { email, name } = req.body;
 
   try {
-    const newUser = await User.create({
-      userName: name,
-      email,
-      block: false,
-      isAdmin: false,
-    });
+    let user = await User.findOne({ email });
+    
+    if (!user) {
+      user = await User.create({
+        userName: name,
+        email,
+        block: false,
+        isAdmin: false,
+      });
+    }
 
-    const token = generateToken(newUser._id);
+    const token = generateToken(user._id);
     res.cookie("token", token, {
       httpOnly: true,
       secure: true,
@@ -197,52 +204,11 @@ export const googleLogin = async (req, res) => {
     });
 
     res.status(200).json({
-      message: "User created successfully",
+      message: user ? "User logged in successfully" : "User created successfully",
       token,
-      user: newUser,
+      user,
     });
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
   }
-
-  // const otpEntry = await Otp.findOne({ email: formData.email, otp });
-  // if (otpEntry && otpEntry.expiresAt > Date.now()) {
-  //   // OTP is valid
-  //   const otpEntry = await Otp.deleteOne({ email: formData.email, otp });
-  //   try {
-  //     // const { userName, email, password, dob, phoneNumber } =
-  //     //   req.session.userDetails;
-
-  //     const newUser = await User.create({
-  //       userName: formData.userName,
-  //       email: formData.email,
-  //       password: formData.password,
-  //       dob: formData.dob,
-  //       phoneNumber: formData.phoneNumber,
-  //       block: false,
-  //       isAdmin: false,
-  //     });
-
-  //     const token = generateToken(newUser._id);
-  //     res.cookie("token", token, {
-  //       httpOnly: true,
-  //       secure: true,
-  //       sameSite: "Strict",
-  //       maxAge: 3600000, // 1 hour
-  //     });
-
-  //     return res
-  //       .status(201)
-  //       .json({ message: "User created successfully", token });
-  //   } catch (error) {
-  //     console.error(error);
-  //     return res.status(500).json({ message: "Server error" });
-  //   }
-  // } else {
-  //   // OTP is invalid or expired
-  //   return res.status(401).json({ message: "Invalid Expired" });
-  // }
-  // if (storedOtp !== otp) {
-  //   return res.status(401).json({ message: "Invalid OTP" });
-  // }
 };
