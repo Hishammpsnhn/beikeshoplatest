@@ -20,6 +20,7 @@ import PlaceOrder from "./pages/user/PlaceOrder";
 import Cart from "./pages/user/Cart";
 import Profile from "./pages/user/Profile";
 import ShippingAddress from "./pages/user/ShippingAddress";
+import OrdersManagement from "./pages/admin/OrdersManagement";
 
 const theme = createMuiTheme({
   palette: {
@@ -80,20 +81,14 @@ function App() {
               <Route path="/otp" element={<OtpPage />} />
               <Route path="/changePassword" element={<ChangePassword />} />
 
-
-
               {/* User Routes */}
               <Route path="/" element={<Home />} />
               <Route path="/products" element={<Products />} />
               <Route path="/productDetails/:id" element={<ProductDetails />} />
               <Route path="/place_order" element={<PlaceOrder />} />
               <Route path="/cart" element={<Cart />} />
-               <Route path='/profile' element={<Profile/>} />
-               <Route path='/shipping_address' element={<ShippingAddress/>}/>
-
-
-
-
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/shipping_address" element={<ShippingAddress />} />
 
               {/* Admin Routes */}
               <Route path="/dashboard" element={<Dashboard />} />
@@ -105,6 +100,10 @@ function App() {
               <Route
                 path="/admin/product_management"
                 element={<ProductManagement />}
+              />
+              <Route
+                path="/admin/orders_management"
+                element={<OrdersManagement />}
               />
 
               {/* Catch-all route to handle undefined paths */}

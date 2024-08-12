@@ -1,14 +1,24 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 
+const addressSchema = mongoose.Schema({
+  fullName:{type:"string",required:"true",},
+  landmark: {type:"string",required:"true",},
+  city: {type:"string",required:"true",},
+  state: {type:"string",required:"true",},
+  pinCode: {type:"number",required:"true",},
+  phoneNumber: {type:"number",required:"true",},
+});
+
 const userSchema = new mongoose.Schema(
   {
     userName: { type: String, required: true},
-    email: { type: String, required: true, },
+    email: { type: String, required: true,unique: true},
     password: { type: String, },
     dob: { type: Date,  },
-    phoneNumber: { type: String },
+    phoneNumber: { type: String,},
     profile: { type: String },
+    address:[addressSchema],
     block: { type: Boolean, required: true,default: false },
     isAdmin: { type: Boolean, required: true, default: false },
   },

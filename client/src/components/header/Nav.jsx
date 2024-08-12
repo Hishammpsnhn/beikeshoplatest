@@ -7,6 +7,7 @@ import {
   Button,
   Container,
   IconButton,
+  ListItemIcon,
   Menu,
   MenuItem,
   Toolbar,
@@ -17,11 +18,19 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../reducers/authReducers";
 import { useNavigate } from "react-router-dom";
-import { getCategories, getProductByCategory } from "../../actions/categoryActions";
+import SettingsIcon from "@mui/icons-material/Settings";
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import LogoutIcon from '@mui/icons-material/Logout';
+import AccountCircleIcon from "@mui/icons-material/AccountCircle"; 
+import {
+  getCategories,
+  getProductByCategory,
+} from "../../actions/categoryActions";
 import { googleLogout } from "@react-oauth/google";
 import { setSelectedCategory } from "../../reducers/productReducers";
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
-const pages = ["About Us", "Latest Product","Contact Us"];
+const pages = ["About Us", "Latest Product", "Contact Us"];
 const productsDropdown = ["Product 1", "Product 2", "Product 3"];
 const settings = ["Profile", "Cart", "Wishlist", "Logout"];
 
@@ -58,13 +67,17 @@ function Nav() {
       dispatch(logout());
       localStorage.removeItem("userInfo");
       navigate("/login");
+    } else if (setting === "Profile") {
+      navigate("/profile");
+    } else if (setting === "Cart") {
+      navigate("/cart");
     }
   };
 
   const handleCloseProductsMenu = (id) => {
     setAnchorElProducts(null);
-    dispatch(setSelectedCategory(id))
-    dispatch(getProductByCategory(id))
+    dispatch(setSelectedCategory(id));
+    dispatch(getProductByCategory(id));
     navigate("/products");
   };
   useEffect(() => {
@@ -177,8 +190,11 @@ function Nav() {
               onClose={handleCloseProductsMenu}
             >
               {categories.map((category) => (
-                <MenuItem key={category._id} onClick={()=>handleCloseProductsMenu(category._id)}>
-                  <Typography textAlign="center" sx={{ color: "black" }} >
+                <MenuItem
+                  key={category._id}
+                  onClick={() => handleCloseProductsMenu(category._id)}
+                >
+                  <Typography textAlign="center" sx={{ color: "black" }}>
                     {category.category}
                   </Typography>
                 </MenuItem>
@@ -217,11 +233,17 @@ function Nav() {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {settings.map((setting) => (
+                {settings.map((setting, index) => (
                   <MenuItem
                     key={setting}
                     onClick={() => handleCloseUserMenu(setting)}
                   >
+                    <ListItemIcon>
+                      {index === 0 && <AccountCircleIcon />}{" "}
+                      {index === 1 && <ShoppingCartIcon />}{" "}
+                      {index === 2 && <FavoriteIcon />}{" "}
+                      {index === 3 && <LogoutIcon />}{" "}
+                    </ListItemIcon>
                     <Typography textAlign="center" sx={{ color: "black" }}>
                       {setting}
                     </Typography>

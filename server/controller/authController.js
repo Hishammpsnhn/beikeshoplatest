@@ -95,9 +95,9 @@ export const signUp = async (req, res) => {
     }
 
     //Generate and send OTP
-    const otp = generateOtp();
-    await sendOtpSms("+91 " + phoneNumber, otp);
-    // const otp = 1234;
+    //const otp = generateOtp();
+    // await sendOtpSms("+91 " + phoneNumber, otp);
+     const otp = 1234;
     const expiresAt = new Date(Date.now() + 120 * 1000);
     const otpEntry = Otp({
       email,

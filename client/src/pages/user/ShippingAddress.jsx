@@ -10,25 +10,58 @@ import {
 } from "@mui/material";
 import Nav from "../../components/header/Nav";
 import Header1 from "../../components/header/Header1";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addShippingAddress,
+  EditShippingAddress,
+} from "../../actions/userAction";
+import { toast, ToastContainer } from "react-toastify";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function ShippingAddress() {
-  const [formData, setFormData] = useState({
+  const { loading, error, user } = useSelector((state) => state.auth);
+  const location = useLocation();
+  const address = location.state;
+  console.log(address);
+  const initialState = {
     fullName: "",
-    location: "",
+    city: "",
     state: "",
     landmark: "",
-    pincode: "",
+    pinCode: "",
     phoneNumber: "",
-  });
+  };
+  const [formData, setFormData] = useState(address ? address : initialState);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     console.log("Form Data:", formData);
+
+    if (address) {
+      const res = await dispatch(
+        EditShippingAddress(user._id, address._id, formData)
+      );
+      if (!res) {
+        toast.success("Addresses Edited successfully");
+        navigate("/profile");
+      } else {
+        toast.error("something went wrong");
+      }
+    } else {
+      const res = await dispatch(addShippingAddress(formData));
+      if (!res) {
+        toast.success("Addresses added successfully");
+      } else {
+        toast.error("something went wrong");
+      }
+    }
   };
 
   return (
@@ -46,9 +79,9 @@ function ShippingAddress() {
           }}
         >
           <form onSubmit={handleSubmit}>
-            <Box marginY="10px" >
+            <Box marginY="10px">
               <Typography variant="h4">Shipping Address</Typography>
-              <Typography variant="body2" color='gray'>
+              <Typography variant="body2" color="gray">
                 We ship within 2 working days
               </Typography>
             </Box>
@@ -67,9 +100,9 @@ function ShippingAddress() {
               <Grid item xs={12}>
                 <TextField
                   fullWidth
-                  label="Location"
-                  name="location"
-                  value={formData.location}
+                  label="City"
+                  name="city"
+                  value={formData.city}
                   onChange={handleChange}
                   variant="outlined"
                   required
@@ -100,8 +133,8 @@ function ShippingAddress() {
                 <TextField
                   fullWidth
                   label="Pincode"
-                  name="pincode"
-                  value={formData.pincode}
+                  name="pinCode"
+                  value={formData.pinCode}
                   onChange={handleChange}
                   variant="outlined"
                   required
@@ -124,14 +157,16 @@ function ShippingAddress() {
                 <Button
                   type="submit"
                   variant="contained"
+                  disabled={loading}
                   color="primary"
                   sx={{ width: "100%" }}
                 >
-                  Submit
+                  {loading ? "loading..." : "Submit"}
                 </Button>
               </Grid>
             </Grid>
           </form>
+          <ToastContainer />
         </Paper>
       </Container>
     </>

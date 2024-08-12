@@ -18,12 +18,22 @@ import AddIcon from "@mui/icons-material/Add";
 import ProdcutBref from "../../components/Product/productBref/ProdcutBref";
 import Nav from "../../components/header/Nav";
 import Header1 from "../../components/header/Header1";
+import validator from "validator";
+import { toast, ToastContainer } from "react-toastify";
+import { useSelector } from "react-redux";
+import { profileUpdate } from "../../actions/userAction";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function Profile() {
+  const { user, error } = useSelector((state) => state.auth);
+  console.log(user, error);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [profile, setProfile] = useState({
-    userName: "",
-    email: "",
-    phoneNumber: "",
+    userName: user.userName,
+    email: user.email,
+    phoneNumber: user.phoneNumber,
   });
 
   const [isEditing, setIsEditing] = useState({
@@ -47,12 +57,39 @@ function Profile() {
     }));
   };
 
-  const handleSave = (field) => {
-    setIsEditing((prevEditing) => ({
-      ...prevEditing,
-      [field]: false,
-    }));
-    // Add save logic here if needed
+  const handleSave = async (field) => {
+    console.log(field);
+    if (field === "email") {
+      if (!validator.isEmail(profile.email.trim())) {
+        toast.error("Please enter a valid email address");
+        return;
+      }
+    } else if (field === "phoneNumber") {
+      if (
+        !validator.isNumeric(profile.phoneNumber) ||
+        profile.phoneNumber.length != 10
+      ) {
+        toast.error("Please enter a valid phone number");
+        return;
+      }
+    }
+    console.log(field, isEditing[field]);
+
+    if (isEditing[field]) {
+      console.log({ [field]: profile[field] });
+      const data = await dispatch(
+        profileUpdate(user._id, { [field]: profile[field] })
+      );
+      console.log(data);
+      if (!data) {
+        toast.error(`Failed  To Update`);
+      } else {
+        setIsEditing((prevEditing) => ({
+          ...prevEditing,
+          [field]: false,
+        }));
+      }
+    }
   };
 
   const handleChangePassword = () => {
@@ -65,8 +102,8 @@ function Profile() {
 
   return (
     <>
-    <Header1/>
-    <Nav/>
+      <Header1 />
+      <Nav />
       <Container>
         <Card
           sx={{
@@ -113,7 +150,7 @@ function Profile() {
             </Box>
             <Box sx={{ width: "70%" }}>
               <Grid container spacing={2}>
-                {["username", "email", "phoneNumber"].map((field) => (
+                {["userName", "email", "phoneNumber"].map((field) => (
                   <Grid
                     item
                     xs={field === "firstName" || field === "lastName" ? 6 : 12}
@@ -178,12 +215,14 @@ function Profile() {
           Address
         </Typography>
         <Box marginY="10px">
-          <AddressDetails />
-          <AddressDetails />
+          {user.address.map((item) => (
+            <AddressDetails cart={false} address={item} />
+          ))}
           <Button
             variant="outlined"
             sx={{ width: "100%", marginY: "10px" }}
             endIcon={<AddIcon />}
+            onClick={() => navigate("/shipping_address")}
           >
             Add Address
           </Button>
@@ -218,6 +257,7 @@ function Profile() {
           <ProdcutBref />
           <ProdcutBref />
         </Paper>
+        <ToastContainer />
       </Container>
     </>
   );
