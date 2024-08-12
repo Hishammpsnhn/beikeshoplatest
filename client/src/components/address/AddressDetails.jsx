@@ -13,7 +13,9 @@ function AddressDetails({ cart, address }) {
 
   const handleDelete = () => {
     console.log(user._id, address._id);
-    dispatch(deleteShippingAddress(user._id, address._id));
+    if (window.confirm(`Are you sure you want to delete`)) {
+      dispatch(deleteShippingAddress(user._id, address._id));
+    }
   };
   const handleEdit = () => {
     console.log(user._id, address._id);
@@ -31,12 +33,13 @@ function AddressDetails({ cart, address }) {
         }}
       >
         <Box>
-          <Typography variant="body1">Mohammed Hisham</Typography>
+          <Typography variant="body1">{address.fullName}</Typography>
           <Typography variant="body2">
-            Address 2: 456 Elm St, City, State, Zip
+            {address.city},{address.landmark}
           </Typography>
+          <Typography variant="body2">{address.state}</Typography>
           <Typography variant="body2">
-            Address 3: 789 Oak St, City, State, Zip
+            {address.pinCode}, {address.phoneNumber}
           </Typography>
         </Box>
         <Box display="flex" alignItems="center">

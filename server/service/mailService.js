@@ -10,7 +10,6 @@ const transporter = nodemailer.createTransport({
     pass: process.env.PASS_KEY, 
   },
 });
-console.log(transporter);
 export default function sentOtpToMail(to, sub, msg) {
   try {
     transporter.sendMail({

@@ -17,7 +17,7 @@ import {
 } from "../../actions/userAction";
 import { toast, ToastContainer } from "react-toastify";
 import { useLocation, useNavigate } from "react-router-dom";
-
+import validator from 'validator'
 function ShippingAddress() {
   const { loading, error, user } = useSelector((state) => state.auth);
   const location = useLocation();
@@ -44,6 +44,30 @@ function ShippingAddress() {
     event.preventDefault();
     console.log("Form Data:", formData);
 
+    const { fullName, city, state, landmark, pinCode, phoneNumber } = formData;
+    if (
+      validator.isEmpty(fullName) ||
+      validator.isEmpty(city) ||
+      validator.isEmpty(state) ||
+      validator.isEmpty(landmark) ||
+      validator.isEmpty(pinCode) ||
+      validator.isEmpty(phoneNumber)
+    ) {
+      toast.error("Please fill all fields");
+      return;
+    }
+
+    // Validate phone number (example: assuming 10-digit number)
+    if (!validator.isMobilePhone(phoneNumber, "en-US")) {
+      toast.error("Please enter a valid phone number");
+      return;
+    }
+
+    // Validate postal code (example: assuming US zip code)
+    if (!validator.isPostalCode(pinCode, "IN")) {
+      toast.error("Please enter a valid postal code");
+      return;
+    }
     if (address) {
       const res = await dispatch(
         EditShippingAddress(user._id, address._id, formData)
@@ -78,7 +102,7 @@ function ShippingAddress() {
             marginTop: "20px",
           }}
         >
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} noValidate>
             <Box marginY="10px">
               <Typography variant="h4">Shipping Address</Typography>
               <Typography variant="body2" color="gray">
