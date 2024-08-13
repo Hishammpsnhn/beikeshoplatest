@@ -38,8 +38,8 @@ function Profile() {
 
   const [isEditing, setIsEditing] = useState({
     userName: false,
-    email: false,
     phoneNumber: false,
+    email: false,
   });
 
   const handleInputChange = (e) => {
@@ -150,7 +150,7 @@ function Profile() {
             </Box>
             <Box sx={{ width: "70%" }}>
               <Grid container spacing={2}>
-                {["userName", "email", "phoneNumber"].map((field) => (
+                {["email","userName", "phoneNumber"].map((field) => (
                   <Grid
                     item
                     xs={field === "firstName" || field === "lastName" ? 6 : 12}
@@ -169,7 +169,7 @@ function Profile() {
                       disabled={!isEditing[field]}
                       sx={{ marginBottom: "15px" }}
                       InputProps={{
-                        endAdornment: (
+                        endAdornment: field !== "email" && (
                           <IconButton
                             onClick={() =>
                               isEditing[field]

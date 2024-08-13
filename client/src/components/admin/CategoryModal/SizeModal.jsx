@@ -25,11 +25,11 @@ function SizeModal({ open, handleClose, selectedSize, onSave, sizes }) {
   };
 
   const handleSave = () => {
-    if (stock >= 0 || isNaN(stock)) {
+    if (stock <= -1 || isNaN(stock)) {
       toast.error("Please Enter valid stock");
       return;
     }
-    if (price >= 0 || isNaN(price)  ) {
+    if (price <= 0 || isNaN(price)  ) {
       toast.error("Please Enter valid price");
       return;
     }

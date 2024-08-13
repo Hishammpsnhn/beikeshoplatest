@@ -16,6 +16,7 @@ import {
   resendOtp,
   signUp,
   forgot_password_verifyOtp,
+  forgotPasswordAction,
 } from "../../actions/authActions";
 import { ToastContainer, toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
@@ -73,9 +74,11 @@ function OtpPage() {
         dispatch(verifyOtp(parseInt(otp), data));
       } else {
         if (forgot) {
-          const data = await dispatch(forgot_password_verifyOtp(parseInt(otp), email));
-          if(data){
-            navigate('/changePassword',{state:data.user})
+          const data = await dispatch(
+            forgot_password_verifyOtp(parseInt(otp), email)
+          );
+          if (data) {
+            navigate("/changePassword", { state: data.user });
           }
         }
       }
@@ -86,7 +89,11 @@ function OtpPage() {
 
   const handleResendOtp = async () => {
     if (canResend) {
-      dispatch(signUp(data));
+      if (forgot) {
+        dispatch(forgotPasswordAction(email));
+      } else {
+        dispatch(signUp(data));
+      }
       setCanResend(false);
       setTimeRemaining(60);
       toast.success("OTP has been resent. Please check.");

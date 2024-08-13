@@ -118,6 +118,7 @@ export const forgotPasswordAction = (email) => async (dispatch) => {
     });
     console.log(data);
     // dispatch(loginSuccess(data));
+    dispatch(initial())
     // localStorage.setItem("userInfo", JSON.stringify(data));
     return data;
   } catch (error) {

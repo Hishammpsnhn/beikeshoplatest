@@ -12,6 +12,7 @@ import logo from "../../public/images/1661417516766.webp";
 import { useDispatch, useSelector } from "react-redux";
 import { change_password } from "../../actions/authActions";
 import { toast, ToastContainer } from "react-toastify";
+import validator from "validator";
 
 function ChangePassword() {
   const location = useLocation();
@@ -22,17 +23,32 @@ function ChangePassword() {
 
   const data = location.state || {};
   console.log(data);
-
+  const options = {
+    minLength: 6,
+    minLowercase: 1,
+    minUppercase: 1,
+    minNumbers: 1,
+    minSymbols: 1,
+  };
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (password === confirmPassword) {
-      dispatch(change_password(data._id,password));
-    } else {
-      toast.error("password not equal to confirm password");
+    if (!validator.isStrongPassword(password, options)) {
+      let errorMessage = `Password must be at least ${options.minLength} characters long, `;
+      errorMessage += `contain at least ${options.minLowercase} lowercase letter(s), `;
+      errorMessage += `${options.minUppercase} uppercase letter(s), `;
+      errorMessage += `${options.minNumbers} number(s), `;
+      errorMessage += `and ${options.minSymbols} special character(s).`;
+
+      return toast.error(errorMessage);
     }
+    if(!validator.equals(password,confirmPassword)){
+      return toast.error("Password not equal to confirm password");
+    }
+    dispatch(change_password(data._id, password));
+
     //navigate("/login");
   };
   useEffect(() => {

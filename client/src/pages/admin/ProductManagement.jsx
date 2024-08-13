@@ -50,6 +50,7 @@ function ProductManagement() {
   const { categories } = useSelector((state) => state.category);
   const { loading, error } = useSelector((state) => state.products);
   const { user, isAuthenticated } = useSelector((state) => state.auth);
+  const [deletedImg,setDeletedImg] = useState([])
   const [imageURLs, setImageURLs] = useState([]);
   const [croppedImage, setCroppedImage] = useState([]);
   console.log(croppedImage);
@@ -86,13 +87,11 @@ function ProductManagement() {
 
   const handleDelete = (src) => {
     if (formData.images.length <= 3) {
-      alert("ss");
-      toast.error("At least two images are required");
+      toast.error("At least three images are required");
       return;
     }
-    alert(src);
     const updatedImages = formData.images.filter((item) => item != src);
-
+    setDeletedImg(updatedImages)
     setFormData({ ...formData, images: updatedImages });
     console.log(updatedImages);
   };
@@ -299,6 +298,8 @@ function ProductManagement() {
             <ImageList sx={{ width: 500, height: 450 }}>
               {imagePreviews.map((file, index) => (
                 <TitlebarImageList
+                  key={index}
+                  selected = {deletedImg.find((item)=> file)}
                   src={`${productToEdit ? file : file.path}`}
                   handleDelete={handleDelete}
                 />
