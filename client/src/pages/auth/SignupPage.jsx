@@ -146,7 +146,7 @@ function SignupPage() {
         <Grid item xs={12} md={10} lg={10}>
           <Card sx={{ height: "100vh" }}>
             <CardContent>
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit} noValidate>
                 <Typography variant="h3" align="center" gutterBottom>
                   BeikeShop
                 </Typography>

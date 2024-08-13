@@ -19,6 +19,6 @@ export default function sentOtpToMail(to, sub, msg) {
     });
     return true;
   } catch (error) {
-    throw error.message;
+    return false;
   }
 }

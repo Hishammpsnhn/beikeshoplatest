@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -7,19 +7,33 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import logo from "../../public/images/1661417516766.webp";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { change_password } from "../../actions/authActions";
+import { toast, ToastContainer } from "react-toastify";
 
 function ChangePassword() {
-  const {isAuthenticated} = useSelector(
-    (state) => state.auth
-  );
+  const location = useLocation();
+  const { isAuthenticated } = useSelector((state) => state.auth);
+
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const data = location.state || {};
+  console.log(data);
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    navigate("/login");
+    if (password === confirmPassword) {
+      dispatch(change_password(data._id,password));
+    } else {
+      toast.error("password not equal to confirm password");
+    }
+    //navigate("/login");
   };
   useEffect(() => {
     if (isAuthenticated) {
@@ -53,6 +67,8 @@ function ChangePassword() {
                   variant="outlined"
                   type="password"
                   placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   required
                 />
               </Box>
@@ -62,6 +78,8 @@ function ChangePassword() {
                   variant="outlined"
                   type="password"
                   placeholder="Confirm Password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                   required
                 />
               </Box>
@@ -80,6 +98,7 @@ function ChangePassword() {
           </CardContent>
         </Card>
       </Box>
+      <ToastContainer />
     </Box>
   );
 }

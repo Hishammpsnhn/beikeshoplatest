@@ -11,7 +11,12 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
-import { verifyOtp, resendOtp, signUp } from "../../actions/authActions";
+import {
+  verifyOtp,
+  resendOtp,
+  signUp,
+  forgot_password_verifyOtp,
+} from "../../actions/authActions";
 import { ToastContainer, toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import "react-toastify/dist/ReactToastify.css";
@@ -19,8 +24,11 @@ import "react-toastify/dist/ReactToastify.css";
 function OtpPage() {
   const location = useLocation();
   const { data } = location.state || {};
+  const { email, forgot } = location.state || {};
 
-  const { isAuthenticated, loading, error } = useSelector((state) => state.auth);
+  const { isAuthenticated, loading, error } = useSelector(
+    (state) => state.auth
+  );
 
   const [otp, setOtp] = useState("");
   const [canResend, setCanResend] = useState(false);
@@ -61,8 +69,17 @@ function OtpPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (otp.length === 4) {
-      dispatch(verifyOtp(parseInt(otp), data));
-    }else{
+      if (data) {
+        dispatch(verifyOtp(parseInt(otp), data));
+      } else {
+        if (forgot) {
+          const data = await dispatch(forgot_password_verifyOtp(parseInt(otp), email));
+          if(data){
+            navigate('/changePassword',{state:data.user})
+          }
+        }
+      }
+    } else {
       toast.info("Enter valid 4 digit OTP ");
     }
   };
@@ -81,7 +98,7 @@ function OtpPage() {
   return (
     <Box
       sx={{
-          backgroundColor: "#E4D5E4",
+        backgroundColor: "#E4D5E4",
         minHeight: "100vh",
         display: "flex",
         justifyContent: "center",
@@ -90,11 +107,7 @@ function OtpPage() {
     >
       <Card sx={{ maxWidth: 400, width: "100%", p: 0 }}>
         <Box sx={{ marginBottom: 2 }}>
-          <img
-            src={logo}
-            alt="Logo"
-            style={{ width: "100%" }}
-          />
+          <img src={logo} alt="Logo" style={{ width: "100%" }} />
         </Box>
         <CardContent>
           <Typography variant="h5" align="center" gutterBottom>

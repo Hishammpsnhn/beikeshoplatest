@@ -9,7 +9,11 @@ import {
   Paper,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { googleAuth, login } from "../../actions/authActions";
+import {
+  forgotPasswordAction,
+  googleAuth,
+  login,
+} from "../../actions/authActions";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -18,6 +22,7 @@ import logo from "../../public/images/1661417516766.webp";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import validator from "validator";
+import { initial } from "../../reducers/authReducers";
 
 function Login({ forgotPassword, setForgotPassword, otp, change }) {
   const [email, setEmail] = useState("");
@@ -37,11 +42,19 @@ function Login({ forgotPassword, setForgotPassword, otp, change }) {
     minSymbols: 1,
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async(event) => {
     event.preventDefault();
     if (forgotPassword) {
-      navigate("/otp");
+      if (!validator.isEmail(email)) {
+        toast.error("Enter a valid Email Address");
+      }
+      const res = await dispatch(forgotPasswordAction(email));
+    if(res){
+      console.log(res);
+      navigate('/otp',{state:{email,forgot:true}});
+      dispatch(initial())
       setForgotPassword(false);
+    }      
     } else {
       if (validator.isEmail(email)) {
         if (validator.isStrongPassword(password, options)) {
@@ -62,8 +75,8 @@ function Login({ forgotPassword, setForgotPassword, otp, change }) {
       const userInfo = jwtDecode(credential);
       console.log(userInfo);
       const res = await dispatch(googleAuth(userInfo));
-      if (res != undefined){
-        navigate('/')
+      if (res != undefined) {
+        navigate("/");
       }
     } catch (error) {
       console.error("Failed to fetch user info:", error);
@@ -118,7 +131,7 @@ function Login({ forgotPassword, setForgotPassword, otp, change }) {
             component="h2"
             sx={{ marginBottom: 2, fontWeight: "bold" }}
           >
-            {forgotPassword ? `Enter Number` : `Login`}
+            {forgotPassword ? `Enter Email` : `Login`}
           </Typography>
           <Box sx={{ padding: 3 }}>
             {!forgotPassword ? (
@@ -143,9 +156,11 @@ function Login({ forgotPassword, setForgotPassword, otp, change }) {
             ) : (
               <TextField
                 fullWidth
-                type="number"
-                label="Phone Number"
+                type="email"
+                label="email"
                 margin="normal"
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
               />
             )}
             {!forgotPassword && (

@@ -49,22 +49,20 @@ function ShippingAddress() {
       validator.isEmpty(fullName) ||
       validator.isEmpty(city) ||
       validator.isEmpty(state) ||
-      validator.isEmpty(landmark) ||
-      validator.isEmpty(pinCode) ||
-      validator.isEmpty(phoneNumber)
+      validator.isEmpty(landmark) 
     ) {
       toast.error("Please fill all fields");
       return;
     }
 
     // Validate phone number (example: assuming 10-digit number)
-    if (!validator.isMobilePhone(phoneNumber, "en-US")) {
+    if (!validator.isMobilePhone(String(phoneNumber), "en-US")) {
       toast.error("Please enter a valid phone number");
       return;
     }
 
-    // Validate postal code (example: assuming US zip code)
-    if (!validator.isPostalCode(pinCode, "IN")) {
+   // Validate postal code (example: assuming US zip code)
+    if (!validator.isPostalCode(String(pinCode), "IN")) {
       toast.error("Please enter a valid postal code");
       return;
     }

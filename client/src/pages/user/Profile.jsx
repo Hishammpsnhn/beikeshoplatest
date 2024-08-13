@@ -31,9 +31,9 @@ function Profile() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [profile, setProfile] = useState({
-    userName: user.userName,
-    email: user.email,
-    phoneNumber: user.phoneNumber,
+    userName: user?.userName,
+    email: user?.email,
+    phoneNumber: user?.phoneNumber,
   });
 
   const [isEditing, setIsEditing] = useState({
@@ -215,7 +215,7 @@ function Profile() {
           Address
         </Typography>
         <Box marginY="10px">
-          {user.address.map((item) => (
+          {user?.address.map((item) => (
             <AddressDetails cart={false} address={item} />
           ))}
           <Button
