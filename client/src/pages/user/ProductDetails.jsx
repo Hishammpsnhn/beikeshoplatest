@@ -4,22 +4,39 @@ import ProductDetailsSection from "../../components/Product/productDetail/Produc
 import SelectSize from "../../components/Product/selectSize/SelectSize";
 import { Box, Button, Container } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { oneProduct } from "../../actions/productActions";
 import Header1 from "../../components/header/Header1";
 import Nav from "../../components/header/Nav";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
+import { toast, ToastContainer } from "react-toastify";
 
 import ReactImageMagnify from "react-image-magnify";
+import { addCart } from "../../actions/cartActions";
 const BASE_URL = "http://localhost:3000/";
 function ProductDetails() {
   const { product, loading } = useSelector((state) => state.products);
+  const { user } = useSelector((state) => state.auth);
   const [selectedSize, setSelectedSize] = useState(null);
-  const { id } = useParams();
-  console.log(selectedSize);
-  const dispatch = useDispatch();
 
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleCart = () => {
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+    if (selectedSize === null) {
+      toast.error("select size");
+      return;
+    }
+    navigate("/cart");
+
+    addCart(user._id,product._id,selectedSize);
+  };
   useEffect(() => {
     if (!product?._id || product?._id !== id) {
       dispatch(oneProduct(id));
@@ -59,10 +76,10 @@ function ProductDetails() {
                   smallImage: {
                     alt: "Wristwatch by Ted Baker London",
                     isFluidWidth: true,
-                    src: `${BASE_URL}${product?.images[0]}`
+                    src: `${BASE_URL}${product?.images[0]}`,
                   },
                   largeImage: {
-                    src:  `${BASE_URL}${product?.images[0]}`,
+                    src: `${BASE_URL}${product?.images[0]}`,
                     width: 1200,
                     height: 1800,
                   },
@@ -84,6 +101,7 @@ function ProductDetails() {
             <Button
               variant="outlined"
               startIcon={<AddShoppingCartIcon />}
+              onClick={handleCart}
               sx={{
                 padding: "15px",
                 flexGrow: 1,
@@ -118,6 +136,7 @@ function ProductDetails() {
           />
           <ProductDetailsSection />
         </Box>
+        <ToastContainer />
       </Container>
     </>
   );

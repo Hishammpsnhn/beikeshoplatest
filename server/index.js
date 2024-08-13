@@ -14,6 +14,7 @@ import { fileURLToPath } from 'url';
 import cors from 'cors';
 import uploadRoute from './router/uploadRoute.js';
 import userRoute from './router/userRoute.js';
+import cartRoute from './router/cartRoute.js';
 
 const __filename = fileURLToPath(import.meta.url); 
 const __dirname = path.dirname(__filename);
@@ -64,6 +65,7 @@ app.use('/api/auth', authRoute);
 app.use('/api/admin/product',productRoute)
 app.use('/api/admin/category',categoryRoute)
 app.use('/api/admin/user',userRoute)
+app.use('/api/cart',cartRoute)
 app.use('/api/upload',uploadRoute);
 
 app.get('/api/check-server', (req, res) => {

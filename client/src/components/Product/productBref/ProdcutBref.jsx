@@ -6,8 +6,8 @@ import Button from "@mui/material/Button";
 import image from "../../../public/images/products/n0jzl_400.webp";
 import HoverRating from "../rating/Rating";
 
-function ProdcutBref() {
-  const [quantity, setQuantity] = useState(1); // Initialize the quantity state
+function ProdcutBref({ cart, name, image,price,qty }) {
+  const [quantity, setQuantity] = useState(qty); // Initialize the quantity state
 
   const handleIncrement = () => {
     setQuantity((prevQuantity) => prevQuantity + 1);
@@ -20,9 +20,9 @@ function ProdcutBref() {
   };
 
   return (
-    <Box sx={{marginY:'10px'}}>
+    <Box sx={{ marginY: "10px" }}>
       <Paper
-      elevation={5}
+        elevation={5}
         sx={{
           padding: "10px",
           display: "flex",
@@ -39,35 +39,35 @@ function ProdcutBref() {
             />
           </Box>
           <Box>
-            <Typography variant="body1">Mohammed Hisham</Typography>
+            <Typography variant="body1"> {name}</Typography>
+            {/* <Typography variant="body2">{name}</Typography> */}
             <Typography variant="body2">
-              Address 2: 456 Elm St, City, State, Zip
-            </Typography>
-            <Typography variant="body2">
-              Address 3: 789 Oak St, City, State, Zip
+              {price}
             </Typography>
           </Box>
         </Box>
-        <HoverRating/>
-        {/* <Box display="flex" alignItems="center">
-          <Button
-            variant="outlined"
-            onClick={handleDecrement}
-            sx={{ minWidth: "40px" }}
-          >
-            -
-          </Button>
-          <Typography variant="body1" sx={{ margin: "0 10px" }}>
-            {quantity}
-          </Typography>
-          <Button
-            variant="outlined"
-            onClick={handleIncrement}
-            sx={{ minWidth: "40px" }}
-          >
-            +
-          </Button>
-        </Box> */}
+        {/* <HoverRating/> */}
+        {cart && (
+          <Box display="flex" alignItems="center">
+            <Button
+              variant="outlined"
+              onClick={handleDecrement}
+              sx={{ minWidth: "40px" }}
+            >
+              -
+            </Button>
+            <Typography variant="body1" sx={{ margin: "0 10px" }}>
+              {quantity}
+            </Typography>
+            <Button
+              variant="outlined"
+              onClick={handleIncrement}
+              sx={{ minWidth: "40px" }}
+            >
+              +
+            </Button>
+          </Box>
+        )}
       </Paper>
     </Box>
   );
