@@ -13,7 +13,7 @@ import AdminSidebar from "./components/admin/constant/sidebar/AdminSidebar";
 import ProductList from "./pages/admin/ProductList";
 import ProductManagement from "./pages/admin/ProductManagement";
 import UsersManagement from "./pages/admin/UsersManagement";
-import Error500Page from "./pages/Error500"; // Import your custom 500 error page
+import Error500Page from "./pages/Error500"; 
 import { useDispatch, useSelector } from "react-redux";
 import { createMuiTheme, ThemeProvider } from "@mui/material";
 import PlaceOrder from "./pages/user/PlaceOrder";

@@ -10,7 +10,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch } from "react-redux";
-function ProdcutBref({ cart, name, image, price, qty, userId, productId,size }) {
+function ProdcutBref({ cart,order, name, image, price, qty, userId, productId,size }) {
   const [quantity, setQuantity] = useState(qty);
 
   const dispatch = useDispatch();
@@ -64,6 +64,11 @@ function ProdcutBref({ cart, name, image, price, qty, userId, productId,size }) 
           </Box>
         </Box>
         {/* <HoverRating/> */}
+        {order && (
+           <Typography variant="body1" sx={{ margin: "" }}>
+           Qty: {quantity}
+         </Typography>
+        )}
         {cart && (
           <Box display="flex" alignItems="center">
             <Button

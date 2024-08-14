@@ -8,10 +8,18 @@ import Header from "../../components/header/Header1";
 import { getCart } from "../../actions/cartActions";
 import { useDispatch, useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 function Cart() {
   const { user } = useSelector((state) => state.auth);
   const { items, loading, error,totalAmount } = useSelector((state) => state.cart);
   console.log(totalAmount,items)
+  const navigate = useNavigate();
+
+  const handleOrder = ()=>{
+    console.log(items)
+    // const data = items.map()
+    navigate('/place_order')
+  }
   const dispatch = useDispatch();
   useEffect(() => {
     async function getCartUser() {
@@ -54,7 +62,7 @@ function Cart() {
             <Box marginTop="10px">
               <PriceDetails totalAmount={totalAmount}/>
             </Box>
-            <Button variant="contained" sx={{ width: "100%", marginY: "30px" }}>
+            <Button variant="contained" sx={{ width: "100%", marginY: "30px" }} onClick={handleOrder}>
               Place Order
             </Button>
           </Box>
