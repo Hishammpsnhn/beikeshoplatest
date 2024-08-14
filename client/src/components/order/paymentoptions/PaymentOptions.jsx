@@ -8,12 +8,21 @@ import {
 } from "@mui/material";
 import Paper from "@mui/material/Paper";
 
-function PaymentOptions() {
+function PaymentOptions({ onSelectPayment, paymentOption }) {
   return (
-    <Paper elevation={5}  sx={{ padding: '20px', maxWidth: '300px', margin: 'auto' }}>
+    <Paper
+      elevation={5}
+      sx={{ padding: "20px", maxWidth: "300px", margin: "auto" }}
+    >
       <FormControl>
         <FormLabel>Payment Options</FormLabel>
-        <RadioGroup defaultValue="primary" name="radio-buttons-group">
+        <RadioGroup
+          defaultValue="primary"
+          name="radio-buttons-group"
+          onChange={(e) => {
+            onSelectPayment(e.target.value);
+          }}
+        >
           <FormControlLabel
             value="cod"
             control={<Radio color="primary" />}

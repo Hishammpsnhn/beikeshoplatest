@@ -2,6 +2,10 @@ import Cart from "../model/cartSchema.js";
 import Products from "../model/ProductSchema.js";
 import User from "../model/userSchema.js";
 
+
+// @desc    create Cart
+// @route   POST /api/cart/create
+// @access  Pubilc
 export const createCart = async (req, res) => {
   const { userId, productId, size } = req.body;
 
@@ -65,8 +69,6 @@ export const createCart = async (req, res) => {
       model: Products,
       select: "name images",
     });
-    // console.log(product);
-    // console.log(cart);
     return res.status(201).json(cart);
   } catch (error) {
     console.error(error);
@@ -74,6 +76,10 @@ export const createCart = async (req, res) => {
   }
 };
 
+
+// @desc    get Cart
+// @route   GET /api/cart/:id
+// @access  Pubilc
 export const getCart = async (req, res) => {
   const { id } = req.params;
   try {
@@ -84,17 +90,20 @@ export const getCart = async (req, res) => {
     });
 
     if (!cart) return res.status(404).json({ message: "Cart not found" });
-    res.json(cart);
+    return res.status(201).json(cart);
   } catch (error) {
     console.error(error);
     res.status(500).send("Server Error");
   }
 };
 
+
+// @desc    update Cart
+// @route   PUT /api/cart/:id
+// @access  Pubilc
 export const updateCart = async (req, res) => {
   const { id } = req.params;
   const { productId, action, size } = req.body;
-  console.log(action, productId, id);
 
   try {
     const cart = await Cart.findOne({ userId: id });
@@ -112,7 +121,7 @@ export const updateCart = async (req, res) => {
     const productSizeIndex = product.sizes.findIndex(
       (sizee) => sizee._id.toString() == size._id.toString()
     );
-    console.log(product.sizes[productSizeIndex].stock);
+
 
     if (productSizeIndex === -1)
       return res.status(404).json({ message: "Size not found" });
@@ -121,9 +130,7 @@ export const updateCart = async (req, res) => {
         if (product.sizes[productSizeIndex].stock <= 0) {
           return res.status(400).json({ message: "Product out of stock" });
         }
-        console.log(cart);
         cart.items[productSizeIndex].quantity += 1;
-        console.log(cart);
         cart.totalAmount += product.sizes[productSizeIndex].price;
         product.sizes[productSizeIndex].stock--;
         break;
@@ -156,7 +163,7 @@ export const updateCart = async (req, res) => {
     await product.save();
     await cart.save();
 
-    res.json(cart);
+    return res.status(201).json(cart);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server Error" });

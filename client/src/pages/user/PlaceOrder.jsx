@@ -11,28 +11,52 @@ import AddIcon from "@mui/icons-material/Add";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 import { getCart } from "../../actions/cartActions";
+import { toast, ToastContainer } from "react-toastify";
+import { createOrder } from "../../actions/orderActions";
 function PlaceOrder() {
   const { user } = useSelector((state) => state.auth);
   const { items, loading, error, totalAmount } = useSelector(
     (state) => state.cart
   );
   const [selectedAddress, setSelectedAddress] = useState(null);
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const [paymentOption, setPaymentOption] = useState(null);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    async function getCartUser() {
-      const data = await dispatch(getCart(user._id));
-      console.log(data);
-      
-      // setItems(data?.items);
+  const handlePlaceOrder = () => {
+    if (!selectedAddress) {
+      toast.error("selected address");
+      return;
     }
-    getCartUser();
-  }, []);
+    if (!paymentOption) {
+      toast.error("Selected Payement Option");
+      return;
+    }
+    console.log(selectedAddress);
+    console.log(paymentOption);
+    console.log(items);
+    console.log(user);
+    createOrder(
+      user._id,
+      selectedAddress,
+      totalAmount,
+      items,
+      paymentOption
+    );
+  };
+
   const onSelect = (address) => {
     setSelectedAddress(address);
   };
-  console.log(selectedAddress)
+  const onSelectPayment = (payment) => {
+    setPaymentOption(payment);
+  };
+  useEffect(() => {
+    async function getCartUser() {
+      const data = await dispatch(getCart(user._id));
+    }
+    getCartUser();
+  }, []);
   return (
     <>
       <Header />
@@ -44,14 +68,14 @@ function PlaceOrder() {
             placeOrder={true}
             address={item}
             onSelect={onSelect}
-             selectedAddress={selectedAddress}
+            selectedAddress={selectedAddress}
           />
         ))}
         <Button
           variant="outlined"
           sx={{ width: "100%", marginY: "30px" }}
           endIcon={<AddIcon />}
-          onClick={()=> navigate('/shipping_address')}
+          onClick={() => navigate("/shipping_address")}
         >
           add address
         </Button>
@@ -74,8 +98,15 @@ function PlaceOrder() {
           <Box>
             <PriceDetails totalAmount={totalAmount} />
             <ApplyCoupon />
-            <PaymentOptions />
-            <Button variant="contained" sx={{ width: "100%", marginY: "30px" }}>
+            <PaymentOptions
+              onSelectPayment={onSelectPayment}
+              paymentOption={paymentOption}
+            />
+            <Button
+              onClick={handlePlaceOrder}
+              variant="contained"
+              sx={{ width: "100%", marginY: "30px" }}
+            >
               Place Order
             </Button>
           </Box>
