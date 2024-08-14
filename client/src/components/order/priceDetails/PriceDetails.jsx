@@ -1,7 +1,7 @@
 import { Box, Paper, Typography, Divider } from '@mui/material';
 import React from 'react';
 
-function PriceDetails() {
+function PriceDetails({totalAmount}) {
   return (
     <Paper elevation={5} sx={{ padding: '20px', maxWidth: '100%', marginX: 'auto',marginBottom:'10px' }}>
       <Typography variant='h6' sx={{ marginBottom: '15px', fontWeight: 'bold' }}>
@@ -22,7 +22,7 @@ function PriceDetails() {
       <Divider sx={{ margin: '15px 0' }} />
       <Box display="flex" justifyContent="space-between">
         <Typography variant='h6' fontWeight="bold">Total:</Typography>
-        <Typography variant='h6' fontWeight="bold">$105</Typography>
+        <Typography variant='h6' fontWeight="bold">{totalAmount}</Typography>
       </Box>
     </Paper>
   );

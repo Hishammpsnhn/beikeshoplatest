@@ -15,7 +15,7 @@ function Carouse({ Banner1, Banner2, Banner3 }) {
       interval={3000}
       indicators={false}
     >
-      {items.map((item, index) => (
+      {items?.map((item, index) => (
         <Paper key={index} elevation={3} style={{ height: '100%' }}>
           <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <img

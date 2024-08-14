@@ -5,18 +5,36 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import image from "../../../public/images/products/n0jzl_400.webp";
 import HoverRating from "../rating/Rating";
+import { updateCart } from "../../../actions/cartActions";
+import { toast, ToastContainer } from "react-toastify";
+import { IconButton } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useDispatch } from "react-redux";
+function ProdcutBref({ cart, name, image, price, qty, userId, productId,size }) {
+  const [quantity, setQuantity] = useState(qty);
 
-function ProdcutBref({ cart, name, image,price,qty }) {
-  const [quantity, setQuantity] = useState(qty); // Initialize the quantity state
+  const dispatch = useDispatch();
 
   const handleIncrement = () => {
-    setQuantity((prevQuantity) => prevQuantity + 1);
+    if (quantity < 4) {
+      setQuantity((prevQuantity) => prevQuantity + 1);
+      dispatch(updateCart(userId, productId._id, "inc",size));
+      toast.success(`quantity updated!`);
+    } else {
+      toast.error("maximum quantity limit exceeded");
+    }
   };
 
   const handleDecrement = () => {
     if (quantity > 1) {
       setQuantity((prevQuantity) => prevQuantity - 1);
+      dispatch(updateCart(userId, productId._id, "dec",size));
+      toast.success(`quantity updated!`);
     }
+  };
+  const handleRemove = () => {
+    dispatch(updateCart(userId, productId._id, "remove",size));
+    toast.success(`Removed from cart!`);
   };
 
   return (
@@ -41,9 +59,8 @@ function ProdcutBref({ cart, name, image,price,qty }) {
           <Box>
             <Typography variant="body1"> {name}</Typography>
             {/* <Typography variant="body2">{name}</Typography> */}
-            <Typography variant="body2">
-              {price}
-            </Typography>
+            <Typography variant="body2">size:{size?.size}</Typography>
+            <Typography variant="body2">{price}</Typography>
           </Box>
         </Box>
         {/* <HoverRating/> */}
@@ -66,9 +83,13 @@ function ProdcutBref({ cart, name, image,price,qty }) {
             >
               +
             </Button>
+            <IconButton onClick={handleRemove}>
+              <DeleteIcon />
+            </IconButton>
           </Box>
         )}
       </Paper>
+      <ToastContainer />
     </Box>
   );
 }

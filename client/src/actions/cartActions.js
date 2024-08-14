@@ -1,47 +1,78 @@
 import axios from "axios";
-
+import {
+  fetchCartFailure,
+  fetchCartStart,
+  fetchCartSuccess,
+} from "../reducers/cartReducers";
 
 const url = "http://localhost:4000";
 
-export const addCart = async(userId,productId,size) => {
+export const addCart = (userId, productId, size) => async (dispatch) => {
+  dispatch(fetchCartStart());
+  try {
+    const { data } = await axios.post(`${url}/api/cart/create`, {
+      userId,
+      productId,
+      size,
+    });
+    console.log(data);
+    dispatch(fetchCartSuccess(data));
+    return data;
+  } catch (error) {
+    console.error("Error:", error);
+    if (error.response && error.response.data) {
+      const errorMessage = error.response.data.message;
+      console.error("Server Error Message:", errorMessage);
+      dispatch(fetchCartFailure(errorMessage));
+    } else {
+      console.error("Generic Error");
+      dispatch(fetchCartFailure("Something went wrong"));
+    }
+  }
+};
+
+export const getCart = (userId) => async (dispatch) => {
+  dispatch(fetchCartSuccess());
+  try {
+    const { data } = await axios.get(`${url}/api/cart/${userId}`);
+    console.log(data);
+    dispatch(fetchCartSuccess(data));
+    return data;
+  } catch (error) {
+    console.error("Error:", error);
+    if (error.response && error.response.data) {
+      const errorMessage = error.response.data.message;
+      console.error("Server Error Message:", errorMessage);
+      dispatch(fetchCartFailure(errorMessage));
+    } else {
+      console.error("Generic Error");
+      dispatch(fetchCartFailure("Something went wrong"));
+    }
+  }
+};
+export const updateCart =
+  (userId, productId, action, size) => async (dispatch) => {
+    dispatch(fetchCartStart());
     try {
-      const { data } = await axios.post(`${url}/api/cart/create`,{
-        userId,
+      const { data } = await axios.put(`${url}/api/cart/${userId}`, {
+        action,
         productId,
         size,
       });
       console.log(data);
+      if (data) {
+        dispatch(fetchCartSuccess(data));
+      }
       return data;
-      //dispatch(fetchCategorySuccess(data));
     } catch (error) {
       console.error("Error:", error);
       if (error.response && error.response.data) {
         const errorMessage = error.response.data.message;
         console.error("Server Error Message:", errorMessage);
-        //dispatch(fetchCategoryFailure(errorMessage));
+        dispatch(fetchCartFailure(errorMessage));
       } else {
         console.error("Generic Error");
-        //dispatch(fetchCategoryFailure("Something went wrong"));
+        dispatch(fetchCartFailure("Something went wrong"));
       }
     }
-};
-
-
-export const getCart = async(userId) => {
-    try {
-      const { data } = await axios.get(`${url}/api/cart/${userId}`);
-      console.log(data);
-      return data;
-      //dispatch(fetchCategorySuccess(data));
-    } catch (error) {
-      console.error("Error:", error);
-      if (error.response && error.response.data) {
-        const errorMessage = error.response.data.message;
-        console.error("Server Error Message:", errorMessage);
-        //dispatch(fetchCategoryFailure(errorMessage));
-      } else {
-        console.error("Generic Error");
-        //dispatch(fetchCategoryFailure("Something went wrong"));
-      }
-    }
-};
+  };

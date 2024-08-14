@@ -35,7 +35,7 @@ function ProductDetails() {
     }
     navigate("/cart");
 
-    addCart(user._id,product._id,selectedSize);
+    dispatch(addCart(user._id, product._id, selectedSize));
   };
   useEffect(() => {
     if (!product?._id || product?._id !== id) {
