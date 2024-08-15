@@ -15,7 +15,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { createOrder } from "../../actions/orderActions";
 function PlaceOrder() {
   const { user } = useSelector((state) => state.auth);
-  const { items, loading, error, totalAmount } = useSelector(
+  const { items, loading, error, totalAmount ,CartId} = useSelector(
     (state) => state.cart
   );
   const [selectedAddress, setSelectedAddress] = useState(null);
@@ -36,12 +36,14 @@ function PlaceOrder() {
     console.log(paymentOption);
     console.log(items);
     console.log(user);
+    console.log()
     createOrder(
       user._id,
       selectedAddress,
       totalAmount,
       items,
-      paymentOption
+      paymentOption,
+      CartId
     );
   };
 

@@ -2,10 +2,9 @@ import Cart from "../model/cartSchema.js";
 import Products from "../model/ProductSchema.js";
 import User from "../model/userSchema.js";
 
-
-// @desc    create Cart
+// @desc    Create Cart
 // @route   POST /api/cart/create
-// @access  Pubilc
+// @access  Public
 export const createCart = async (req, res) => {
   const { userId, productId, size } = req.body;
 
@@ -16,9 +15,8 @@ export const createCart = async (req, res) => {
     const product = await Products.findById(productId);
     if (!product) return res.status(404).json({ message: "Product not found" });
 
-    const productSize = product.sizes.find((item) => item._id == size._id);
-    if (!productSize)
-      return res.status(404).json({ message: "Size not found" });
+    const productSize = product.sizes.find((item) => item._id.toString() === size._id.toString());
+    if (!productSize) return res.status(404).json({ message: "Size not found" });
 
     if (productSize.stock <= 0) {
       return res.status(400).json({ message: "Product out of stock" });
@@ -30,7 +28,7 @@ export const createCart = async (req, res) => {
       const newCart = new Cart({
         userId,
         items: [{ productId, quantity: 1, productSizeDetails: productSize }],
-        totalAmount: size.price,
+        totalAmount: productSize.price,
       });
       productSize.stock--;
 
@@ -42,28 +40,30 @@ export const createCart = async (req, res) => {
         model: Products,
         select: "name images sizes",
       });
+
       const itemIndex = cart.items.findIndex(
         (item) =>
-          item.productId._id == productId &&
-          item.productSizeDetails.size == productSize.size
+          item.productId._id.toString() === productId &&
+          item.productSizeDetails._id.toString() === productSize._id.toString()
       );
-      console.log(itemIndex);
+
       if (itemIndex > -1) {
         cart.items[itemIndex].quantity += 1;
-        cart.totalAmount += size.price;
+        cart.totalAmount += productSize.price;
       } else {
         cart.items.push({
           productId,
           quantity: 1,
           productSizeDetails: productSize,
         });
-        cart.totalAmount += size.price;
+        cart.totalAmount += productSize.price;
       }
 
       productSize.stock--;
       await product.save();
       cart = await cart.save();
     }
+
     await cart.populate({
       path: "items.productId",
       model: Products,
@@ -76,10 +76,9 @@ export const createCart = async (req, res) => {
   }
 };
 
-
-// @desc    get Cart
+// @desc    Get Cart
 // @route   GET /api/cart/:id
-// @access  Pubilc
+// @access  Public
 export const getCart = async (req, res) => {
   const { id } = req.params;
   try {
@@ -90,17 +89,16 @@ export const getCart = async (req, res) => {
     });
 
     if (!cart) return res.status(404).json({ message: "Cart not found" });
-    return res.status(201).json(cart);
+    return res.status(200).json(cart);
   } catch (error) {
     console.error(error);
     res.status(500).send("Server Error");
   }
 };
 
-
-// @desc    update Cart
+// @desc    Update Cart
 // @route   PUT /api/cart/:id
-// @access  Pubilc
+// @access  Public
 export const updateCart = async (req, res) => {
   const { id } = req.params;
   const { productId, action, size } = req.body;
@@ -110,60 +108,64 @@ export const updateCart = async (req, res) => {
     if (!cart) return res.status(404).json({ message: "Cart not found" });
 
     const itemIndex = cart.items.findIndex(
-      (item) => item.productId.toString() === productId
+      (item) => item.productId.toString() === productId && item.productSizeDetails._id.toString() === size._id.toString()
     );
-    if (itemIndex === -1)
-      return res.status(404).json({ message: "Item not found in cart" });
+
+    if (itemIndex === -1) return res.status(404).json({ message: "Item not found in cart" });
 
     const product = await Products.findById(productId);
     if (!product) return res.status(404).json({ message: "Product not found" });
 
     const productSizeIndex = product.sizes.findIndex(
-      (sizee) => sizee._id.toString() == size._id.toString()
+      (sizee) => sizee._id.toString() === size._id.toString()
     );
 
+    if (productSizeIndex === -1) return res.status(404).json({ message: "Size not found" });
 
-    if (productSizeIndex === -1)
-      return res.status(404).json({ message: "Size not found" });
+    const productSize = product.sizes[productSizeIndex];
+
     switch (action) {
       case "inc":
-        if (product.sizes[productSizeIndex].stock <= 0) {
+        if (productSize.stock <= 0) {
           return res.status(400).json({ message: "Product out of stock" });
         }
-        cart.items[productSizeIndex].quantity += 1;
-        cart.totalAmount += product.sizes[productSizeIndex].price;
-        product.sizes[productSizeIndex].stock--;
+        cart.items[itemIndex].quantity += 1;
+        cart.totalAmount += productSize.price;
+        productSize.stock--;
         break;
 
       case "dec":
-        cart.items[productSizeIndex].quantity -= 1;
-        cart.totalAmount -= product.sizes[productSizeIndex].price;
-        product.sizes[productSizeIndex].stock++;
+        if (cart.items[itemIndex].quantity <= 0) {
+          return res.status(400).json({ message: "Quantity cannot be less than 0" });
+        }
+        cart.items[itemIndex].quantity -= 1;
+        cart.totalAmount -= productSize.price;
+        productSize.stock++;
         if (cart.items[itemIndex].quantity <= 0) {
           cart.items.splice(itemIndex, 1);
         }
         break;
 
       case "remove":
-        cart.totalAmount -=
-          product.sizes[productSizeIndex].price *
-          cart.items[productSizeIndex].quantity;
-        product.sizes[productSizeIndex].stock += cart.items[itemIndex].quantity;
+        cart.totalAmount -= productSize.price * cart.items[itemIndex].quantity;
+        productSize.stock += cart.items[itemIndex].quantity;
         cart.items.splice(itemIndex, 1);
         break;
 
       default:
         return res.status(400).json({ message: "Invalid action" });
     }
-    await cart.populate({
-      path: "items.productId",
-      model: Products,
-      select: "name images ",
-    });
+
     await product.save();
     await cart.save();
 
-    return res.status(201).json(cart);
+    await cart.populate({
+      path: "items.productId",
+      model: Products,
+      select: "name images",
+    });
+
+    return res.status(200).json(cart);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server Error" });

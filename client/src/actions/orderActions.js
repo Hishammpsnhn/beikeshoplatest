@@ -8,6 +8,7 @@ export const createOrder = async (
   totalAmount,
   items,
   paymentMethod,
+  CartId
 ) => {
   //dispatch(fetchProductStart());
 
@@ -18,9 +19,63 @@ export const createOrder = async (
       totalAmount,
       items,
       paymentMethod,
+      CartId,
     });
     console.log(data);
     //dispatch(fetchProductSuccess(data));
+  } catch (error) {
+    console.error("Error:", error);
+    if (error.response && error.response.data) {
+      const errorMessage = error.response.data.message;
+      console.error("Server Error Message:", errorMessage);
+      //dispatch(fetchProductFailure(errorMessage));
+    } else {
+      console.error("Generic Error");
+      // dispatch(fetchProductFailure("Something went wrong"));
+    }
+  }
+};
+
+export const getOrders = async (id) => {
+  try {
+    const { data } = await axios.get(`${url}/api/order/${id}`);
+    return data;
+  } catch (error) {
+    console.error("Error:", error);
+    if (error.response && error.response.data) {
+      const errorMessage = error.response.data.message;
+      console.error("Server Error Message:", errorMessage);
+      //dispatch(fetchProductFailure(errorMessage));
+    } else {
+      console.error("Generic Error");
+      // dispatch(fetchProductFailure("Something went wrong"));
+    }
+  }
+};
+
+export const getAllOrders = async () => {
+  try {
+    const { data } = await axios.get(`${url}/api/order/`);
+    return data;
+  } catch (error) {
+    console.error("Error:", error);
+    if (error.response && error.response.data) {
+      const errorMessage = error.response.data.message;
+      console.error("Server Error Message:", errorMessage);
+      //dispatch(fetchProductFailure(errorMessage));
+    } else {
+      console.error("Generic Error");
+      // dispatch(fetchProductFailure("Something went wrong"));
+    }
+  }
+};
+export const updateOrders = async (id, obj) => {
+  try {
+    const { data } = await axios.put(`${url}/api/order/${id}`, {
+      obj,
+    });
+    
+    return data;
   } catch (error) {
     console.error("Error:", error);
     if (error.response && error.response.data) {

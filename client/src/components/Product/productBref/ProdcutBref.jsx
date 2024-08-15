@@ -10,31 +10,62 @@ import { toast, ToastContainer } from "react-toastify";
 import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch } from "react-redux";
-function ProdcutBref({ cart,order, name, image, price, qty, userId, productId,size }) {
+import { updateOrders } from "../../../actions/orderActions";
+function ProdcutBref({
+  cart,
+  order,
+  profile,
+  name,
+  image,
+  price,
+  qty,
+  userId,
+  productId,
+  size,
+  orderStatus,
+  paymentStatus,
+  orderId,
+}) {
   const [quantity, setQuantity] = useState(qty);
 
   const dispatch = useDispatch();
 
-  const handleIncrement = () => {
+  const handleIncrement = async () => {
     if (quantity < 4) {
-      setQuantity((prevQuantity) => prevQuantity + 1);
-      dispatch(updateCart(userId, productId._id, "inc",size));
-      toast.success(`quantity updated!`);
+      const data = await dispatch(
+        updateCart(userId, productId._id, "inc", size)
+      )
+      if (data) {
+        setQuantity((prevQuantity) => prevQuantity + 1);
+        toast.success(`quantity updated!`);
+      }else{
+        toast.error(`out of Stock!`);
+      }
     } else {
       toast.error("maximum quantity limit exceeded");
     }
   };
 
-  const handleDecrement = () => {
+  const handleDecrement = async () => {
     if (quantity > 1) {
-      setQuantity((prevQuantity) => prevQuantity - 1);
-      dispatch(updateCart(userId, productId._id, "dec",size));
-      toast.success(`quantity updated!`);
+      const data = await dispatch(
+        updateCart(userId, productId._id, "dec", size)
+      );
+      if (data) {
+        setQuantity((prevQuantity) => prevQuantity - 1);
+        console.log(data);
+        toast.success(`quantity updated!`);
+      }
     }
   };
   const handleRemove = () => {
-    dispatch(updateCart(userId, productId._id, "remove",size));
+    dispatch(updateCart(userId, productId._id, "remove", size));
     toast.success(`Removed from cart!`);
+  };
+  const handleCancelOrder = () => {
+    if (window.confirm("Are you sure you want to cancel")) {
+      updateOrders(orderId, { orderStatus: "cancelled" });
+    }
   };
 
   return (
@@ -46,6 +77,7 @@ function ProdcutBref({ cart,order, name, image, price, qty, userId, productId,si
           display: "flex",
           justifyContent: "space-between",
           minWidth: "100%",
+          alignItems: "center",
         }}
       >
         <Box display="flex" width="50%" justifyContent="space-evenly">
@@ -56,18 +88,41 @@ function ProdcutBref({ cart,order, name, image, price, qty, userId, productId,si
               style={{ width: "100%", height: "100%", objectFit: "contain" }}
             />
           </Box>
-          <Box>
+          <Box sx={{ flex: 1 }}>
             <Typography variant="body1"> {name}</Typography>
             {/* <Typography variant="body2">{name}</Typography> */}
-            <Typography variant="body2">size:{size?.size}</Typography>
+            {profile ? (
+              <Typography variant="body2">size:{size}</Typography>
+            ) : (
+              <Typography variant="body2">size:{size?.size}</Typography>
+            )}
             <Typography variant="body2">{price}</Typography>
           </Box>
         </Box>
-        {/* <HoverRating/> */}
+        {profile && orderStatus === "delivered" && paymentStatus && (
+          <HoverRating />
+        )}
+        {profile && orderStatus === "cancelled" && (
+          <Typography variant="body2" color="error">
+            Order Cancelled
+          </Typography>
+        )}
+
+        {profile && orderStatus === "pending" && (
+          <Box>
+            <Button
+              variant="contained"
+              color="error"
+              onClick={handleCancelOrder}
+            >
+              cancel
+            </Button>
+          </Box>
+        )}
         {order && (
-           <Typography variant="body1" sx={{ margin: "" }}>
-           Qty: {quantity}
-         </Typography>
+          <Typography variant="body1" sx={{ margin: "" }}>
+            Qty: {quantity}
+          </Typography>
         )}
         {cart && (
           <Box display="flex" alignItems="center">

@@ -147,7 +147,7 @@ function AdminSidebar() {
             )}
             <Item
               title="Orders"
-              to="/invoices"
+              to="/admin/orders_management"
               icon={<AddShoppingCartIcon />}
               selected={selected}
               setSelected={setSelected}

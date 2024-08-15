@@ -2,56 +2,45 @@ import React, { useEffect, useState } from "react";
 import { Box, Button, Typography, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
-import { mockUserData as users } from "../../mockdata";
 import Header from "../../components/admin/Header/AdminSubHeader";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import CategoryModal from "../../components/admin/CategoryModal/CategoryModeal";
-import {
-  deleteProduct,
-  getProductsList,
-  oneProduct,
-} from "../../actions/productActions";
-import BlockIcon from "@mui/icons-material/Block";
-import { getUsers, userStatusUpdate } from "../../actions/userAction";
+import CloseIcon from "@mui/icons-material/Close";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import { getAllOrders, updateOrders } from "../../actions/orderActions";
 
 const OrderManagement = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const { products, loading, error } = useSelector((state) => state.products);
   const { user, isAuthenticated } = useSelector((state) => state.auth);
-  const [users, setUsers] = useState([]);
-  console.log(users);
+  const [orders, setOrders] = useState([]);
+  console.log(orders);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
-  useEffect(() => {
-    dispatch(getProductsList());
-  }, [dispatch]);
-
-  const rows = users?.map((item) => ({
+  const rows = orders?.map((item) => ({
     id: item._id,
-    name: item.userName,
-    email: item.email,
-    status: !item.block ? "Active" : "Blocked",
+    productId: item.product[0].product,
+    size: item.product[0].size,
+    quantity: item.product[0].quantity,
+    price: item.product[0].price,
+    orderStatus: item.orderStatus,
+    payment: item.paymentMethod,
+    paymentStatus: item.paymentStatus,
   }));
 
-  const handleUpdate = async (id) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to change status of User?"
-    );
-    if (confirmed) {
-      const res = await userStatusUpdate(id);
-      if (res.user) {
-        setUsers(
-          users.map((user) => (user._id === res.user._id ? res.user : user))
+  const handleUpdate = async (id, obj) => {
+    console.log(id, obj);
+    const data = await updateOrders(id, obj);
+    console.log(data);
+    if (data.updatedOrder) {
+      if (data.updatedOrder) {
+        const newOrders = orders.map((order) =>
+          order._id === id ? data.updatedOrder : order
         );
+        setOrders(newOrders);
       }
     }
   };
@@ -61,44 +50,74 @@ const OrderManagement = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    async function getAllUsers() {
-      const data = await getUsers();
-      if (data.users) {
-        setUsers(data.users);
+    async function getAllOrder() {
+      const data = await getAllOrders();
+      console.log(data.orders);
+      if (data.orders) {
+        const newOrder = orders.filter((order) => order._id != data.orders._id);
+        setOrders(data.orders);
       }
     }
-    getAllUsers();
+    getAllOrder();
   }, []);
 
   const columns = [
     { field: "id", headerName: "ID" },
     {
-      field: "name",
-      headerName: "Name",
+      field: "productId",
+      headerName: "productId",
       flex: 1,
       cellClassName: "name-column--cell",
     },
     {
-      field: "email",
-      headerName: "Email",
+      field: "quantity",
+      headerName: "Quantity",
       flex: 1,
     },
     {
-      field: "status",
-      headerName: "Status",
+      field: "price",
+      headerName: "Price",
+      flex: 1,
+    },
+    {
+      field: "payment",
+      headerName: "Payment Method",
+      flex: 1,
+    },
+    {
+      field: "paymentStatus",
+      headerName: "Payment Info",
+      flex: 1,
+      renderCell: ({ row }) => (
+        <>
+          {row.paymentStatus == true ? (
+            <CheckCircleOutlineIcon />
+          ) : (
+            <CloseIcon />
+          )}
+        </>
+      ),
+    },
+    {
+      field: "orderStatus",
+      headerName: "orderStatus",
       type: "string",
       flex: 1,
       renderCell: ({ row }) => (
         <Typography
           sx={{
             color:
-              row.status === "Active"
+              row.orderStatus === "pending"
                 ? colors.greenAccent[400]
-                : colors.redAccent[400],
+                : row.orderStatus === "delivered"
+                ? "green"
+                : row.orderStatus === "cancelled"
+                ? "red"
+                : "dark",
             fontWeight: "bold",
           }}
         >
-          {row.status}
+          {row.orderStatus}
         </Typography>
       ),
     },
@@ -109,19 +128,41 @@ const OrderManagement = () => {
       flex: 1,
       renderCell: ({ row }) => (
         <Box display="flex" justifyContent="center" gap="10px">
-          <Button
-            onClick={() => handleUpdate(row.id)}
-            variant="contained"
-            startIcon={
-              row.status === "Active" ? (
-                <BlockIcon />
-              ) : (
-                <CheckCircleOutlineIcon />
-              )
-            }
-          >
-            {row.status == "Active" ? "Block" : "Unblock"}
-          </Button>
+          {row.orderStatus === "pending" && (
+            <>
+              <Button
+                onClick={() =>
+                  handleUpdate(row.id, { orderStatus: "delivered" })
+                }
+                variant="contained"
+              >
+                Deliver
+              </Button>
+              <Button
+                onClick={() =>
+                  handleUpdate(row.id, { orderStatus: "cancelled" })
+                }
+                variant="contained"
+                color="error"
+              >
+                cancel
+              </Button>
+            </>
+          )}
+          {row.orderStatus == "delivered" && row.paymentStatus == false && (
+            <Button
+              onClick={() => handleUpdate(row.id, { paymentStatus: true })}
+              variant="contained"
+              color="info"
+            >
+              Pay
+            </Button>
+          )}
+          {row.orderStatus == "delivered" && row.paymentStatus == true && (
+            <Typography sx={{fontWeight:'bold'}}  color="#4caf50" >
+              Success
+            </Typography>
+          )}
         </Box>
       ),
     },
@@ -174,7 +215,6 @@ const OrderManagement = () => {
           error={error}
         />
       </Box>
-      <CategoryModal handleClose={handleClose} open={open} />
     </Box>
   );
 };

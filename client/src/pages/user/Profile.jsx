@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Avatar,
   Box,
@@ -24,10 +24,12 @@ import { useSelector } from "react-redux";
 import { profileUpdate } from "../../actions/userAction";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { getOrders } from "../../actions/orderActions";
 
 function Profile() {
   const { user, error } = useSelector((state) => state.auth);
-  console.log(user, error);
+  const [orders, setOrders] = useState([]);
+  console.log(orders);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [profile, setProfile] = useState({
@@ -73,7 +75,6 @@ function Profile() {
         return;
       }
     }
-    console.log(field, isEditing[field]);
 
     if (isEditing[field]) {
       console.log({ [field]: profile[field] });
@@ -99,6 +100,14 @@ function Profile() {
   const handleLogout = () => {
     console.log("Logout clicked");
   };
+
+  useEffect(() => {
+    async function getUserOrder() {
+      const data = await getOrders(user._id);
+      setOrders(data.orders);
+    }
+    getUserOrder();
+  }, []);
 
   return (
     <>
@@ -150,7 +159,7 @@ function Profile() {
             </Box>
             <Box sx={{ width: "70%" }}>
               <Grid container spacing={2}>
-                {["email","userName", "phoneNumber"].map((field) => (
+                {["email", "userName", "phoneNumber"].map((field) => (
                   <Grid
                     item
                     xs={field === "firstName" || field === "lastName" ? 6 : 12}
@@ -249,13 +258,19 @@ function Profile() {
             "scrollbar-width": "none", // Firefox
           }}
         >
-          <ProdcutBref />
-          <ProdcutBref />
-          <ProdcutBref />
-          <ProdcutBref />
-          <ProdcutBref />
-          <ProdcutBref />
-          <ProdcutBref />
+          {orders?.map((order) => (
+            <ProdcutBref
+              name={order?.product[0].product.name}
+              image={order?.product[0].product.images[0]}
+              size={order?.product[0].size}
+              qty={order?.product[0].quantity}
+              price={order?.product[0].price}
+              orderStatus={order?.orderStatus}
+              paymentStatus={order?.paymentStatus}
+              profile={true}
+              orderId={order._id}
+            />
+          ))}
         </Paper>
         <ToastContainer />
       </Container>
