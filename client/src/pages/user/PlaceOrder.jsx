@@ -15,7 +15,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { createOrder } from "../../actions/orderActions";
 function PlaceOrder() {
   const { user } = useSelector((state) => state.auth);
-  const { items, loading, error, totalAmount ,CartId} = useSelector(
+  const { items, loading, error, totalAmount, CartId } = useSelector(
     (state) => state.cart
   );
   const [selectedAddress, setSelectedAddress] = useState(null);
@@ -23,7 +23,7 @@ function PlaceOrder() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handlePlaceOrder = () => {
+  const handlePlaceOrder = async () => {
     if (!selectedAddress) {
       toast.error("selected address");
       return;
@@ -32,7 +32,7 @@ function PlaceOrder() {
       toast.error("Selected Payement Option");
       return;
     }
-    createOrder(
+    const data = await createOrder(
       user._id,
       selectedAddress,
       totalAmount,
@@ -40,6 +40,9 @@ function PlaceOrder() {
       paymentOption,
       CartId
     );
+    if(data){
+      navigate('/success', { state: { order: true } });
+    }
   };
 
   const onSelect = (address) => {
@@ -54,11 +57,11 @@ function PlaceOrder() {
     }
     getCartUser();
   }, []);
-  useEffect(()=>{
-    if(items.length <=0){
-      navigate('/')
+  useEffect(() => {
+    if (items.length <= 0 || !items) {
+      navigate("/");
     }
-  },[])
+  }, []);
   return (
     <>
       <Header />

@@ -25,9 +25,13 @@ function ProdcutBref({
   orderStatus,
   paymentStatus,
   orderId,
-  handleCancelOrder
+  handleCancelOrder,
+  ratings,
 }) {
   const [quantity, setQuantity] = useState(qty);
+
+  const userRating = ratings?.find((item) => item?.userId == userId);
+
 
   const dispatch = useDispatch();
 
@@ -35,11 +39,11 @@ function ProdcutBref({
     if (quantity < 4) {
       const data = await dispatch(
         updateCart(userId, productId._id, "inc", size)
-      )
+      );
       if (data) {
         setQuantity((prevQuantity) => prevQuantity + 1);
         toast.success(`quantity updated!`);
-      }else{
+      } else {
         toast.error(`out of Stock!`);
       }
     } else {
@@ -63,7 +67,6 @@ function ProdcutBref({
     dispatch(updateCart(userId, productId._id, "remove", size));
     toast.success(`Removed from cart!`);
   };
-  
 
   return (
     <Box sx={{ marginY: "10px" }}>
@@ -97,7 +100,7 @@ function ProdcutBref({
           </Box>
         </Box>
         {profile && orderStatus === "delivered" && paymentStatus && (
-          <HoverRating />
+          <HoverRating userId={userId} productId={productId} userRating={userRating} />
         )}
         {profile && orderStatus === "cancelled" && (
           <Typography variant="body2" color="error">
@@ -110,7 +113,7 @@ function ProdcutBref({
             <Button
               variant="contained"
               color="error"
-              onClick={()=>handleCancelOrder(orderId)}
+              onClick={() => handleCancelOrder(orderId)}
             >
               cancel
             </Button>

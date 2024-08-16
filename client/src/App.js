@@ -21,6 +21,7 @@ import Cart from "./pages/user/Cart";
 import Profile from "./pages/user/Profile";
 import ShippingAddress from "./pages/user/ShippingAddress";
 import OrdersManagement from "./pages/admin/OrdersManagement";
+import Success from "./pages/user/Success";
 
 const theme = createMuiTheme({
   palette: {
@@ -89,6 +90,7 @@ function App() {
               <Route path="/cart" element={<Cart />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/shipping_address" element={<ShippingAddress />} />
+              <Route path="/success" element={<Success />} />
 
               {/* Admin Routes */}
               <Route path="/dashboard" element={<Dashboard />} />

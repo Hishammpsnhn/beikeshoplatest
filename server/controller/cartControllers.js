@@ -38,7 +38,7 @@ export const createCart = async (req, res) => {
       await cart.populate({
         path: "items.productId",
         model: Products,
-        select: "name images sizes",
+        select: "name images sizes ",
       });
 
       const itemIndex = cart.items.findIndex(

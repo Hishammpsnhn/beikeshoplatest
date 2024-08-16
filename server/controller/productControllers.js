@@ -6,7 +6,7 @@ import Products from "../model/ProductSchema.js";
 // @access  Public
 export const getAllProducts = async (req, res) => {
   const { sort } = req.query;
-  console.log(sort)
+  console.log(sort);
   try {
     let sortOption = {};
     switch (sort) {
@@ -134,22 +134,58 @@ export const softDeleteProduct = async (req, res) => {
 // @access  Public
 export const getProduct = async (req, res) => {
   try {
-    const product = await Products.aggregate([
-      { $match: { _id: new mongoose.Types.ObjectId(req.params.id) } },
-      {
-        $addFields: {
-          averageRating: {
-            $cond: {
-              if: { $gt: [{ $size: "$rating" }, 0] },
-              then: { $avg: "$rating.rating" },
-              else: 0,
-            },
+    const product = await Products.findById(req.params.id);
+
+    res.status(200).json(product);
+  } catch (error) {
+    console.error("Error getting Product:", error.message);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const addOrUpdateRating = async (req, res) => {
+  console.log(req.body);
+  const { productId, userId, rating } = req.body;
+  try {
+    const product = await Products.findOne({
+      _id: productId,
+      "ratings.userId": userId,
+    });
+
+    if (product) {
+      // User has already rated, so update the existing rating
+      await Products.updateOne(
+        { _id: productId, "ratings.userId": userId },
+        {
+          $set: {
+            "ratings.$.rating": rating,
+          },
+        }
+      );
+    } else {
+      // User has not rated yet, so add a new rating
+      await Products.findByIdAndUpdate(productId, {
+        $push: {
+          ratings: {
+            userId: userId,
+            rating: rating,
           },
         },
-      },
-    ]);
+      });
+    }
 
-    res.status(200).json(product[0]);
+    // Recalculate average rating
+    const updatedProduct = await Products.findById(productId);
+    const ratings = updatedProduct.ratings;
+    const averageRating =
+      ratings.reduce((sum, r) => sum + r.rating, 0) / ratings.length;
+    console.log("avg is 0"+averageRating);
+    await Products.findByIdAndUpdate(productId, {
+      averageRating: averageRating,
+      ratingsCount: ratings.length,
+    });
+    const savedProduct = await updatedProduct.save();
+    res.status(200).json({ message: "add or updated successfully",savedProduct });
   } catch (error) {
     console.error("Error getting Product:", error.message);
     res.status(500).json({ message: "Server error" });

@@ -16,32 +16,56 @@ import {
 } from "../../actions/categoryActions";
 import { setSelectedCategory } from "../../reducers/productReducers";
 
-function SidebarProducts({sort}) {
-  const [priceRange, setPriceRange] = React.useState([20, 80]);
+const marks = [
+  {
+    value: 0,
+    label: '0',
+  },
+  {
+    value: 500,
+    label: '500',
+  },
+  {
+    value: 1000,
+    label: '1000',
+  },
+  {
+    value: 1500,
+    label: '1500',
+  },
+  {
+    value: 2000,
+    label: '2000',
+  },
+];
+
+function SidebarProducts({ sort }) {
+  const [priceRange, setPriceRange] = useState([0, 2000]);
   const dispatch = useDispatch();
   const { categories } = useSelector((state) => state.category);
   const { selectedCategory } = useSelector((state) => state.products);
-
-  console.log(selectedCategory)
 
   const handlePriceRangeChange = (event, newValue) => {
     setPriceRange(newValue);
   };
 
   const handleCategory = (id) => {
-    dispatch(setSelectedCategory(id))
-    // dispatch(getProductByCategory(id,sort));
+    dispatch(setSelectedCategory(id));
+    // dispatch(getProductByCategory(id, sort));
   };
 
-  useEffect(() => {
-    dispatch(getCategories());
-    //setSelected(categories)
-  }, []);
+  function valuetext(value) {
+    return `${value}`;
+  }
 
   useEffect(() => {
     dispatch(getCategories());
-    dispatch(getProductByCategory(selectedCategory,sort));
-  }, [sort,selectedCategory]);
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(getCategories());
+    dispatch(getProductByCategory(selectedCategory, sort));
+  }, [dispatch, sort, selectedCategory]);
 
   return (
     <Sidebar className="sidebar-container">
@@ -56,18 +80,17 @@ function SidebarProducts({sort}) {
             onClick={() => handleCategory(item._id)}
             key={index}
             style={{
-              backgroundColor: selectedCategory === item._id ? " #D4499F" : "transparent",
+              backgroundColor: selectedCategory === item._id ? "#D4499F" : "transparent",
               color: selectedCategory === item._id ? "white" : 'black',
             }}
           >
-            {" "}
-            {item.category}{" "}
+            {item.category}
           </MenuItem>
         ))}
 
         <SubMenu label={<Typography variant="body1">Accessories</Typography>}>
-          <MenuItem> Watches</MenuItem>
-          <MenuItem> Bags </MenuItem>
+          <MenuItem>Watches</MenuItem>
+          <MenuItem>Bags</MenuItem>
         </SubMenu>
         <Divider />
 
@@ -80,10 +103,13 @@ function SidebarProducts({sort}) {
           <Slider
             value={priceRange}
             onChange={handlePriceRangeChange}
+            aria-label="Price Range"
             valueLabelDisplay="auto"
+            getAriaValueText={valuetext}
+            step={10}
             min={0}
-            max={100}
-            aria-labelledby="range-slider"
+            max={2000}
+            marks={marks}
           />
         </Box>
         <Divider />
@@ -108,3 +134,4 @@ function SidebarProducts({sort}) {
 }
 
 export default SidebarProducts;
+

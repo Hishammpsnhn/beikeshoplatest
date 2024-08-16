@@ -23,6 +23,7 @@ export const createOrder = async (
     });
     console.log(data);
     //dispatch(fetchProductSuccess(data));
+    return data
   } catch (error) {
     console.error("Error:", error);
     if (error.response && error.response.data) {

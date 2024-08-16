@@ -91,7 +91,7 @@ export const getUserOrders = async (req, res) => {
     const orders = await Orders.find({ userId:id }).populate({
       path:'product.product',
       model: Products,
-      select:"name images"
+      select:"name images ratings"
     })
     res.status(200).json({ message: "Orders fetched successfully", orders });
   } catch (error) {

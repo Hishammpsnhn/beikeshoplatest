@@ -12,11 +12,11 @@ import {
 const url = "http://localhost:4000";
 
 export const getProductsList = (sort) => async (dispatch) => {
-  console.log(sort)
+  console.log(sort);
   dispatch(fetchProductStart());
   try {
     const { data } = await axios.get(`${url}/api/admin/product`, {
-      params: { sort }, 
+      params: { sort },
     });
     console.log(data);
     dispatch(fetchProductSuccess(data));
@@ -51,7 +51,7 @@ export const addProduct = (formdata) => async (dispatch) => {
       }
     );
     console.log(data);
-    
+
     dispatch(stopLoading());
   } catch (error) {
     console.error("Error:", error);
@@ -71,13 +71,17 @@ export const editProduct = (formdata, id) => async (dispatch) => {
   dispatch(fetchProductStart());
   try {
     console.log(formdata);
-    const { data } = await axios.put(`${url}/api/admin/product/${id}`, {
-      formdata,
-    },{
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
+    const { data } = await axios.put(
+      `${url}/api/admin/product/${id}`,
+      {
+        formdata,
       },
-    });
+      {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      }
+    );
     console.log(data);
     dispatch(stopLoading());
   } catch (error) {
@@ -98,7 +102,7 @@ export const deleteProduct = (id) => async (dispatch) => {
   const data = localStorage.getItem("userInfo");
   const userInfo = JSON.parse(data);
   try {
-    const { data } = await axios.delete(`${url}/api/admin/product/${id}`,{
+    const { data } = await axios.delete(`${url}/api/admin/product/${id}`, {
       headers: {
         Authorization: `Bearer ${userInfo.token}`,
       },
@@ -124,7 +128,7 @@ export const oneProduct = (id) => async (dispatch) => {
     const { data } = await axios.get(`${url}/api/admin/product/${id}`);
     console.log(data);
     dispatch(oneProductSuccess(data));
-    return data
+    return data;
   } catch (error) {
     console.error("Error:", error);
     if (error.response && error.response.data) {
@@ -134,6 +138,27 @@ export const oneProduct = (id) => async (dispatch) => {
     } else {
       console.error("Generic Error");
       dispatch(fetchProductFailure("Something went wrong"));
+    }
+  }
+};
+export const addOrUpdateRating = async (productId, userId, rating) => {
+  console.log(productId, userId, rating);
+  try {
+    const { data } = await axios.post(`${url}/api/admin/product/rating`,{
+      productId,
+      userId,
+      rating,
+    });
+    return data;
+  } catch (error) {
+    console.error("Error:", error);
+    if (error.response && error.response.data) {
+      const errorMessage = error.response.data.message;
+      console.error("Server Error Message:", errorMessage);
+     // dispatch(fetchProductFailure(errorMessage));
+    } else {
+      console.error("Generic Error");
+     // dispatch(fetchProductFailure("Something went wrong"));
     }
   }
 };
