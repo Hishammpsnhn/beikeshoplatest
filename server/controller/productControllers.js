@@ -1,25 +1,42 @@
 import mongoose from "mongoose";
 import Products from "../model/ProductSchema.js";
 
-
-// @desc    gel all product 
+// @desc    gel all product
 // @route   GET /api/admin/product
 // @access  Public
 export const getAllProducts = async (req, res) => {
+  const { sort } = req.query;
+  console.log(sort)
   try {
-    const product = await Products.find({ isDeleted: false });
+    let sortOption = {};
+    switch (sort) {
+      case "lowToHigh":
+        sortOption = { price: 1 };
+        break;
+      case "highToLow":
+        sortOption = { price: -1 };
+        break;
+      case "aToZ":
+        sortOption = { name: 1 };
+        break;
+      case "zToA":
+        sortOption = { name: -1 };
+        break;
+      default:
+        sortOption = {};
+    }
+    const product = await Products.find({ isDeleted: false }).sort(sortOption);
     res.status(200).json(product);
   } catch (error) {
     res.status(500).json({ message: "Something went wrong", error });
   }
 };
 
-
-// @desc    create a  product 
+// @desc    create a  product
 // @route   POST /api/admin/product
 // @access  Public
 export const addProduct = async (req, res) => {
-  const product = req.body.formdata;  
+  const product = req.body.formdata;
   try {
     const newProduct = new Products({
       name: product.name,
@@ -48,14 +65,14 @@ export const addProduct = async (req, res) => {
   }
 };
 
-// @desc    edit a  product 
+// @desc    edit a  product
 // @route   PUT /api/admin/product/:id
 // @access  Public
 export const editProduct = async (req, res) => {
-  const { id } = req.params; 
-  const updatedData = req.body.formdata;  
-  console.log(id,updatedData)
-  
+  const { id } = req.params;
+  const updatedData = req.body.formdata;
+  console.log(id, updatedData);
+
   try {
     const updatedProduct = await Products.findByIdAndUpdate(
       id,
@@ -71,7 +88,7 @@ export const editProduct = async (req, res) => {
         sizes: updatedData.sizes,
         type: updatedData.type,
       },
-      { new: true }  
+      { new: true }
     );
 
     if (!updatedProduct) {
@@ -92,7 +109,7 @@ export const editProduct = async (req, res) => {
   }
 };
 
-// @desc    soft delete a  product 
+// @desc    soft delete a  product
 // @route   DELETE /api/admin/product/:id
 // @access  Public
 export const softDeleteProduct = async (req, res) => {
@@ -112,9 +129,6 @@ export const softDeleteProduct = async (req, res) => {
   }
 };
 
-
-
-
 // @desc   get one product
 // @route   GET /api/admin/product/:id
 // @access  Public
@@ -128,11 +142,11 @@ export const getProduct = async (req, res) => {
             $cond: {
               if: { $gt: [{ $size: "$rating" }, 0] },
               then: { $avg: "$rating.rating" },
-              else: 0
-            }
-          }
-        }
-      }
+              else: 0,
+            },
+          },
+        },
+      },
     ]);
 
     res.status(200).json(product[0]);

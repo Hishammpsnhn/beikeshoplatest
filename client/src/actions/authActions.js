@@ -7,7 +7,7 @@ import {
 } from "../reducers/authReducers";
 
 const url = "http://localhost:4000";
-
+axios.defaults.withCredentials = true;
 export const login = (email, password) => async (dispatch) => {
   dispatch(loginStart());
   try {

@@ -32,11 +32,6 @@ function PlaceOrder() {
       toast.error("Selected Payement Option");
       return;
     }
-    console.log(selectedAddress);
-    console.log(paymentOption);
-    console.log(items);
-    console.log(user);
-    console.log()
     createOrder(
       user._id,
       selectedAddress,
@@ -59,6 +54,11 @@ function PlaceOrder() {
     }
     getCartUser();
   }, []);
+  useEffect(()=>{
+    if(items.length <=0){
+      navigate('/')
+    }
+  },[])
   return (
     <>
       <Header />

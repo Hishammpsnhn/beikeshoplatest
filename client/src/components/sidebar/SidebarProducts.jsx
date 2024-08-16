@@ -16,7 +16,7 @@ import {
 } from "../../actions/categoryActions";
 import { setSelectedCategory } from "../../reducers/productReducers";
 
-function SidebarProducts() {
+function SidebarProducts({sort}) {
   const [priceRange, setPriceRange] = React.useState([20, 80]);
   const dispatch = useDispatch();
   const { categories } = useSelector((state) => state.category);
@@ -30,13 +30,18 @@ function SidebarProducts() {
 
   const handleCategory = (id) => {
     dispatch(setSelectedCategory(id))
-    dispatch(getProductByCategory(id));
+    // dispatch(getProductByCategory(id,sort));
   };
 
   useEffect(() => {
     dispatch(getCategories());
     //setSelected(categories)
   }, []);
+
+  useEffect(() => {
+    dispatch(getCategories());
+    dispatch(getProductByCategory(selectedCategory,sort));
+  }, [sort,selectedCategory]);
 
   return (
     <Sidebar className="sidebar-container">

@@ -74,7 +74,7 @@ export const updateOrders = async (id, obj) => {
     const { data } = await axios.put(`${url}/api/order/${id}`, {
       obj,
     });
-    
+    console.log(data)
     return data;
   } catch (error) {
     console.error("Error:", error);

@@ -112,6 +112,7 @@ function ProductDetails() {
             </Button>
             <Button
               variant="contained"
+              onClick={handleCart}
               startIcon={<ShoppingBagIcon />}
               sx={{
                 padding: "15px",

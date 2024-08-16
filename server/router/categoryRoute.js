@@ -7,6 +7,6 @@ const router = express.Router()
 
 router.get('/',getCategory)
 router.get('/product',getProductByCategory)
-router.post('/',verifyToken,createCategory)
-router.delete('/:id',verifyToken, softDeleteCategory)
+router.post('/',createCategory)
+router.delete('/:id', softDeleteCategory)
 export default router

@@ -81,9 +81,11 @@ function Nav() {
     navigate("/products");
   };
   useEffect(() => {
-    //setCategories(one.categories)
-    dispatch(getCategories());
-  }, []);
+    // Ensure categories are fetched only once when the component mounts
+    if (categories.length === 0) {
+      dispatch(getCategories());
+    }
+  }, [dispatch, categories.length]); 
 
   return (
     <AppBar position="static" sx={{ background: "#E4D5E4", color: "black" }}>
@@ -169,10 +171,16 @@ function Nav() {
             }}
           >
             <Button
-              onClick={handleOpenProductsMenu}
+              onClick={()=> navigate('/products')}
               sx={{ my: 2, color: "black", display: "block" }}
             >
               Products
+            </Button>
+            <Button
+              onClick={handleOpenProductsMenu}
+              sx={{ my: 2, color: "black", display: "block" }}
+            >
+              Category
             </Button>
             <Menu
               id="menu-products"

@@ -25,6 +25,7 @@ function ProdcutBref({
   orderStatus,
   paymentStatus,
   orderId,
+  handleCancelOrder
 }) {
   const [quantity, setQuantity] = useState(qty);
 
@@ -62,11 +63,7 @@ function ProdcutBref({
     dispatch(updateCart(userId, productId._id, "remove", size));
     toast.success(`Removed from cart!`);
   };
-  const handleCancelOrder = () => {
-    if (window.confirm("Are you sure you want to cancel")) {
-      updateOrders(orderId, { orderStatus: "cancelled" });
-    }
-  };
+  
 
   return (
     <Box sx={{ marginY: "10px" }}>
@@ -113,7 +110,7 @@ function ProdcutBref({
             <Button
               variant="contained"
               color="error"
-              onClick={handleCancelOrder}
+              onClick={()=>handleCancelOrder(orderId)}
             >
               cancel
             </Button>

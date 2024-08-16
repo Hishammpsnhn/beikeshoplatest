@@ -128,7 +128,11 @@ export const updateOrder = async (req, res) => {
   }
 
   try {
-    const order = await Orders.findById(id);
+    const order = await Orders.findById(id).populate({
+      path:'product.product',
+      model: Products,
+      select:"name images"
+    })
 
     if (!order) {
       return res.status(404).json({ message: "Order not found" });

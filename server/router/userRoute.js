@@ -7,7 +7,6 @@ import {
   deleteAddress,
   EditAddress,
 } from "../controller/userController.js";
-import verifyToken from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 router.get("/", getAllUsers);

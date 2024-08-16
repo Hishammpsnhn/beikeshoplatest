@@ -13,6 +13,7 @@ import {
 } from "../reducers/productReducers";
 
 const url = "http://localhost:4000";
+axios.defaults.withCredentials = true;
 
 export const addCategory = (name, description) => async (dispatch) => {
   const data = localStorage.getItem("userInfo");
@@ -89,12 +90,15 @@ export const deleteCategories = (id) => async (dispatch) => {
     }
   }
 };
-export const getProductByCategory = (id) => async (dispatch) => {
+export const getProductByCategory = (id, sort) => async (dispatch) => {
   dispatch(fetchProductStart());
 
   try {
     const { data } = await axios.get(
-      `${url}/api/admin/category/product?category=${id}`
+      `${url}/api/admin/category/product?category=${id}`,
+      {
+        params: { sort },
+      }
     );
     console.log(data);
     dispatch(fetchProductSuccess(data));

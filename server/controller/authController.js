@@ -42,10 +42,10 @@ export const login = async (req, res) => {
     bcrypt.compare(password, existingUser.password, function (err, result) {
       if (err) res.status(500).json({ message: "invalid crediantial!" });
       if (result) {
-        const token = generateToken(result);
+        const token = generateToken(existingUser);
         res.cookie("token", token, {
           httpOnly: true,
-          secure: true,
+          secure: false,
           sameSite: "Strict",
           maxAge: 3600000, // 1 hor
         });
@@ -96,9 +96,15 @@ export const signUp = async (req, res) => {
     }
 
     //Generate and send OTP
-    //const otp = generateOtp();
-    // await sendOtpSms("+91 " + phoneNumber, otp);
-    const otp = 1234;
+    const otp = generateOtp();
+    const otpToMail = await sentOtpToMail(
+      "hishammpsnhn@gmail.com",
+      "",
+      `Your OTP is ${otp}`
+    );
+    if (!otpToMail) {
+      res.status(403).json({ message: "something went wrong!" });
+    }
     const expiresAt = new Date(Date.now() + 120 * 1000);
     const otpEntry = Otp({
       email,
@@ -157,15 +163,15 @@ export const verifyOtp = async (req, res) => {
 
       const token = generateToken(newUser._id);
       res.cookie("token", token, {
-        httpOnly: true,
-        secure: true,
+        httpOnly: false,
+        secure: false,
         sameSite: "Strict",
         maxAge: 3600000, // 1 hour
       });
 
       return res
         .status(201)
-        .json({ message: "User created successfully", token,user:newUser });
+        .json({ message: "User created successfully", token, user: newUser });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ message: "Server error" });
@@ -198,8 +204,8 @@ export const googleLogin = async (req, res) => {
 
     const token = generateToken(user._id);
     res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,
+      httpOnly: false,
+      secure: false,
       sameSite: "Strict",
       maxAge: 3600000, // 1 hour
     });
@@ -306,7 +312,7 @@ export const forgotPassword_verifyOTP = async (req, res) => {
 export const change_password = async (req, res) => {
   const { id } = req.params;
   const { password } = req.body;
-  console.log(id, password,req.body);
+  console.log(id, password, req.body);
 
   try {
     const user = await User.findById(id);

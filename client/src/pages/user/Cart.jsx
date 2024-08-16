@@ -62,7 +62,7 @@ function Cart() {
             <Box width="40%">
               {/* <AddressDetails cart={true} /> */}
               <Box marginTop="10px">
-                <PriceDetails totalAmount={totalAmount} />
+                <PriceDetails totalAmount={totalAmount} itemsCount={items.length} />
               </Box>
               <Button
                 variant="contained"

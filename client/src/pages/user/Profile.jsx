@@ -24,7 +24,7 @@ import { useSelector } from "react-redux";
 import { profileUpdate } from "../../actions/userAction";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getOrders } from "../../actions/orderActions";
+import { getOrders, updateOrders } from "../../actions/orderActions";
 
 function Profile() {
   const { user, error } = useSelector((state) => state.auth);
@@ -99,6 +99,27 @@ function Profile() {
 
   const handleLogout = () => {
     console.log("Logout clicked");
+  };
+
+  const handleCancelOrder = async (orderId) => {
+    if (window.confirm("Are you sure you want to cancel " + orderId + "?")) {
+      try {
+        const data = await updateOrders(orderId, { orderStatus: "cancelled" });
+        if (data.updatedOrder) {
+          toast.success("Order cancelled successfully");
+  
+          // Update the orders state
+          setOrders(
+            orders.map((order) => 
+              order._id === orderId ? data.updatedOrder : order
+            )
+          );
+        }
+      } catch (error) {
+        toast.error("Failed to cancel the order");
+        console.error("Error cancelling order:", error);
+      }
+    }
   };
 
   useEffect(() => {
@@ -259,6 +280,7 @@ function Profile() {
           }}
         >
           {orders?.map((order) => (
+            
             <ProdcutBref
               name={order?.product[0].product.name}
               image={order?.product[0].product.images[0]}
@@ -269,6 +291,7 @@ function Profile() {
               paymentStatus={order?.paymentStatus}
               profile={true}
               orderId={order._id}
+              handleCancelOrder={handleCancelOrder}
             />
           ))}
         </Paper>

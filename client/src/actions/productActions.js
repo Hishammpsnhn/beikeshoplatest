@@ -11,10 +11,13 @@ import {
 
 const url = "http://localhost:4000";
 
-export const getProductsList = () => async (dispatch) => {
+export const getProductsList = (sort) => async (dispatch) => {
+  console.log(sort)
   dispatch(fetchProductStart());
   try {
-    const { data } = await axios.get(`${url}/api/admin/product`);
+    const { data } = await axios.get(`${url}/api/admin/product`, {
+      params: { sort }, 
+    });
     console.log(data);
     dispatch(fetchProductSuccess(data));
   } catch (error) {

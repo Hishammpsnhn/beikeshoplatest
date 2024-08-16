@@ -58,7 +58,7 @@ export const softDeleteCategory = async (req, res) => {
 // @access  Public
 export const getProductByCategory = async (req, res) => {
   try {
-    const { category } = req.query;
+    const { category, sort } = req.query;
 
     if (!category) {
       return res
@@ -66,12 +66,28 @@ export const getProductByCategory = async (req, res) => {
         .json({ message: "Category parameter is required" });
     }
 
-    // const categoryObjectId =  mongoose.Types.ObjectId(category);
+    let sortOption = {};
+    switch (sort) {
+      case "lowToHigh":
+        sortOption = { price: 1 };
+        break;
+      case "highToLow":
+        sortOption = { price: -1 };
+        break;
+      case "aToZ":
+        sortOption = { name: 1 };
+        break;
+      case "zToA":
+        sortOption = { name: -1 };
+        break;
+      default:
+        sortOption = {};
+    }
 
     const products = await Products.find({
       category: category,
       isDeleted: false,
-    });
+    }).sort(sortOption);
 
     res.status(200).json(products);
   } catch (error) {

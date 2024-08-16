@@ -16,6 +16,8 @@ import uploadRoute from "./router/uploadRoute.js";
 import userRoute from "./router/userRoute.js";
 import cartRoute from "./router/cartRoute.js";
 import orderRoute from "./router/orderRoute.js";
+import cookieParser from "cookie-parser";
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -23,26 +25,14 @@ const __dirname = path.dirname(__filename);
 dotenv.config();
 
 const app = express();
+app.use(cookieParser());
 
-// Session
-app.use(
-  session({
-    secret: "your-secret-key",
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Set to true if using HTTPS
-      sameSite: "None", // Set to 'None' to allow cross-origin cookies if needed
-    },
-  })
-);
 
 // Apply CORS middleware
 app.use(
   cors({
-    origin: "http://localhost:3000", // Replace with your React app's origin
-    credentials: true, // Allow cookies to be sent
+    origin: "http://localhost:3000", 
+    credentials: true,
   })
 );
 
