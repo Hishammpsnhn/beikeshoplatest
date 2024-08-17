@@ -25,6 +25,9 @@ import { profileUpdate } from "../../actions/userAction";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getOrders, updateOrders } from "../../actions/orderActions";
+import { googleLogout } from "@react-oauth/google";
+import { logout } from "../../reducers/authReducers";
+import { logoutCookie } from "../../actions/authActions";
 
 function Profile() {
   const { user, error } = useSelector((state) => state.auth);
@@ -94,11 +97,16 @@ function Profile() {
   };
 
   const handleChangePassword = () => {
-    console.log("Change Password clicked");
+    console.log("change password");
   };
 
   const handleLogout = () => {
     console.log("Logout clicked");
+    googleLogout();
+    dispatch(logout());
+    logoutCookie();
+    localStorage.removeItem("userInfo");
+    navigate("/login");
   };
 
   const handleCancelOrder = async (orderId) => {
@@ -107,10 +115,10 @@ function Profile() {
         const data = await updateOrders(orderId, { orderStatus: "cancelled" });
         if (data.updatedOrder) {
           toast.success("Order cancelled successfully");
-  
+
           // Update the orders state
           setOrders(
-            orders.map((order) => 
+            orders.map((order) =>
               order._id === orderId ? data.updatedOrder : order
             )
           );
@@ -124,7 +132,7 @@ function Profile() {
 
   useEffect(() => {
     async function getUserOrder() {
-      const data = await getOrders(user._id);
+      const data = await getOrders(user?._id);
       setOrders(data.orders);
     }
     getUserOrder();
@@ -280,7 +288,6 @@ function Profile() {
           }}
         >
           {orders?.map((order) => (
-            
             <ProdcutBref
               name={order?.product[0].product.name}
               image={order?.product[0].product.images[0]}
@@ -294,7 +301,7 @@ function Profile() {
               handleCancelOrder={handleCancelOrder}
               userId={user._id}
               productId={order?.product[0].product._id}
-              ratings = {order?.product[0].product.ratings}
+              ratings={order?.product[0].product.ratings}
             />
           ))}
         </Paper>

@@ -39,35 +39,23 @@ const theme = createMuiTheme({
 
 function App() {
   const [ForgotPassword, setForgotPassword] = useState(false);
-  const [serverError, setServerError] = useState(false);
+  
 
   const dispatch = useDispatch();
   const { user, isAuthenticated, loading, error } = useSelector(
     (state) => state.auth
   );
 
-  useEffect(() => {
-    const checkServer = async () => {
-      try {
-        await axios.get("/api/check-server");
-      } catch (error) {
-        setServerError(true);
-      }
-    };
 
-    checkServer();
-  }, []);
 
   return (
     <ThemeProvider theme={theme}>
       {/* classname app for admin */}
       <div className={user?.isAdmin ? "app" : ""}>
-        {user?.isAdmin && !serverError && <AdminSidebar />}
+        {user?.isAdmin && <AdminSidebar />}
         <Routes>
-          {serverError ? (
-            <Route path="*" element={<Error500Page />} />
-          ) : (
-            <>
+          
+        
               {/* Authentication Routes */}
               <Route path="/signup" element={<SignupPage />} />
               <Route
@@ -110,8 +98,8 @@ function App() {
 
               {/* Catch-all route to handle undefined paths */}
               <Route path="*" element={<Home />} />
-            </>
-          )}
+          
+      
         </Routes>
       </div>
     </ThemeProvider>

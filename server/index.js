@@ -17,6 +17,7 @@ import userRoute from "./router/userRoute.js";
 import cartRoute from "./router/cartRoute.js";
 import orderRoute from "./router/orderRoute.js";
 import cookieParser from "cookie-parser";
+import checkUserStatus from "./middleware/checkUserStatus.js";
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -50,6 +51,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // No-cache Middleware
 app.use(nocache());
+
 
 // Routes
 app.use("/api/auth", authRoute);

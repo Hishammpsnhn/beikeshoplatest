@@ -4,6 +4,8 @@ import {
   Button,
   Card,
   CardContent,
+  IconButton,
+  InputAdornment,
   TextField,
   Typography,
 } from "@mui/material";
@@ -13,6 +15,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { change_password } from "../../actions/authActions";
 import { toast, ToastContainer } from "react-toastify";
 import validator from "validator";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 function ChangePassword() {
   const location = useLocation();
@@ -20,6 +24,8 @@ function ChangePassword() {
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const data = location.state || {};
   console.log(data);
@@ -44,12 +50,18 @@ function ChangePassword() {
 
       return toast.error(errorMessage);
     }
-    if(!validator.equals(password,confirmPassword)){
+    if (!validator.equals(password, confirmPassword)) {
       return toast.error("Password not equal to confirm password");
     }
     dispatch(change_password(data._id, password));
 
     //navigate("/login");
+  };
+  const handleClickShowPassword = () => {
+    setShowPassword((prev) => !prev);
+  };
+  const handleClickShowconfirmPassword = () => {
+    setShowConfirmPassword((prev) => !prev);
   };
   useEffect(() => {
     if (isAuthenticated) {
@@ -81,22 +93,52 @@ function ChangePassword() {
                 <TextField
                   fullWidth
                   variant="outlined"
-                  type="password"
+                  type={`${showPassword ? "text" : "password"}`}
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          edge="end"
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                 />
               </Box>
               <Box sx={{ mb: 2 }}>
                 <TextField
                   fullWidth
                   variant="outlined"
-                  type="password"
+                  type={`${showConfirmPassword ? "text" : "password"}`}
                   placeholder="Confirm Password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowconfirmPassword}
+                          edge="end"
+                        >
+                          {showConfirmPassword ? (
+                            <VisibilityOff />
+                          ) : (
+                            <Visibility />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                 />
               </Box>
               <Box>

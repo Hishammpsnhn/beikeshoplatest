@@ -5,7 +5,10 @@ import checkUserStatus from '../middleware/checkUserStatus.js';
 
 
 const router = express.Router()
-router.use(checkUserStatus);
+
+
+
+
 router.get('/',getCategory)
 router.get('/product',getProductByCategory)
 router.post('/',createCategory)

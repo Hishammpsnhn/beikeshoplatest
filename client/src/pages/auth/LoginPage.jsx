@@ -7,6 +7,8 @@ import {
   Typography,
   Link,
   Paper,
+  IconButton,
+  InputAdornment,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import {
@@ -23,10 +25,13 @@ import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import validator from "validator";
 import { initial } from "../../reducers/authReducers";
+import Visibility from '@mui/icons-material/Visibility'
+import VisibilityOff from '@mui/icons-material/VisibilityOff'
 
 function Login({ forgotPassword, setForgotPassword, otp, change }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const { user, isAuthenticated, loading, error } = useSelector(
     (state) => state.auth
@@ -82,6 +87,9 @@ function Login({ forgotPassword, setForgotPassword, otp, change }) {
       console.error("Failed to fetch user info:", error);
       toast.error("Google login failed : Email already exist");
     }
+  };
+  const handleClickShowPassword = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
   useEffect(() => {
@@ -146,11 +154,24 @@ function Login({ forgotPassword, setForgotPassword, otp, change }) {
                 />
                 <TextField
                   fullWidth
-                  type="password"
+                  type={`${showPassword ? "text" : "password"}`}
                   label="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   margin="normal"
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          edge="end"
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                 />
               </>
             ) : (

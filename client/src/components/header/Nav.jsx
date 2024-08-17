@@ -16,7 +16,6 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../../reducers/authReducers";
 import { useNavigate } from "react-router-dom";
 import SettingsIcon from "@mui/icons-material/Settings";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -29,6 +28,8 @@ import {
 import { googleLogout } from "@react-oauth/google";
 import { setSelectedCategory } from "../../reducers/productReducers";
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { logoutCookie } from "../../actions/authActions";
+import { logout } from "../../reducers/authReducers";
 
 const pages = ["About Us", "Latest Product", "Contact Us"];
 const productsDropdown = ["Product 1", "Product 2", "Product 3"];
@@ -65,6 +66,7 @@ function Nav() {
     if (setting === "Logout") {
       googleLogout();
       dispatch(logout());
+      logoutCookie()
       localStorage.removeItem("userInfo");
       navigate("/login");
     } else if (setting === "Profile") {

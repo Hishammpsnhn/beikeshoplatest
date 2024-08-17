@@ -9,6 +9,8 @@ import {
   CircularProgress,
   Typography,
   Link,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import googleImg from "../../public/images/google.png";
@@ -20,6 +22,8 @@ import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import validator from "validator";
 import { isValidUsername, validation } from "../../utils/utils";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 function SignupPage() {
   const userData = {
@@ -31,10 +35,12 @@ function SignupPage() {
     confirmPassword: "",
   };
   const [data, setData] = useState(userData);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isAuthenticated,loading, error } = useSelector(
+  const { isAuthenticated, loading, error } = useSelector(
     (state) => state.auth
   );
 
@@ -52,6 +58,12 @@ function SignupPage() {
     minNumbers: 1,
     minSymbols: 1,
   };
+  const handleClickShowPassword = () => {
+    setShowPassword((prev) => !prev);
+  };
+  const handleClickShowconfirmPassword = () => {
+    setShowConfirmPassword((prev) => !prev);
+  };
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -59,14 +71,14 @@ function SignupPage() {
     if (msg) {
       return toast.error(msg);
     }
-  
+
     if (!validator.isStrongPassword(data.password, options)) {
       let errorMessage = `Password must be at least ${options.minLength} characters long, `;
       errorMessage += `contain at least ${options.minLowercase} lowercase letter(s), `;
       errorMessage += `${options.minUppercase} uppercase letter(s), `;
       errorMessage += `${options.minNumbers} number(s), `;
       errorMessage += `and ${options.minSymbols} special character(s).`;
-  
+
       return toast.error(errorMessage);
     }
     if (!validator.equals(data.password, data.confirmPassword)) {
@@ -85,41 +97,41 @@ function SignupPage() {
   const handleSignupError = (err) => {
     toast.error(`Signup failed! ${err.message}`);
   };
-  const handleGoogle = useGoogleLogin({
-    onSuccess: async (tokenResponse) => {
-      console.log("Google login response:", tokenResponse);
+  // const handleGoogle = useGoogleLogin({
+  //   onSuccess: async (tokenResponse) => {
+  //     console.log("Google login response:", tokenResponse);
 
-      try {
-        const { access_token } = tokenResponse;
-        if (!access_token) {
-          throw new Error("Access token not found in the response");
-        }
-        const userInfoResponse = await axios.get(
-          "https://www.googleapis.com/oauth2/v2/userinfo",
-          {
-            headers: {
-              Authorization: `Bearer ${access_token}`,
-            },
-          }
-        );
+  //     try {
+  //       const { access_token } = tokenResponse;
+  //       if (!access_token) {
+  //         throw new Error("Access token not found in the response");
+  //       }
+  //       const userInfoResponse = await axios.get(
+  //         "https://www.googleapis.com/oauth2/v2/userinfo",
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${access_token}`,
+  //           },
+  //         }
+  //       );
 
-        const userInfo = userInfoResponse.data;
-        console.log("User Info:", userInfo);
-        dispatch(googleAuth(userInfo.email, userInfo.name));
+  //       const userInfo = userInfoResponse.data;
+  //       console.log("User Info:", userInfo);
+  //       dispatch(googleAuth(userInfo.email, userInfo.name));
 
-        // Dispatch login action and navigate
-        // dispatch(login(userInfo));
-        // navigate('/');
-      } catch (error) {
-        console.error("Failed to fetch user info:", error);
-        toast.error("Google login failed");
-      }
-    },
-    onError: (error) => {
-      console.error("Google login error:", error);
-      toast.error("Google login failed");
-    },
-  });
+  //       // Dispatch login action and navigate
+  //       // dispatch(login(userInfo));
+  //       // navigate('/');
+  //     } catch (error) {
+  //       console.error("Failed to fetch user info:", error);
+  //       toast.error("Google login failed");
+  //     }
+  //   },
+  //   onError: (error) => {
+  //     console.error("Google login error:", error);
+  //     toast.error("Google login failed");
+  //   },
+  // });
   useEffect(() => {
     if (error) {
       toast.error(`Signup failed! ${error}`);
@@ -218,24 +230,55 @@ function SignupPage() {
                       margin="normal"
                       variant="outlined"
                       label="Password"
-                      type="password"
+                      type={`${showPassword ? "text" : "password"}`}
                       name="password"
                       value={data.password}
                       onChange={handleChange}
                       required
                       sx={{ marginRight: 1 }}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={handleClickShowPassword}
+                              edge="end"
+                            >
+                              {showPassword ? (
+                                <VisibilityOff />
+                              ) : (
+                                <Visibility />
+                              )}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
                     />
                     <TextField
                       fullWidth
                       margin="normal"
                       variant="outlined"
                       label="Confirm Password"
-                      type="password"
+                      type={`${showConfirmPassword ? "text" : "password"}`}
                       name="confirmPassword"
                       value={data.confirmPassword}
                       onChange={handleChange}
                       required
                       sx={{ marginLeft: 1 }}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={handleClickShowconfirmPassword}
+                              edge="end"
+                            >
+                              {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
+                      
                     />
                   </Box>
                   <Button

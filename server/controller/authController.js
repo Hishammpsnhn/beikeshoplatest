@@ -308,7 +308,6 @@ export const forgotPassword_verifyOTP = async (req, res) => {
 // @desc    Password update
 // @route   POST /api/auth/:id/change_password
 // @access  Public
-
 export const change_password = async (req, res) => {
   const { id } = req.params;
   const { password } = req.body;
@@ -331,4 +330,13 @@ export const change_password = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
+};
+
+// @desc    logout
+// @route   get /api/auth/logout
+// @access  Public
+
+export const logout = async (req, res) => {
+  res.clearCookie("token");
+  res.status(200).json({ message: "Logged out successfully" });
 };

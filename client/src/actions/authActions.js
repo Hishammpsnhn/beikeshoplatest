@@ -118,7 +118,7 @@ export const forgotPasswordAction = (email) => async (dispatch) => {
     });
     console.log(data);
     // dispatch(loginSuccess(data));
-    dispatch(initial())
+    dispatch(initial());
     // localStorage.setItem("userInfo", JSON.stringify(data));
     return data;
   } catch (error) {
@@ -146,7 +146,7 @@ export const forgot_password_verifyOtp = (otp, email) => async (dispatch) => {
       }
     );
     dispatch(initial());
-    console.log(data)
+    console.log(data);
     return data;
     // localStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
@@ -162,19 +162,15 @@ export const forgot_password_verifyOtp = (otp, email) => async (dispatch) => {
   }
 };
 
-
-export const change_password = ( id,password) => async (dispatch) => {
+export const change_password = (id, password) => async (dispatch) => {
   dispatch(loginStart());
-  console.log(password)
+  console.log(password);
   try {
-    const { data } = await axios.post(
-      `${url}/api/auth/${id}/change_password`,
-      {
-       password
-      }
-    );
+    const { data } = await axios.post(`${url}/api/auth/${id}/change_password`, {
+      password,
+    });
     dispatch(loginSuccess(data));
-    console.log(data)
+    console.log(data);
     localStorage.setItem("userInfo", JSON.stringify(data));
     return data;
   } catch (error) {
@@ -186,6 +182,20 @@ export const change_password = ( id,password) => async (dispatch) => {
     } else {
       console.error("Generic Error");
       dispatch(loginFailure("Something went wrong"));
+    }
+  }
+};
+export const logoutCookie = async () => {
+  try {
+    const { data } = await axios.get(`${url}/api/auth/logout`);
+    return data;
+  } catch (error) {
+    console.error("Error:", error);
+    if (error.response && error.response.data) {
+      const errorMessage = error.response.data.message;
+      console.error("Server Error Message:", errorMessage);
+    } else {
+      console.error("Generic Error");
     }
   }
 };
