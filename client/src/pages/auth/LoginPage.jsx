@@ -42,19 +42,19 @@ function Login({ forgotPassword, setForgotPassword, otp, change }) {
     minSymbols: 1,
   };
 
-  const handleSubmit = async(event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (forgotPassword) {
       if (!validator.isEmail(email)) {
         toast.error("Enter a valid Email Address");
       }
       const res = await dispatch(forgotPasswordAction(email));
-    if(res){
-      console.log(res);
-      navigate('/otp',{state:{email,forgot:true}});
-      dispatch(initial())
-      setForgotPassword(false);
-    }      
+      if (res) {
+        console.log(res);
+        navigate("/otp", { state: { email, forgot: true } });
+        dispatch(initial());
+        setForgotPassword(false);
+      }
     } else {
       if (validator.isEmail(email)) {
         if (validator.isStrongPassword(password, options)) {
@@ -213,9 +213,11 @@ function Login({ forgotPassword, setForgotPassword, otp, change }) {
                 }}
               />
             )}
-            <Link href="/signup" underline="hover">
-              Don't have Account? Sign up{" "}
-            </Link>
+            {!forgotPassword && (
+              <Link href="/signup" underline="hover">
+                Don't have Account? Sign up{" "}
+              </Link>
+            )}
           </Box>
         </Box>
       </Paper>

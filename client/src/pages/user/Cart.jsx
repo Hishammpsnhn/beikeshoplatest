@@ -23,26 +23,28 @@ function Cart() {
   const dispatch = useDispatch();
   useEffect(() => {
     async function getCartUser() {
-      const data = await dispatch(getCart(user._id));
-      console.log(data);
+      if (user) {
+        const data = await dispatch(getCart(user._id));
+        console.log(data);
+      }
 
       // setItems(data?.items);
     }
     getCartUser();
   }, []);
   console.log(items);
-  //  useEffect(() => {
-  //   if (error != undefined) {
-  //     toast.error("Failed"+error);
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (!user) {
+      navigate("/login");
+    }
+  }, []);
 
   return (
     <>
       <Header />
       <Nav />
       <Container sx={{ marginTop: "20px" }}>
-        {items?.length > 0  ? (
+        {items?.length > 0 ? (
           <Box display="flex" justifyContent="space-between" marginTop="20px">
             <Box width="50%">
               {items?.map((item) => (
@@ -62,7 +64,10 @@ function Cart() {
             <Box width="40%">
               {/* <AddressDetails cart={true} /> */}
               <Box marginTop="10px">
-                <PriceDetails totalAmount={totalAmount} itemsCount={items.length} />
+                <PriceDetails
+                  totalAmount={totalAmount}
+                  itemsCount={items.length}
+                />
               </Box>
               <Button
                 variant="contained"
@@ -73,7 +78,7 @@ function Cart() {
               </Button>
             </Box>
           </Box>
-        ):(
+        ) : (
           <Typography>Your cart is Empty</Typography>
         )}
       </Container>

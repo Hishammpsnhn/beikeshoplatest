@@ -61,6 +61,9 @@ function PlaceOrder() {
     if (items.length <= 0 || !items) {
       navigate("/");
     }
+    if(!user){
+      navigate("/login");
+    }
   }, []);
   return (
     <>

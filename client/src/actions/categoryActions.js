@@ -15,6 +15,20 @@ import {
 const url = "http://localhost:4000";
 axios.defaults.withCredentials = true;
 
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const status = error.response ? error.response.status : null;
+
+    if (status === 403) {
+      localStorage.removeItem("userInfo");
+      window.location.href = "/login";
+    }
+
+    return Promise.reject(error);
+  }
+);
+
 export const addCategory = (name, description) => async (dispatch) => {
   const data = localStorage.getItem("userInfo");
   const userInfo = JSON.parse(data);

@@ -82,6 +82,7 @@ function SidebarProducts({ sort }) {
             style={{
               backgroundColor: selectedCategory === item._id ? "#D4499F" : "transparent",
               color: selectedCategory === item._id ? "white" : 'black',
+              textTransform:'capitalize'
             }}
           >
             {item.category}

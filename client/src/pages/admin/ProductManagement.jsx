@@ -95,6 +95,7 @@ function ProductManagement() {
     setFormData({ ...formData, images: updatedImages });
     console.log(updatedImages);
   };
+  console.log(selectedFile)
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
@@ -146,6 +147,7 @@ function ProductManagement() {
       setFormData(initialData);
       toast.success("Product added successfully");
       setImagePreviews([]);
+      setImageURLs([])
       setSelectedFile(null);
     }
   };
