@@ -32,12 +32,12 @@ const ProductList = () => {
   useEffect(() => {
     dispatch(getProductsList());
   }, [dispatch]);
-
+console.log(products)
   const rows = products.map((item) => ({
     id: item._id,
     name: item.name,
     category: item.category,
-    stock: item.sizes[0].stock,
+    stock: item.sizes.reduce((acc,cur)=>acc+cur.stock,0),
     discount: 0,
   }));
 

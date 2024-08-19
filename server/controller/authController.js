@@ -47,7 +47,7 @@ export const login = async (req, res) => {
           httpOnly: true,
           secure: false,
           sameSite: "Strict",
-          maxAge: 3600000, // 1 hor
+          maxAge: 86400000
         });
 
         res.status(200).json({
@@ -166,7 +166,7 @@ export const verifyOtp = async (req, res) => {
         httpOnly: false,
         secure: false,
         sameSite: "Strict",
-        maxAge: 3600000, // 1 hour
+        maxAge: 86400000
       });
 
       return res
@@ -207,7 +207,7 @@ export const googleLogin = async (req, res) => {
       httpOnly: false,
       secure: false,
       sameSite: "Strict",
-      maxAge: 3600000, // 1 hour
+      maxAge: 86400000
     });
 
     res.status(200).json({

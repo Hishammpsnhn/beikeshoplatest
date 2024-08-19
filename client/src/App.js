@@ -22,6 +22,8 @@ import Profile from "./pages/user/Profile";
 import ShippingAddress from "./pages/user/ShippingAddress";
 import OrdersManagement from "./pages/admin/OrdersManagement";
 import Success from "./pages/user/Success";
+import { ToastContainer } from "react-toastify";
+import PlaceOrderDetails from "./pages/user/PlaceOrderDetails.jsx";
 
 const theme = createMuiTheme({
   palette: {
@@ -79,6 +81,7 @@ function App() {
               <Route path="/profile" element={<Profile />} />
               <Route path="/shipping_address" element={<ShippingAddress />} />
               <Route path="/success" element={<Success />} />
+              <Route path="/orderDetails/:id" element={<PlaceOrderDetails />} />
 
               {/* Admin Routes */}
               <Route path="/dashboard" element={<Dashboard />} />
@@ -101,6 +104,7 @@ function App() {
           
       
         </Routes>
+        <ToastContainer/>
       </div>
     </ThemeProvider>
   );

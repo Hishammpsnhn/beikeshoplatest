@@ -137,7 +137,7 @@ function ProductDetails() {
           />
           <ProductDetailsSection />
         </Box>
-        <ToastContainer />
+        {/* <ToastContainer /> */}
       </Container>
     </>
   );

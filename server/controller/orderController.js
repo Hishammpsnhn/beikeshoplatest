@@ -46,6 +46,17 @@ export const createOrder = async (req, res) => {
           throw new Error(`Product with ID ${item.productId} not found`);
         }
 
+        product.sizes.forEach((size) => {
+          if (size.size === item.productSizeDetails.size) {
+            if (size.stock >= item.quantity) {
+              size.stock -= item.quantity;
+              product.save();
+            } else {
+              throw new Error(`Not enough stock for product`);
+            }
+          }
+        });
+
         const newOrder = new Orders({
           userId: userId,
           addressId: addressId,
@@ -87,12 +98,11 @@ export const getUserOrders = async (req, res) => {
   const { id } = req.params;
   console.log(req.params);
   try {
-
-    const orders = await Orders.find({ userId:id }).populate({
-      path:'product.product',
+    const orders = await Orders.find({ userId: id }).populate({
+      path: "product.product",
       model: Products,
-      select:"name images ratings"
-    })
+      select: "name images ratings",
+    });
     res.status(200).json({ message: "Orders fetched successfully", orders });
   } catch (error) {
     res
@@ -121,7 +131,7 @@ export const getOrdersList = async (req, res) => {
 export const updateOrder = async (req, res) => {
   const { id } = req.params;
   const { orderStatus, paymentStatus } = req.body.obj;
-  console.log(id,req.body)
+  console.log(id, req.body);
 
   if (orderStatus === undefined && paymentStatus === undefined) {
     return res.status(400).json({ message: "field is required" });
@@ -129,15 +139,15 @@ export const updateOrder = async (req, res) => {
 
   try {
     const order = await Orders.findById(id).populate({
-      path:'product.product',
+      path: "product.product",
       model: Products,
-      select:"name images"
-    })
+      select: "name images",
+    });
 
     if (!order) {
       return res.status(404).json({ message: "Order not found" });
     }
-    
+
     if (orderStatus !== undefined) {
       order.orderStatus = orderStatus;
     }
@@ -147,8 +157,40 @@ export const updateOrder = async (req, res) => {
 
     const updatedOrder = await order.save();
 
-    res.status(200).json({ message: "Order updated successfully", updatedOrder });
+    res
+      .status(200)
+      .json({ message: "Order updated successfully", updatedOrder });
   } catch (error) {
-    res.status(500).json({ message: "Error updating order", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error updating order", error: error.message });
+  }
+};
+
+// @desc    get Ordes for Users
+// @route   GET /api/order/:id/order_details
+// @access  Private
+export const orderDetails = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const order = await Orders.findById(id).populate({
+      path: "product.product",
+      model: Products,
+      select: "name price images sizes ratings",
+    });
+    if (!order) {
+      res.status(404).json({ message:"Order not found"});
+    }
+
+    const user = await User.findById(order.userId)
+    console.log(order.addressId)
+    const address  = user.address.find((address) => {
+      return address._id.toString() === order.addressId.toString()
+    })
+    res.status(200).json({ message: "Orders fetched successfully", order,address });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error fetching orders", error: error.message });
   }
 };

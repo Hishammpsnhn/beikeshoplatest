@@ -6,11 +6,13 @@ import Button from "@mui/material/Button";
 import image from "../../../public/images/products/n0jzl_400.webp";
 import HoverRating from "../rating/Rating";
 import { updateCart } from "../../../actions/cartActions";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch } from "react-redux";
 import { updateOrders } from "../../../actions/orderActions";
+import { fetchCartStart } from "../../../reducers/cartReducers";
+import { useNavigate } from "react-router-dom";
 function ProdcutBref({
   cart,
   order,
@@ -27,18 +29,22 @@ function ProdcutBref({
   orderId,
   handleCancelOrder,
   ratings,
+  availability,
+  details,
 }) {
   const [quantity, setQuantity] = useState(qty);
+  const [qtyLoading, setQtyLoading] = useState(false);
 
   const userRating = ratings?.find((item) => item?.userId == userId);
 
-
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleIncrement = async () => {
+    setQtyLoading(true);
     if (quantity < 4) {
       const data = await dispatch(
-        updateCart(userId, productId._id, "inc", size)
+        updateCart(userId, productId._id, "inc", size, quantity)
       );
       if (data) {
         setQuantity((prevQuantity) => prevQuantity + 1);
@@ -49,6 +55,7 @@ function ProdcutBref({
     } else {
       toast.error("maximum quantity limit exceeded");
     }
+    setQtyLoading(false);
   };
 
   const handleDecrement = async () => {
@@ -64,8 +71,12 @@ function ProdcutBref({
     }
   };
   const handleRemove = () => {
+    dispatch(fetchCartStart());
     dispatch(updateCart(userId, productId._id, "remove", size));
     toast.success(`Removed from cart!`);
+  };
+  const handleDetail = () => {
+    navigate(`/orderDetails/${orderId}`);
   };
 
   return (
@@ -84,8 +95,9 @@ function ProdcutBref({
           <Box sx={{ width: "80px", height: "80px" }}>
             <img
               src={image}
-              alt=""
+              alt="image"
               style={{ width: "100%", height: "100%", objectFit: "contain" }}
+              loading="lazy"
             />
           </Box>
           <Box sx={{ flex: 1 }}>
@@ -100,7 +112,11 @@ function ProdcutBref({
           </Box>
         </Box>
         {profile && orderStatus === "delivered" && paymentStatus && (
-          <HoverRating userId={userId} productId={productId} userRating={userRating} />
+          <HoverRating
+            userId={userId}
+            productId={productId}
+            userRating={userRating}
+          />
         )}
         {profile && orderStatus === "cancelled" && (
           <Typography variant="body2" color="error">
@@ -124,12 +140,14 @@ function ProdcutBref({
             Qty: {quantity}
           </Typography>
         )}
+
         {cart && (
           <Box display="flex" alignItems="center">
             <Button
               variant="outlined"
               onClick={handleDecrement}
               sx={{ minWidth: "40px" }}
+              disabled={qtyLoading}
             >
               -
             </Button>
@@ -140,16 +158,26 @@ function ProdcutBref({
               variant="outlined"
               onClick={handleIncrement}
               sx={{ minWidth: "40px" }}
+              disabled={qtyLoading || !availability}
             >
               +
             </Button>
-            <IconButton onClick={handleRemove}>
+            <IconButton disabled={qtyLoading} onClick={handleRemove}>
               <DeleteIcon />
             </IconButton>
           </Box>
         )}
+        {profile && !details && (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => handleDetail(orderId)}
+          >
+            Details
+          </Button>
+        )}
+        {!availability && cart && <Typography>Out of Stock</Typography>}
       </Paper>
-      <ToastContainer />
     </Box>
   );
 }

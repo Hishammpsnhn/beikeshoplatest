@@ -89,3 +89,20 @@ export const updateOrders = async (id, obj) => {
     }
   }
 };
+export const getProductDetails = async (id) => {
+  try {
+    const { data } = await axios.get(`${url}/api/order/${id}/order_details`);
+    console.log(data)
+    return data;
+  } catch (error) {
+    console.error("Error:", error);
+    if (error.response && error.response.data) {
+      const errorMessage = error.response.data.message;
+      console.error("Server Error Message:", errorMessage);
+      //dispatch(fetchProductFailure(errorMessage));
+    } else {
+      console.error("Generic Error");
+      // dispatch(fetchProductFailure("Something went wrong"));
+    }
+  }
+};

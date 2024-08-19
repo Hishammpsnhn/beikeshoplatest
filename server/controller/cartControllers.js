@@ -15,8 +15,11 @@ export const createCart = async (req, res) => {
     const product = await Products.findById(productId);
     if (!product) return res.status(404).json({ message: "Product not found" });
 
-    const productSize = product.sizes.find((item) => item._id.toString() === size._id.toString());
-    if (!productSize) return res.status(404).json({ message: "Size not found" });
+    const productSize = product.sizes.find(
+      (item) => item._id.toString() === size._id.toString()
+    );
+    if (!productSize)
+      return res.status(404).json({ message: "Size not found" });
 
     if (productSize.stock <= 0) {
       return res.status(400).json({ message: "Product out of stock" });
@@ -27,10 +30,17 @@ export const createCart = async (req, res) => {
     if (!cart) {
       const newCart = new Cart({
         userId,
-        items: [{ productId, quantity: 1, productSizeDetails: productSize }],
+        items: [
+          {
+            productId,
+            quantity: 1,
+            productSizeDetails: productSize,
+            availability: true,
+          },
+        ],
         totalAmount: productSize.price,
       });
-      productSize.stock--;
+      //productSize.stock--;
 
       await product.save();
       cart = await newCart.save();
@@ -55,11 +65,12 @@ export const createCart = async (req, res) => {
           productId,
           quantity: 1,
           productSizeDetails: productSize,
+          availability: true,
         });
         cart.totalAmount += productSize.price;
       }
 
-      productSize.stock--;
+      // productSize.stock--;
       await product.save();
       cart = await cart.save();
     }
@@ -85,10 +96,27 @@ export const getCart = async (req, res) => {
     const cart = await Cart.findOne({ userId: id }).populate({
       path: "items.productId",
       model: Products,
-      select: "name images",
+      select: "name images sizes",
     });
 
     if (!cart) return res.status(404).json({ message: "Cart not found" });
+
+    cart.items.forEach((item) => {
+      const product = item.productId;
+
+      const size = product.sizes.find(
+        (s) => s.size === item.productSizeDetails.size
+      );
+
+      if (size && size.stock < item.quantity) {
+        console.log("false", size.stock, item.quantity);
+        item.availability = false;
+      } else {
+        item.availability = true;
+      }
+    });
+    console.log("cart", cart);
+    await cart.save();
     return res.status(200).json(cart);
   } catch (error) {
     console.error(error);
@@ -101,17 +129,20 @@ export const getCart = async (req, res) => {
 // @access  Public
 export const updateCart = async (req, res) => {
   const { id } = req.params;
-  const { productId, action, size } = req.body;
+  const { productId, action, size, qty } = req.body;
 
   try {
     const cart = await Cart.findOne({ userId: id });
     if (!cart) return res.status(404).json({ message: "Cart not found" });
 
     const itemIndex = cart.items.findIndex(
-      (item) => item.productId.toString() === productId && item.productSizeDetails._id.toString() === size._id.toString()
+      (item) =>
+        item.productId.toString() === productId &&
+        item.productSizeDetails._id.toString() === size._id.toString()
     );
 
-    if (itemIndex === -1) return res.status(404).json({ message: "Item not found in cart" });
+    if (itemIndex === -1)
+      return res.status(404).json({ message: "Item not found in cart" });
 
     const product = await Products.findById(productId);
     if (!product) return res.status(404).json({ message: "Product not found" });
@@ -120,35 +151,43 @@ export const updateCart = async (req, res) => {
       (sizee) => sizee._id.toString() === size._id.toString()
     );
 
-    if (productSizeIndex === -1) return res.status(404).json({ message: "Size not found" });
+    if (productSizeIndex === -1)
+      return res.status(404).json({ message: "Size not found" });
 
     const productSize = product.sizes[productSizeIndex];
 
     switch (action) {
       case "inc":
-        if (productSize.stock <= 0) {
+        if (productSize.stock <= qty) {
           return res.status(400).json({ message: "Product out of stock" });
         }
         cart.items[itemIndex].quantity += 1;
         cart.totalAmount += productSize.price;
-        productSize.stock--;
+        //productSize.stock--;
         break;
 
       case "dec":
         if (cart.items[itemIndex].quantity <= 0) {
-          return res.status(400).json({ message: "Quantity cannot be less than 0" });
+          return res
+            .status(400)
+            .json({ message: "Quantity cannot be less than 0" });
         }
+
         cart.items[itemIndex].quantity -= 1;
         cart.totalAmount -= productSize.price;
-        productSize.stock++;
+        //productSize.stock++;
         if (cart.items[itemIndex].quantity <= 0) {
           cart.items.splice(itemIndex, 1);
+        }
+        console.log(cart.items[itemIndex].quantity , productSize.stock)
+        if (cart.items[itemIndex].quantity <= productSize.stock) {
+          cart.items[itemIndex].availability = true
         }
         break;
 
       case "remove":
         cart.totalAmount -= productSize.price * cart.items[itemIndex].quantity;
-        productSize.stock += cart.items[itemIndex].quantity;
+        //productSize.stock += cart.items[itemIndex].quantity;
         cart.items.splice(itemIndex, 1);
         break;
 
