@@ -109,8 +109,8 @@ function Profile() {
     navigate("/login");
   };
 
-  const handleCancelOrder = async (orderId) => {
-    if (window.confirm("Are you sure you want to cancel " + orderId + "?")) {
+  const handleCancelOrder = async (orderId,name) => {
+    if (window.confirm("Are you sure you want to cancel " + name + "?")) {
       try {
         const data = await updateOrders(orderId, { orderStatus: "cancelled" });
         if (data.updatedOrder) {

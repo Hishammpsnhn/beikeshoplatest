@@ -79,6 +79,7 @@ function ProdcutBref({
     navigate(`/orderDetails/${orderId}`);
   };
 
+
   return (
     <Box sx={{ marginY: "10px" }}>
       <Paper
@@ -129,7 +130,7 @@ function ProdcutBref({
             <Button
               variant="contained"
               color="error"
-              onClick={() => handleCancelOrder(orderId)}
+              onClick={() => handleCancelOrder(orderId,name)}
             >
               cancel
             </Button>

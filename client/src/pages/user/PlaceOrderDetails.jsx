@@ -18,8 +18,8 @@ function PlaceOrderDetails() {
 
   const { user, error } = useSelector((state) => state.auth);
 
-  const handleCancelOrder = async () => {
-    if (window.confirm("Are you sure you want to cancel " + order._id + "?")) {
+  const handleCancelOrder = async (id,name) => {
+    if (window.confirm("Are you sure you want to cancel " + name + "?")) {
       try {
         const data = await updateOrders(order._id, {
           orderStatus: "cancelled",
