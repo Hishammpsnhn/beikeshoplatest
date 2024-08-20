@@ -25,6 +25,7 @@ import Success from "./pages/user/Success";
 import { ToastContainer } from "react-toastify";
 import PlaceOrderDetails from "./pages/user/PlaceOrderDetails.jsx";
 import Wishlist from "./pages/user/Wishlist.jsx";
+import PromoCode from "./pages/admin/PromoCode.jsx";
 
 const theme = createMuiTheme({
   palette: {
@@ -99,6 +100,10 @@ function App() {
               <Route
                 path="/admin/orders_management"
                 element={<OrdersManagement />}
+              />
+              <Route
+                path="/admin/promocode"
+                element={<PromoCode />}
               />
 
               {/* Catch-all route to handle undefined paths */}

@@ -131,7 +131,7 @@ function AdminSidebar() {
             />
             <Item
               title="Promo Code"
-              to="/invoices"
+             to="/admin/promocode"
               icon={<DiscountIcon />}
               selected={selected}
               setSelected={setSelected}
