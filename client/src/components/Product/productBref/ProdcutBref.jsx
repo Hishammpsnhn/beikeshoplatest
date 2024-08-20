@@ -13,9 +13,12 @@ import { useDispatch } from "react-redux";
 import { updateOrders } from "../../../actions/orderActions";
 import { fetchCartStart } from "../../../reducers/cartReducers";
 import { useNavigate } from "react-router-dom";
+import StarIcon from "@mui/icons-material/Star";
+import { removeItemWishlist } from "../../../actions/wishlistAction";
 function ProdcutBref({
   cart,
   order,
+  wishlist,
   profile,
   name,
   image,
@@ -31,6 +34,7 @@ function ProdcutBref({
   ratings,
   availability,
   details,
+  handleWishlistRemove,
 }) {
   const [quantity, setQuantity] = useState(qty);
   const [qtyLoading, setQtyLoading] = useState(false);
@@ -79,7 +83,6 @@ function ProdcutBref({
     navigate(`/orderDetails/${orderId}`);
   };
 
-
   return (
     <Box sx={{ marginY: "10px" }}>
       <Paper
@@ -95,22 +98,46 @@ function ProdcutBref({
         <Box display="flex" width="50%" justifyContent="space-evenly">
           <Box sx={{ width: "80px", height: "80px" }}>
             <img
+              onClick={() => navigate(`/productDetails/${productId}`)}
               src={image}
               alt="image"
-              style={{ width: "100%", height: "100%", objectFit: "contain" }}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "contain",
+                cursor: "pointer",
+              }}
               loading="lazy"
             />
           </Box>
-          <Box sx={{ flex: 1 }}>
-            <Typography variant="body1"> {name}</Typography>
-            {/* <Typography variant="body2">{name}</Typography> */}
-            {profile ? (
-              <Typography variant="body2">size:{size}</Typography>
-            ) : (
-              <Typography variant="body2">size:{size?.size}</Typography>
-            )}
-            <Typography variant="body2">{price}</Typography>
-          </Box>
+          {!wishlist ? (
+            <Box sx={{ flex: 1 }}>
+              <Typography variant="body1"> {name}</Typography>
+              {profile ? (
+                <Typography variant="body2">size:{size}</Typography>
+              ) : (
+                <Typography variant="body2">size:{size?.size}</Typography>
+              )}
+              <Typography variant="body2">{price}</Typography>
+            </Box>
+          ) : (
+            <Box sx={{ flex: 1 }}>
+              <Typography variant="body1"> {name}</Typography>
+
+              <Typography variant="body2">{price}</Typography>
+              {wishlist && (
+                <Button
+                  variant="contained"
+                  className="bg-primary "
+                  size="small"
+                  endIcon={<StarIcon />}
+                  sx={{ position: "inherit", padding: "0px", minWidth: "45px" }}
+                >
+                  4
+                </Button>
+              )}
+            </Box>
+          )}
         </Box>
         {profile && orderStatus === "delivered" && paymentStatus && (
           <HoverRating
@@ -130,7 +157,7 @@ function ProdcutBref({
             <Button
               variant="contained"
               color="error"
-              onClick={() => handleCancelOrder(orderId,name)}
+              onClick={() => handleCancelOrder(orderId, name)}
             >
               cancel
             </Button>
@@ -167,6 +194,14 @@ function ProdcutBref({
               <DeleteIcon />
             </IconButton>
           </Box>
+        )}
+        {wishlist && (
+          <IconButton
+            disabled={qtyLoading}
+            onClick={() => handleWishlistRemove(productId)}
+          >
+            <DeleteIcon />
+          </IconButton>
         )}
         {profile && !details && (
           <Button

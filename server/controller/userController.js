@@ -3,6 +3,8 @@ import sentOtpToMail from "../service/mailService.js";
 import generateToken from "../utils/generateToken.js";
 import nodemailer from "nodemailer";
 import { generateOtp } from "../utils/otpGenerator.js";
+
+
 // @desc    get all users
 // @route   PUT /api/admin/user/
 // @access  Private

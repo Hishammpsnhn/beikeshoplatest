@@ -1,0 +1,5 @@
+/* Add this CSS either in your global stylesheet or use a styled component */
+.MuiCard-root:hover .wishlist-icon {
+    display: flex;
+  }
+  

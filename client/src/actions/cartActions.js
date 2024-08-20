@@ -8,6 +8,22 @@ import {
 } from "../reducers/cartReducers";
 
 const url = "http://localhost:4000";
+axios.defaults.withCredentials = true;
+
+
+// axios.interceptors.response.use(
+//   (response) => response,
+//   (error) => {
+//     const status = error.response ? error.response.status : null;
+
+//     if (status === 403) {
+//       localStorage.removeItem("userInfo");
+//       window.location.href = "/login";
+//     }
+
+//     return Promise.reject(error);
+//   }
+// );
 
 export const addCart = (userId, productId, size) => async (dispatch) => {
   dispatch(fetchAddCartStart());

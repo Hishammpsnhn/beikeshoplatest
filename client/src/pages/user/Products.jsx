@@ -18,6 +18,7 @@ import Nav from "../../components/header/Nav";
 import Header from "../../components/header/Header1";
 import { getProductByCategory } from "../../actions/categoryActions";
 import { getProductsList } from "../../actions/productActions";
+import { getWishlist } from "../../actions/wishlistAction";
 
 function Products() {
   const theme = useTheme();
@@ -27,6 +28,7 @@ function Products() {
   const { products, loading, error } = useSelector((state) => state.products);
   const { selectedCategory } = useSelector((state) => state.products);
   const dispatch = useDispatch();
+  const [data, setData] = useState([]);
 
   let sidebarWidth;
   if (isTablet) {
@@ -45,9 +47,19 @@ function Products() {
       dispatch(getProductsList(sort));
     }
   }, [sort]);
-  useEffect(()=>{
-    setSort('')
-  },[selectedCategory])
+  useEffect(() => {
+    setSort("");
+  }, [selectedCategory]);
+
+  useEffect(() => {
+    const fetch = async () => {
+      const data = await getWishlist();
+      if (data) {
+        setData(data.items);
+      }
+    };
+    fetch();
+  }, []);
 
   return (
     <>
@@ -104,16 +116,24 @@ function Products() {
               </>
             ) : (
               <>
-                {products.map((item, index) => (
-                  <Grid item xs={2} sm={4} md={4} key={index}>
-                    <ProductCard
-                      image={item?.images[0]}
-                      name={item.name}
-                      price={item.sizes[0].price}
-                      id={item._id}
-                    />
-                  </Grid>
-                ))}
+                {products.map((item, index) => {
+                  const isInWishlist = data.some(
+                    (wishlistItem) => wishlistItem._id === item._id
+                  );
+                  console.log(isInWishlist)
+
+                  return (
+                    <Grid item xs={2} sm={4} md={4} key={index}>
+                      <ProductCard
+                        image={item?.images[0]}
+                        name={item.name}
+                        price={item.sizes[0].price}
+                        id={item._id}
+                        wishlist={isInWishlist}
+                      />
+                    </Grid>
+                  );
+                })}
               </>
             )}
           </Grid>

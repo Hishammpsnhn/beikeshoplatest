@@ -73,6 +73,8 @@ function Nav() {
       navigate("/profile");
     } else if (setting === "Cart") {
       navigate("/cart");
+    } else if(setting === "Wishlist"){
+      navigate("/wishlist");
     }
   };
 

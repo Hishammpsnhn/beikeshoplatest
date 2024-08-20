@@ -17,8 +17,7 @@ import userRoute from "./router/userRoute.js";
 import cartRoute from "./router/cartRoute.js";
 import orderRoute from "./router/orderRoute.js";
 import cookieParser from "cookie-parser";
-import checkUserStatus from "./middleware/checkUserStatus.js";
-
+import wishlistRoute from "./router/wishlistRoute.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -28,11 +27,10 @@ dotenv.config();
 const app = express();
 app.use(cookieParser());
 
-
 // Apply CORS middleware
 app.use(
   cors({
-    origin: "http://localhost:3000", 
+    origin: "http://localhost:3000",
     credentials: true,
   })
 );
@@ -52,7 +50,6 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // No-cache Middleware
 app.use(nocache());
 
-
 // Routes
 app.use("/api/auth", authRoute);
 app.use("/api/admin/product", productRoute);
@@ -61,6 +58,7 @@ app.use("/api/admin/user", userRoute);
 app.use("/api/cart", cartRoute);
 app.use("/api/upload", uploadRoute);
 app.use("/api/order", orderRoute);
+app.use("/api/wishlist", wishlistRoute);
 
 app.get("/api/check-server", (req, res) => {
   res.status(200).send({ message: "Server is running" });
