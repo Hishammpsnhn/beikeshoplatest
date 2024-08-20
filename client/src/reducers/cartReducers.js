@@ -40,6 +40,16 @@ const CartSlice = createSlice({
       state.addCartLoading = false;
       state.error = action.payload;
     },
+    clearCart: (state) => {
+      state.items = [];
+      state.totalAmount = 0;
+      state.quantity = 0;
+      state.CartId = null;
+      state.loading = false;
+      state.addCartLoading = false;
+      state.error = null;
+    },
+    
   },
 });
 
@@ -48,6 +58,7 @@ export const {
   fetchCartStart,
   fetchCartSuccess,
   fetchAddCartStart,
-  fetchAddCartSuccess
+  fetchAddCartSuccess,
+  clearCart,
 } = CartSlice.actions;
 export default CartSlice.reducer;

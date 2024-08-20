@@ -2,6 +2,8 @@ import Cart from "../model/cartSchema.js";
 import Products from "../model/ProductSchema.js";
 import User from "../model/userSchema.js";
 import Orders from "../model/orderSchema.js";
+import Razorpay from "razorpay";
+import { createHmac } from "crypto";
 
 // @desc    create a order
 // @route   POST /api/order
@@ -56,7 +58,7 @@ export const createOrder = async (req, res) => {
             }
           }
         });
-
+        const paymentStatus = paymentMethod === "COD" ? false : true;
         const newOrder = new Orders({
           userId: userId,
           addressId: addressId,
@@ -72,7 +74,7 @@ export const createOrder = async (req, res) => {
           ],
           paymentMethod: paymentMethod,
           orderStatus: "pending",
-          paymentStatus: false,
+          paymentStatus,
         });
 
         console.log(newOrder);
@@ -179,18 +181,69 @@ export const orderDetails = async (req, res) => {
       select: "name price images sizes ratings",
     });
     if (!order) {
-      res.status(404).json({ message:"Order not found"});
+      res.status(404).json({ message: "Order not found" });
     }
 
-    const user = await User.findById(order.userId)
-    console.log(order.addressId)
-    const address  = user.address.find((address) => {
-      return address._id.toString() === order.addressId.toString()
-    })
-    res.status(200).json({ message: "Orders fetched successfully", order,address });
+    const user = await User.findById(order.userId);
+    console.log(order.addressId);
+    const address = user.address.find((address) => {
+      return address._id.toString() === order.addressId.toString();
+    });
+    res
+      .status(200)
+      .json({ message: "Orders fetched successfully", order, address });
   } catch (error) {
     res
       .status(500)
       .json({ message: "Error fetching orders", error: error.message });
+  }
+};
+
+export const onlinePaymentOrder = async (req, res) => {
+  try {
+    const razorpay = new Razorpay({
+      key_id: process.env.RAZORPAPY_KEY_ID,
+      key_secret: process.env.RAZORPAPY_KEY_SECRET,
+    });
+    const options = {
+      amount: req.body.totalAmount,
+      currency: "INR",
+      receipt: "rqwol",
+    };
+    const order = await razorpay.orders.create(options);
+    if (!order) {
+      return res.status(500).json({ message: "Error creating order" });
+    }
+    res.json(order);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error processing payment", error: error.message });
+  }
+};
+
+export const onlinePaymentOrderVerify = async (req, res) => {
+  try {
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
+      req.body.body;
+
+    const sha = createHmac("sha256", process.env.RAZORPAPY_KEY_SECRET);
+    sha.update(`${razorpay_order_id}|${razorpay_payment_id}`);
+
+    const digest = sha.digest("hex");
+
+    if (digest !== razorpay_signature) {
+      return res.status(400).json({ message: "Invalid signature" });
+    }
+
+    res.status(200).json({
+      message: "Payment verification successful",
+      orderId: razorpay_order_id,
+      paymentId: razorpay_payment_id,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error processing payment", error: error.message });
   }
 };

@@ -12,7 +12,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 import { getCart } from "../../actions/cartActions";
 import { toast, ToastContainer } from "react-toastify";
-import { createOrder } from "../../actions/orderActions";
+import {
+  createOrder,
+  onlinePaymentOrder,
+  onlinePaymentOrderVerify,
+} from "../../actions/orderActions";
+import { clearCart } from "../../reducers/cartReducers";
+
 function PlaceOrder() {
   const { user } = useSelector((state) => state.auth);
   const { items, loading, error, totalAmount, CartId } = useSelector(
@@ -32,16 +38,73 @@ function PlaceOrder() {
       toast.error("Selected Payement Option");
       return;
     }
-    const data = await createOrder(
-      user._id,
-      selectedAddress,
-      totalAmount,
-      items,
-      paymentOption,
-      CartId
-    );
-    if(data){
-      navigate('/success', { state: { order: true } });
+
+    if (paymentOption === "online payment") {
+      const data = await onlinePaymentOrder(totalAmount);
+      var options = {
+        key: process.env.RAZORPAPY_KEY_ID,
+        amount: totalAmount,
+        currency: "INR",
+        name: "Beike shop",
+        description: "Test Transaction",
+        image: "https://example.com/your_logo",
+        order_id: data.id,
+        handler: async function (response) {
+          const body = {
+            ...response,
+          };
+          const verify = onlinePaymentOrderVerify(body);
+          if (verify) {
+            const data = await createOrder(
+              user._id,
+              selectedAddress,
+              totalAmount,
+              items,
+              paymentOption,
+              CartId
+            );
+            if (data) {
+              navigate("/success", { state: { order: true } });
+              dispatch(clearCart());
+            }
+          }
+        },
+        prefill: {
+          name: "hishammps",
+          email: "hishammpsn@gmail.com",
+          contact: "9000090000",
+        },
+        notes: {
+          address: "Razorpay Corporate Office",
+        },
+        theme: {
+          color: "#461246",
+        },
+      };
+      var rzp1 = new window.Razorpay(options);
+      rzp1.on("payment.failed", function (response) {
+        alert(response.error.code);
+        alert(response.error.description);
+        alert(response.error.source);
+        alert(response.error.step);
+        alert(response.error.reason);
+        alert(response.error.metadata.order_id);
+        alert(response.error.metadata.payment_id);
+      });
+      rzp1.open();
+    } else {
+      const data = await createOrder(
+        user._id,
+        selectedAddress,
+        totalAmount,
+        items,
+        paymentOption,
+        CartId
+      );
+      if (data) {
+        navigate("/success", { state: { order: true } });
+        dispatch(clearCart());
+      }
     }
   };
 
@@ -61,7 +124,7 @@ function PlaceOrder() {
     if (items.length <= 0 || !items) {
       navigate("/");
     }
-    if(!user){
+    if (!user) {
       navigate("/login");
     }
   }, []);

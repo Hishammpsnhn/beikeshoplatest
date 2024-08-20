@@ -23,7 +23,7 @@ export const createOrder = async (
     });
     console.log(data);
     //dispatch(fetchProductSuccess(data));
-    return data
+    return data;
   } catch (error) {
     console.error("Error:", error);
     if (error.response && error.response.data) {
@@ -75,7 +75,7 @@ export const updateOrders = async (id, obj) => {
     const { data } = await axios.put(`${url}/api/order/${id}`, {
       obj,
     });
-    console.log(data)
+    console.log(data);
     return data;
   } catch (error) {
     console.error("Error:", error);
@@ -92,7 +92,47 @@ export const updateOrders = async (id, obj) => {
 export const getProductDetails = async (id) => {
   try {
     const { data } = await axios.get(`${url}/api/order/${id}/order_details`);
-    console.log(data)
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error("Error:", error);
+    if (error.response && error.response.data) {
+      const errorMessage = error.response.data.message;
+      console.error("Server Error Message:", errorMessage);
+      //dispatch(fetchProductFailure(errorMessage));
+    } else {
+      console.error("Generic Error");
+      // dispatch(fetchProductFailure("Something went wrong"));
+    }
+  }
+};
+
+export const onlinePaymentOrder = async (totalAmount) => {
+  try {
+    const { data } = await axios.post(`${url}/api/order/online_payment_order`,{
+      totalAmount,
+    });
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error("Error:", error);
+    if (error.response && error.response.data) {
+      const errorMessage = error.response.data.message;
+      console.error("Server Error Message:", errorMessage);
+      //dispatch(fetchProductFailure(errorMessage));
+    } else {
+      console.error("Generic Error");
+      // dispatch(fetchProductFailure("Something went wrong"));
+    }
+  }
+};
+export const onlinePaymentOrderVerify = async (body) => {
+  
+  try {
+    const { data } = await axios.post(`${url}/api/order/online_payment_order/validate`,{
+      body
+    });
+    console.log(data);
     return data;
   } catch (error) {
     console.error("Error:", error);

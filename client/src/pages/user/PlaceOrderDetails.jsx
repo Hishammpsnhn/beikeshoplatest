@@ -18,7 +18,7 @@ function PlaceOrderDetails() {
 
   const { user, error } = useSelector((state) => state.auth);
 
-  const handleCancelOrder = async (id,name) => {
+  const handleCancelOrder = async (id, name) => {
     if (window.confirm("Are you sure you want to cancel " + name + "?")) {
       try {
         const data = await updateOrders(order._id, {
@@ -61,22 +61,38 @@ function PlaceOrderDetails() {
           cart={true}
           placeOrderDetails={true}
         />
-        <Box sx={{ width: "50%" }}>
-          <ProdcutBref
-            name={order?.product[0].product.name}
-            image={`${BASE_URL}/${order?.product[0]?.product?.images[0]}`}
-            size={order?.product[0].size}
-            qty={order?.product[0].quantity}
-            price={order?.product[0].price}
-            orderStatus={order?.orderStatus}
-            paymentStatus={order?.paymentStatus}
-            handleCancelOrder={handleCancelOrder}
-            ratings={order?.product[0].product.ratings}
-            userId={user._id}
-            productId={order?.product[0].product._id}
-            profile={true}
-            details={true}
-          />
+        <Box sx={{ width: "100%", display: "flex" }}>
+          <Box width="50%">
+            <ProdcutBref
+              name={order?.product[0].product.name}
+              image={`${BASE_URL}/${order?.product[0]?.product?.images[0]}`}
+              size={order?.product[0].size}
+              qty={order?.product[0].quantity}
+              price={order?.product[0].price}
+              orderStatus={order?.orderStatus}
+              paymentStatus={order?.paymentStatus}
+              handleCancelOrder={handleCancelOrder}
+              ratings={order?.product[0].product.ratings}
+              userId={user._id}
+              productId={order?.product[0].product._id}
+              profile={true}
+              details={true}
+            />
+          </Box>
+          <Box paddingX='25px'>
+            <Typography variant="h6">
+              Payment Method : {order?.paymentMethod}
+            </Typography>
+            <Typography variant="h6">
+              Order Date : {order?.paymentMethod}
+            </Typography>
+            <Typography variant="h6">
+              Deliver Date : {order?.paymentMethod}
+            </Typography>
+            <Typography variant="h6">
+              Status : {order?.paymentMethod}
+            </Typography>
+          </Box>
         </Box>
       </Container>
     </>
