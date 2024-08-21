@@ -3,7 +3,7 @@ import { createOrder, getOrdersList, getUserOrders, onlinePaymentOrder, onlinePa
 import checkUserStatus from "../middleware/checkUserStatus.js";
 
 const router = express.Router();
-// router.use(checkUserStatus);
+router.use(checkUserStatus);
 
 router.get("/:id", getUserOrders);
 router.get("/:id/order_details", orderDetails);

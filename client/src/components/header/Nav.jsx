@@ -18,22 +18,23 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import SettingsIcon from "@mui/icons-material/Settings";
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import LogoutIcon from '@mui/icons-material/Logout';
-import AccountCircleIcon from "@mui/icons-material/AccountCircle"; 
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import LogoutIcon from "@mui/icons-material/Logout";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import {
   getCategories,
   getProductByCategory,
 } from "../../actions/categoryActions";
 import { googleLogout } from "@react-oauth/google";
 import { setSelectedCategory } from "../../reducers/productReducers";
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import { logoutCookie } from "../../actions/authActions";
 import { logout } from "../../reducers/authReducers";
+import WalletIcon from "@mui/icons-material/Wallet";
 
 const pages = ["About Us", "Latest Product", "Contact Us"];
 const productsDropdown = ["Product 1", "Product 2", "Product 3"];
-const settings = ["Profile", "Cart", "Wishlist", "Logout"];
+const settings = ["Profile", "Cart", "Wishlist", "Wallet", "Logout"];
 
 function Nav() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -66,15 +67,17 @@ function Nav() {
     if (setting === "Logout") {
       googleLogout();
       dispatch(logout());
-      logoutCookie()
+      logoutCookie();
       localStorage.removeItem("userInfo");
       navigate("/login");
     } else if (setting === "Profile") {
       navigate("/profile");
     } else if (setting === "Cart") {
       navigate("/cart");
-    } else if(setting === "Wishlist"){
+    } else if (setting === "Wishlist") {
       navigate("/wishlist");
+    } else if(setting === "Wallet"){
+      navigate("/wallet");
     }
   };
 
@@ -89,7 +92,7 @@ function Nav() {
     if (categories.length === 0) {
       dispatch(getCategories());
     }
-  }, [dispatch, categories.length]); 
+  }, [dispatch, categories.length]);
 
   return (
     <AppBar position="static" sx={{ background: "#E4D5E4", color: "black" }}>
@@ -175,7 +178,7 @@ function Nav() {
             }}
           >
             <Button
-              onClick={()=> navigate('/products')}
+              onClick={() => navigate("/products")}
               sx={{ my: 2, color: "black", display: "block" }}
             >
               Products
@@ -254,7 +257,8 @@ function Nav() {
                       {index === 0 && <AccountCircleIcon />}{" "}
                       {index === 1 && <ShoppingCartIcon />}{" "}
                       {index === 2 && <FavoriteIcon />}{" "}
-                      {index === 3 && <LogoutIcon />}{" "}
+                      {index === 3 && <WalletIcon />} {" "}
+                      {index === 4 && <LogoutIcon />}{" "}
                     </ListItemIcon>
                     <Typography textAlign="center" sx={{ color: "black" }}>
                       {setting}

@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AdminSubHeader from "../../components/admin/Header/AdminSubHeader";
 import { Box, Button, Paper, TextField, Typography } from "@mui/material";
+import { createCoupon, deleteCoupon, getAllCoupons } from "../../actions/couponActions";
+import { toast } from "react-toastify";
+import validator from "validator";
 
 function PromoCode() {
-  // State to hold form input values
+  const [coupons, setCoupons] = useState([]);
   const [promoData, setPromoData] = useState({
     code: "",
-    amount: "",
+    discount: "",
     expDate: "",
   });
 
@@ -20,9 +23,59 @@ function PromoCode() {
   };
 
   // Handle form submission
-  const handleSubmit = () => {
-    console.log(promoData);
+  const handleSubmit = async () => {
+    if (promoData.code.length < 5) {
+      toast.error("At least 5 Letters required");
+      return;
+    }
+    if (
+      promoData.discount < 0 ||
+      promoData.discount > 100 ||
+      validator.isEmpty(promoData.discount)
+    ) {
+      toast.error("Enter valid Amount in %");
+      return;
+    }
+    if (validator.isEmpty(promoData.expDate)) {
+      toast.error("Enter valid Date");
+      return;
+    }
+    const data = await createCoupon(promoData);
+    if (data) {
+      toast.success("successfully created");
+      setPromoData({
+        code: "",
+        discount: "",
+        expDate: "",
+      });
+      coupons.push(data);
+    }else{
+      toast.error("Coupon already exists");
+    }
   };
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this coupon?")) {
+      try {
+        const data = await deleteCoupon(id);
+        if (data) {
+          toast.success("Coupon deleted successfully");
+          setCoupons(coupons.filter((c) => c._id !== id));
+        }
+      } catch (error) {
+        toast.error("Failed to delete coupon");
+      }
+    }
+  };
+
+  useEffect(() => {
+    const getallcoupons = async () => {
+      const data = await getAllCoupons();
+      console.log(data);
+      if (data) setCoupons(data);
+    };
+    getallcoupons();
+  }, []);
+  console.log(coupons);
 
   return (
     <Box m="20px" width="100%">
@@ -45,9 +98,27 @@ function PromoCode() {
             display="flex"
             justifyContent="space-between"
           >
-            <TextField placeholder="code" />
-            <TextField placeholder="Amount" />
-            <TextField placeholder="EXP-Date" />
+            <TextField
+              name="code"
+              value={promoData.code}
+              sx={{ textTransform: "uppercase" }}
+              placeholder="code"
+              onChange={handleInputChange}
+            />
+            <TextField
+              name="discount"
+              value={promoData.discount}
+              placeholder="Amount"
+              type="number"
+              onChange={handleInputChange}
+            />
+            <TextField
+              name="expDate"
+              value={promoData.expDate}
+              type="Date"
+              placeholder="EXP-Date"
+              onChange={handleInputChange}
+            />
           </Box>
           <Button
             variant="contained"
@@ -59,28 +130,51 @@ function PromoCode() {
           </Button>
         </Box>
       </Paper>
-      <Typography variant="h5" sx={{textTransform:'capitalize'}}>Current Promocodes</Typography>
-      <Paper
-        elevation={6}
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          maxWidth: "60%",
-          marginX: "auto",
-          marginTop: "20px",
-          padding: "20px",
-        }}
-      >
-        <Box display="flex" gap={5}>
-          <Typography>BCF34</Typography>
-          <Typography>20%</Typography>
-          <Typography>1 Day Left</Typography>
-        </Box>
-        <Box gap={5} display='flex'>
-          <Button variant="outlined">EDit</Button>
-          <Button variant="contained" color="error">Delete</Button>
-        </Box>
-      </Paper>
+      <Typography variant="h5" sx={{ textTransform: "capitalize" }}>
+        Current Promocodes
+      </Typography>
+      {coupons.map((item) => {
+        const expDate = new Date(item.expDate);
+        const today = new Date();
+        const timeDiff = expDate.getTime() - today.getTime();
+        const daysLeft = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+        return (
+          <Paper
+            key={item.code}
+            elevation={6}
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              maxWidth: "60%",
+              marginX: "auto",
+              marginTop: "20px",
+              padding: "20px",
+            }}
+          >
+            <Box display="flex" gap={5}>
+              <Typography sx={{ textTransform: "uppercase" }}>
+                {item.code}
+              </Typography>
+              <Typography>{item.discount}%</Typography>
+              <Typography>
+                {daysLeft > 0
+                  ? `${daysLeft} Day${daysLeft > 1 ? "s" : ""} Left`
+                  : "Expired"}
+              </Typography>
+            </Box>
+            <Box gap={5} display="flex">
+              <Button
+                variant="contained"
+                color="error"
+                onClick={() => handleDelete(item._id)}
+              >
+                Delete
+              </Button>
+            </Box>
+          </Paper>
+        );
+      })}
     </Box>
   );
 }

@@ -22,10 +22,10 @@ const OrderManagement = () => {
 
   const rows = orders?.map((item) => ({
     id: item._id,
-    productId: item.product[0].product,
+    productId: item.product[0].product.name,
     size: item.product[0].size,
     quantity: item.product[0].quantity,
-    price: item.product[0].price,
+    price: item.finalAmount,
     orderStatus: item.orderStatus,
     payment: item.paymentMethod,
     paymentStatus: item.paymentStatus,
@@ -140,7 +140,7 @@ const OrderManagement = () => {
               </Button>
               <Button
                 onClick={() =>
-                  handleUpdate(row.id, { orderStatus: "cancelled" })
+                  handleUpdate(row.id, { orderStatus: "cancelled",paymentStatus: row.paymentStatus,amount:row.price})
                 }
                 variant="contained"
                 color="error"

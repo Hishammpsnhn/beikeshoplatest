@@ -4,6 +4,7 @@ import User from "../model/userSchema.js";
 import Orders from "../model/orderSchema.js";
 import Razorpay from "razorpay";
 import { createHmac } from "crypto";
+import Wallet from "../model/walletSchema.js";
 
 // @desc    create a order
 // @route   POST /api/order
@@ -15,7 +16,7 @@ export const createOrder = async (req, res) => {
     totalAmount,
     items,
     paymentMethod,
-    discount = 0,
+    discount,
     CartId,
   } = req.body;
 
@@ -58,17 +59,21 @@ export const createOrder = async (req, res) => {
             }
           }
         });
-        const paymentStatus = paymentMethod === "COD" ? false : true;
+        const paymentStatus = paymentMethod == "cod" ? false : true;
+        const discountedAmount =
+          item.quantity * product.price * (discount / 100);
+        console.log(discountedAmount, discount, item.quantity * product.price);
         const newOrder = new Orders({
           userId: userId,
           addressId: addressId,
-          totalAmount: item.quantity * product.price,
-          finalAmount: item.quantity * product.price - discount,
+          totalAmount: item.quantity * item.productSizeDetails.price,
+          finalAmount: item.quantity * product.price - discountedAmount,
+          discount,
           product: [
             {
               product: item.productId._id,
               quantity: item.quantity,
-              price: product.price,
+              price: item.productSizeDetails.price,
               size: item.productSizeDetails.size,
             },
           ],
@@ -76,8 +81,6 @@ export const createOrder = async (req, res) => {
           orderStatus: "pending",
           paymentStatus,
         });
-
-        console.log(newOrder);
         return newOrder.save();
       })
     );
@@ -118,7 +121,11 @@ export const getUserOrders = async (req, res) => {
 // @access  Private
 export const getOrdersList = async (req, res) => {
   try {
-    const orders = await Orders.find({});
+    const orders = await Orders.find({}).populate({
+      path: "product.product",
+      model: Products,
+      select: "name images",
+    });
     res.status(200).json({ message: "Orders fetched successfully", orders });
   } catch (error) {
     res
@@ -132,11 +139,11 @@ export const getOrdersList = async (req, res) => {
 // @access  Private
 export const updateOrder = async (req, res) => {
   const { id } = req.params;
-  const { orderStatus, paymentStatus } = req.body.obj;
-  console.log(id, req.body);
+  const userId = req.user; 
+  const { orderStatus, paymentStatus, amount } = req.body.obj;
 
   if (orderStatus === undefined && paymentStatus === undefined) {
-    return res.status(400).json({ message: "field is required" });
+    return res.status(400).json({ message: "Field is required" });
   }
 
   try {
@@ -150,6 +157,38 @@ export const updateOrder = async (req, res) => {
       return res.status(404).json({ message: "Order not found" });
     }
 
+
+    if (orderStatus === "cancelled" && paymentStatus === true && amount) {
+      try {
+        let wallet = await Wallet.findOne({ userId });
+
+        if (wallet) {
+          wallet.amount += amount;
+          wallet.history.push({
+            amount: amount,
+            transactionType: "credit",
+            description: "Added funds to wallet",
+          });
+        } else {
+          wallet = new Wallet({
+            userId,
+            amount: amount,
+            history: [
+              {
+                amount: amount,
+                transactionType: "credit",
+                description: "Initial deposit to wallet",
+              },
+            ],
+          });
+        }
+
+        await wallet.save();
+      } catch (error) {
+        return res.status(500).json({ message: "Error updating wallet", error });
+      }
+    }
+
     if (orderStatus !== undefined) {
       order.orderStatus = orderStatus;
     }
@@ -159,13 +198,10 @@ export const updateOrder = async (req, res) => {
 
     const updatedOrder = await order.save();
 
-    res
-      .status(200)
-      .json({ message: "Order updated successfully", updatedOrder });
+    return res.status(200).json({ message: "Order updated successfully", updatedOrder });
+
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error updating order", error: error.message });
+    return res.status(500).json({ message: "Error updating order", error: error.message });
   }
 };
 

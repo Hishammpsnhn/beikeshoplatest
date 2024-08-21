@@ -109,10 +109,10 @@ function Profile() {
     navigate("/login");
   };
 
-  const handleCancelOrder = async (orderId,name) => {
-    if (window.confirm("Are you sure you want to cancel " + name + "?")) {
+  const handleCancelOrder = async (orderId,name,paymentStatus,amount) => {
+    if (window.confirm("Are you sure you want to cancel " + name + "?"+paymentStatus+amount)) {
       try {
-        const data = await updateOrders(orderId, { orderStatus: "cancelled" });
+        const data = await updateOrders(orderId, { orderStatus: "cancelled",paymentStatus,amount });
         if (data.updatedOrder) {
           toast.success("Order cancelled successfully");
 
@@ -293,13 +293,14 @@ function Profile() {
               image={order?.product[0].product.images[0]}
               size={order?.product[0].size}
               qty={order?.product[0].quantity}
-              price={order?.product[0].price}
+              price={order?.totalAmount}
               orderStatus={order?.orderStatus}
               paymentStatus={order?.paymentStatus}
               profile={true}
               orderId={order._id}
               handleCancelOrder={handleCancelOrder}
               userId={user._id}
+              finalAmount={order?.finalAmount}
               productId={order?.product[0].product._id}
               ratings={order?.product[0].product.ratings}
        

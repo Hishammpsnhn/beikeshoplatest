@@ -10,6 +10,7 @@ const addressSchema = mongoose.Schema({
   phoneNumber: {type:"number",required:"true",},
 });
 
+
 const userSchema = new mongoose.Schema(
   {
     userName: { type: String, required: true},
@@ -42,4 +43,5 @@ userSchema.pre('save', async function (next) {
 });
 
 const User = mongoose.model("User", userSchema);
+
 export default User;

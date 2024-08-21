@@ -28,6 +28,7 @@ function ProdcutBref({
   productId,
   size,
   orderStatus,
+  finalAmount,
   paymentStatus,
   orderId,
   handleCancelOrder,
@@ -157,7 +158,7 @@ function ProdcutBref({
             <Button
               variant="contained"
               color="error"
-              onClick={() => handleCancelOrder(orderId, name)}
+              onClick={() => handleCancelOrder(orderId, name,paymentStatus,finalAmount)}
             >
               cancel
             </Button>

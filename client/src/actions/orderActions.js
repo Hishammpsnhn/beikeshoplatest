@@ -8,10 +8,11 @@ export const createOrder = async (
   totalAmount,
   items,
   paymentMethod,
-  CartId
+  CartId,
+  discount,
 ) => {
   //dispatch(fetchProductStart());
-
+alert(discount)
   try {
     const { data } = await axios.post(`${url}/api/order`, {
       userId,
@@ -20,6 +21,7 @@ export const createOrder = async (
       items,
       paymentMethod,
       CartId,
+      discount
     });
     console.log(data);
     //dispatch(fetchProductSuccess(data));

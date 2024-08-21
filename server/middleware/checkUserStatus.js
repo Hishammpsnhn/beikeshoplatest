@@ -12,7 +12,7 @@ const checkUserStatus = async (req, res, next) => {
     if (user.block ) {
       return res.status(403).json({ message: "User is blocked" });
     }
-
+    req.user = decoded.id;
     next();
   } catch (error) {
     res.status(500).json({ message: "Authentication failed." });

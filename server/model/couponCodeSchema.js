@@ -4,10 +4,9 @@ const { Schema } = mongoose;
 
 const couponCodeSchema = new Schema(
   {
-    Code: { type: String, required: true, unique: true },
-    Discount: { type: Number, required: true },
-    Exp_date: { type: Date, required: true },
-    IsActive: { type: Boolean, required: true },
+    code: { type: String, required: true, unique: true },
+    discount: { type: Number, required: true },
+    expDate: { type: Date, required: true },
   },
   { timestamps: true }
 );

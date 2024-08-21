@@ -26,6 +26,7 @@ function PlaceOrder() {
   );
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [paymentOption, setPaymentOption] = useState(null);
+  const [coupon, setCoupon] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -61,7 +62,8 @@ function PlaceOrder() {
               totalAmount,
               items,
               paymentOption,
-              CartId
+              CartId,
+              coupon ? coupon.discount : 0 
             );
             if (data) {
               navigate("/success", { state: { order: true } });
@@ -99,7 +101,8 @@ function PlaceOrder() {
         totalAmount,
         items,
         paymentOption,
-        CartId
+        CartId,
+        coupon ? coupon.discount : 0 
       );
       if (data) {
         navigate("/success", { state: { order: true } });
@@ -167,8 +170,8 @@ function PlaceOrder() {
             ))}
           </Box>
           <Box>
-            <PriceDetails totalAmount={totalAmount} />
-            <ApplyCoupon />
+            <PriceDetails totalAmount={totalAmount} coupon={coupon} itemsCount={items.length} />
+            <ApplyCoupon setCoupon={setCoupon} />
             <PaymentOptions
               onSelectPayment={onSelectPayment}
               paymentOption={paymentOption}

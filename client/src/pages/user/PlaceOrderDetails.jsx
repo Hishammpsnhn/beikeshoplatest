@@ -4,10 +4,20 @@ import Nav from "../../components/header/Nav";
 import AddressDetails from "../../components/address/AddressDetails";
 import { useParams } from "react-router-dom";
 import { getProductDetails, updateOrders } from "../../actions/orderActions";
-import { Box, Container, Typography } from "@mui/material";
+import {
+  Box,
+  Container,
+  Paper,
+  Step,
+  StepLabel,
+  Stepper,
+  Typography,
+} from "@mui/material";
 import ProdcutBref from "../../components/Product/productBref/ProdcutBref";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+
+const steps = ["Order Placed", "In Transit", "Delivered"];
 
 const BASE_URL = "http://localhost:3000/";
 function PlaceOrderDetails() {
@@ -61,7 +71,19 @@ function PlaceOrderDetails() {
           cart={true}
           placeOrderDetails={true}
         />
-        <Box sx={{ width: "100%", display: "flex" }}>
+        <Box sx={{ width: "100%", marginY: "20px" }}>
+          <Stepper
+            activeStep={order?.orderStatus === "pending" ? 1 : 2}
+            alternativeLabel
+          >
+            {steps.map((label) => (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+        </Box>
+        <Box sx={{ width: "100%", display: "flex",justifyContent:'space-between' }}>
           <Box width="50%">
             <ProdcutBref
               name={order?.product[0].product.name}
@@ -79,20 +101,17 @@ function PlaceOrderDetails() {
               details={true}
             />
           </Box>
-          <Box paddingX='25px'>
-            <Typography variant="h6">
+          <Paper elevation={6} sx={{width:'40%',padding:'20px'}}>
+            <Typography variant="body1">
+              Amount : {order?.finalAmount}
+            </Typography>
+            <Typography variant="body1">
               Payment Method : {order?.paymentMethod}
             </Typography>
-            <Typography variant="h6">
-              Order Date : {order?.paymentMethod}
+            <Typography variant="body1">
+              Order Date :{new Date(order?.createdAt).toLocaleDateString()}
             </Typography>
-            <Typography variant="h6">
-              Deliver Date : {order?.paymentMethod}
-            </Typography>
-            <Typography variant="h6">
-              Status : {order?.paymentMethod}
-            </Typography>
-          </Box>
+          </Paper>
         </Box>
       </Container>
     </>
