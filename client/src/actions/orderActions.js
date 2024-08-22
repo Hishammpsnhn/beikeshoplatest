@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from 'react-toastify';
 
 const url = "http://localhost:4000";
 
@@ -10,9 +11,9 @@ export const createOrder = async (
   paymentMethod,
   CartId,
   discount,
+  finalPrice
 ) => {
   //dispatch(fetchProductStart());
-alert(discount)
   try {
     const { data } = await axios.post(`${url}/api/order`, {
       userId,
@@ -21,7 +22,8 @@ alert(discount)
       items,
       paymentMethod,
       CartId,
-      discount
+      discount,
+      finalPrice,
     });
     console.log(data);
     //dispatch(fetchProductSuccess(data));
@@ -32,6 +34,7 @@ alert(discount)
       const errorMessage = error.response.data.message;
       console.error("Server Error Message:", errorMessage);
       //dispatch(fetchProductFailure(errorMessage));
+      toast.error(errorMessage);
     } else {
       console.error("Generic Error");
       // dispatch(fetchProductFailure("Something went wrong"));
@@ -111,7 +114,7 @@ export const getProductDetails = async (id) => {
 
 export const onlinePaymentOrder = async (totalAmount) => {
   try {
-    const { data } = await axios.post(`${url}/api/order/online_payment_order`,{
+    const { data } = await axios.post(`${url}/api/order/online_payment_order`, {
       totalAmount,
     });
     console.log(data);
@@ -129,11 +132,13 @@ export const onlinePaymentOrder = async (totalAmount) => {
   }
 };
 export const onlinePaymentOrderVerify = async (body) => {
-  
   try {
-    const { data } = await axios.post(`${url}/api/order/online_payment_order/validate`,{
-      body
-    });
+    const { data } = await axios.post(
+      `${url}/api/order/online_payment_order/validate`,
+      {
+        body,
+      }
+    );
     console.log(data);
     return data;
   } catch (error) {
@@ -148,7 +153,7 @@ export const onlinePaymentOrderVerify = async (body) => {
     }
   }
 };
-export const updateOrdersReturn= async (id, obj) => {
+export const updateOrdersReturn = async (id, obj) => {
   try {
     const { data } = await axios.put(`${url}/api/order/${id}/return`, {
       obj,

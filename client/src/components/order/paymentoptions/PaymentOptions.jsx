@@ -5,10 +5,11 @@ import {
   Radio,
   RadioGroup,
   FormControlLabel,
+  Checkbox,
 } from "@mui/material";
 import Paper from "@mui/material/Paper";
 
-function PaymentOptions({ onSelectPayment, paymentOption }) {
+function PaymentOptions({ onSelectPayment }) {
   return (
     <Paper
       elevation={5}
@@ -33,15 +34,28 @@ function PaymentOptions({ onSelectPayment, paymentOption }) {
             control={<Radio color="primary" />}
             label="Online Payment"
           />
-        </RadioGroup>
-        <RadioGroup defaultValue="primary" name="radio-buttons-group">
-          <FormLabel>Wallet</FormLabel>
           <FormControlLabel
-            value="Apply Wallet"
+            value="wallet"
             control={<Radio color="primary" />}
-            label="Apply Wallet"
+            label="Use Wallet"
           />
         </RadioGroup>
+
+        {/* <>
+          <FormLabel>Wallet</FormLabel>
+          <FormControlLabel
+            control={
+              <Checkbox
+                color="primary"
+                checked={wallet}
+                onChange={(e) => {
+                  setWallet((prev)=>!prev);
+                }}
+              />
+            }
+            label="Apply Wallet"
+          />
+        </> */}
       </FormControl>
     </Paper>
   );

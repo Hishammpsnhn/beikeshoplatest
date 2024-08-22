@@ -27,6 +27,9 @@ function PlaceOrder() {
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [paymentOption, setPaymentOption] = useState(null);
   const [coupon, setCoupon] = useState(null);
+  // const [wallet, setWallet] = useState(null);
+  const [finalPrice, setFinalPrice] = useState(null);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -35,11 +38,20 @@ function PlaceOrder() {
       toast.error("selected address");
       return;
     }
+    
     if (!paymentOption) {
       toast.error("Selected Payement Option");
       return;
     }
-
+    let discountTotalAmount = totalAmount;
+    if (coupon) {
+      const discountedAmount = totalAmount * (coupon.discount / 100);
+      discountTotalAmount = totalAmount - discountedAmount;
+    }
+    if(coupon && paymentOption === 'wallet'){
+      toast.error("Can't use coupon with Wallet")
+    }
+  
     if (paymentOption === "online payment") {
       const data = await onlinePaymentOrder(totalAmount);
       var options = {
@@ -63,7 +75,8 @@ function PlaceOrder() {
               items,
               paymentOption,
               CartId,
-              coupon ? coupon.discount : 0 
+              coupon ? coupon.discount : 0,
+              discountTotalAmount
             );
             if (data) {
               navigate("/success", { state: { order: true } });
@@ -102,7 +115,8 @@ function PlaceOrder() {
         items,
         paymentOption,
         CartId,
-        coupon ? coupon.discount : 0 
+        coupon ? coupon.discount : 0,
+        discountTotalAmount
       );
       if (data) {
         navigate("/success", { state: { order: true } });
@@ -170,11 +184,15 @@ function PlaceOrder() {
             ))}
           </Box>
           <Box>
-            <PriceDetails totalAmount={totalAmount} coupon={coupon} itemsCount={items.length} />
+            <PriceDetails
+              totalAmount={totalAmount}
+              coupon={coupon}
+              itemsCount={items.length}
+            />
             <ApplyCoupon setCoupon={setCoupon} />
             <PaymentOptions
               onSelectPayment={onSelectPayment}
-              paymentOption={paymentOption}
+   
             />
             <Button
               onClick={handlePlaceOrder}

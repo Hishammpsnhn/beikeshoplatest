@@ -18,6 +18,7 @@ export const createOrder = async (req, res) => {
     paymentMethod,
     discount,
     CartId,
+    finalPrice
   } = req.body;
 
   if (!userId || !addressId || !items || !paymentMethod) {
@@ -41,6 +42,24 @@ export const createOrder = async (req, res) => {
     return res.status(404).json({ message: "Address not found" });
   }
 
+  if(paymentMethod === "wallet"){
+    const wallet = await Wallet.findOne({userId});
+    if(!wallet){
+      return res.status(404).json({ message: "Wallet is Empty" });
+    }
+     if(wallet.amount < finalPrice ){
+      return res.status(404).json({ message: "Wallet has no enough money" });
+     }
+     wallet.amount -= finalPrice;
+     wallet.history.push({
+      amount: finalPrice,
+      transactionType: "debit",
+      description: "Purchase Product",
+    });
+    await wallet.save();
+  }
+
+
   try {
     const orders = await Promise.all(
       items.map(async (item) => {
@@ -59,10 +78,9 @@ export const createOrder = async (req, res) => {
             }
           }
         });
-        const paymentStatus = paymentMethod == "cod" ? false : true;
+        const paymentStatus = paymentMethod === "cod" ? false : true;
         const discountedAmount =
           item.quantity * product.price * (discount / 100);
-        console.log(discountedAmount, discount, item.quantity * product.price);
         const newOrder = new Orders({
           userId: userId,
           addressId: addressId,

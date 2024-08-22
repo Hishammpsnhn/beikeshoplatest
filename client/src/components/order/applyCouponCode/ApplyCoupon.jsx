@@ -12,6 +12,7 @@ function ApplyCoupon({ setCoupon }) {
   const handleApplyCouponCode = async () => {
     if (couponCode.length < 5) {
       toast.error("Enter valid coupon code"+couponCode);
+      setCoupon(null)
       return;
     }
     const data = await getCouponsByCode(couponCode);
