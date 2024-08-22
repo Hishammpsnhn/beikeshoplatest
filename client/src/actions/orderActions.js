@@ -148,3 +148,22 @@ export const onlinePaymentOrderVerify = async (body) => {
     }
   }
 };
+export const updateOrdersReturn= async (id, obj) => {
+  try {
+    const { data } = await axios.put(`${url}/api/order/${id}/return`, {
+      obj,
+    });
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error("Error:", error);
+    if (error.response && error.response.data) {
+      const errorMessage = error.response.data.message;
+      console.error("Server Error Message:", errorMessage);
+      //dispatch(fetchProductFailure(errorMessage));
+    } else {
+      console.error("Generic Error");
+      // dispatch(fetchProductFailure("Something went wrong"));
+    }
+  }
+};

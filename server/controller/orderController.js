@@ -139,7 +139,7 @@ export const getOrdersList = async (req, res) => {
 // @access  Private
 export const updateOrder = async (req, res) => {
   const { id } = req.params;
-  const userId = req.user; 
+  const userId = req.user;
   const { orderStatus, paymentStatus, amount } = req.body.obj;
 
   if (orderStatus === undefined && paymentStatus === undefined) {
@@ -156,7 +156,6 @@ export const updateOrder = async (req, res) => {
     if (!order) {
       return res.status(404).json({ message: "Order not found" });
     }
-
 
     if (orderStatus === "cancelled" && paymentStatus === true && amount) {
       try {
@@ -185,7 +184,9 @@ export const updateOrder = async (req, res) => {
 
         await wallet.save();
       } catch (error) {
-        return res.status(500).json({ message: "Error updating wallet", error });
+        return res
+          .status(500)
+          .json({ message: "Error updating wallet", error });
       }
     }
 
@@ -198,10 +199,13 @@ export const updateOrder = async (req, res) => {
 
     const updatedOrder = await order.save();
 
-    return res.status(200).json({ message: "Order updated successfully", updatedOrder });
-
+    return res
+      .status(200)
+      .json({ message: "Order updated successfully", updatedOrder });
   } catch (error) {
-    return res.status(500).json({ message: "Error updating order", error: error.message });
+    return res
+      .status(500)
+      .json({ message: "Error updating order", error: error.message });
   }
 };
 
@@ -281,5 +285,84 @@ export const onlinePaymentOrderVerify = async (req, res) => {
     res
       .status(500)
       .json({ message: "Error processing payment", error: error.message });
+  }
+};
+
+// @desc    return product
+// @route   PUT /api/order/:id/return
+// @access  Private
+export const returnUpdate = async (req, res) => {
+  const { id } = req.params;
+  const { orderReturnStatus, returnPickupStatus, amount } = req.body.obj;
+  console.log(orderReturnStatus, amount, returnPickupStatus, id);
+  if (orderReturnStatus === undefined) {
+    return res.status(400).json({ message: "Field is required" });
+  }
+
+  try {
+    const order = await Orders.findById(id).populate({
+      path: "product.product",
+      model: Products,
+      select: "name images",
+    });
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    if (
+      orderReturnStatus === "completed" &&
+      returnPickupStatus === "picked" &&
+      amount
+    ) {
+      try {
+        let wallet = await Wallet.findOne({ userId:order.userId });
+
+        if (wallet) {
+          wallet.amount += amount;
+          wallet.history.push({
+            amount: amount,
+            transactionType: "credit",
+            description: "order returned",
+          });
+        } else {
+          wallet = new Wallet({
+            userId:order.userId,
+            amount: amount,
+            history: [
+              {
+                amount: amount,
+                transactionType: "credit",
+                description: "order returned",
+              },
+            ],
+          });
+        }
+
+        await wallet.save();
+      } catch (error) {
+        return res
+          .status(500)
+          .json({ message: "Error updating wallet", error });
+      }
+    }
+
+    if (orderReturnStatus !== undefined) {
+      order.orderReturnStatus = orderReturnStatus;
+    }
+
+    if (returnPickupStatus !== undefined && amount) {
+      order.returnPickupStatus = returnPickupStatus;
+    }
+
+    const updatedOrder = await order.save();
+
+    return res
+      .status(200)
+      .json({ message: "Order updated successfully", updatedOrder });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Error updating order", error: error.message });
   }
 };

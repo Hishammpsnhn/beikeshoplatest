@@ -7,7 +7,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import { getAllOrders, updateOrders } from "../../actions/orderActions";
+import {
+  getAllOrders,
+  updateOrders,
+  updateOrdersReturn,
+} from "../../actions/orderActions";
 
 const OrderManagement = () => {
   const theme = useTheme();
@@ -26,7 +30,10 @@ const OrderManagement = () => {
     size: item.product[0].size,
     quantity: item.product[0].quantity,
     price: item.finalAmount,
-    orderStatus: item.orderStatus,
+    orderStatus:
+      item.orderReturnStatus != "not requested"
+        ? `RE - ${item.orderReturnStatus}`
+        : item.orderStatus,
     payment: item.paymentMethod,
     paymentStatus: item.paymentStatus,
   }));
@@ -35,6 +42,17 @@ const OrderManagement = () => {
     console.log(id, obj);
     const data = await updateOrders(id, obj);
     console.log(data);
+    if (data.updatedOrder) {
+      if (data.updatedOrder) {
+        const newOrders = orders.map((order) =>
+          order._id === id ? data.updatedOrder : order
+        );
+        setOrders(newOrders);
+      }
+    }
+  };
+  const handleReturnUpdate = async (id, obj) => {
+    const data = await updateOrdersReturn(id, obj);
     if (data.updatedOrder) {
       if (data.updatedOrder) {
         const newOrders = orders.map((order) =>
@@ -140,13 +158,64 @@ const OrderManagement = () => {
               </Button>
               <Button
                 onClick={() =>
-                  handleUpdate(row.id, { orderStatus: "cancelled",paymentStatus: row.paymentStatus,amount:row.price})
+                  handleUpdate(row.id, {
+                    orderStatus: "cancelled",
+                    paymentStatus: row.paymentStatus,
+                    amount: row.price,
+                  })
                 }
                 variant="contained"
                 color="error"
               >
                 cancel
               </Button>
+            </>
+          )}
+          {row.orderStatus === "RE - requested" && (
+            <>
+              <Button
+                onClick={() =>
+                  handleReturnUpdate(row.id, {
+                    orderReturnStatus: "approved",
+                    returnPickupStatus: "not picked",
+                  })
+                }
+                variant="contained"
+                color="info"
+                size="small"
+              >
+                approve
+              </Button>
+              <Button
+                onClick={() =>
+                  handleReturnUpdate(row.id, {
+                    orderReturnStatus: "rejected",
+                  })
+                }
+                variant="contained"
+                color="error"
+                size="small"
+              >
+                Reject
+              </Button>
+            </>
+          )}
+          {row.orderStatus === "RE - approved"  && (
+            <>
+              <Button
+                onClick={() =>
+                  handleReturnUpdate(row.id, {
+                    orderReturnStatus: "completed",
+                    returnPickupStatus: "picked",
+                    amount: row.price
+                  })
+                }
+                variant="contained"
+                color="info"
+                size="small"
+              >
+                picked
+              </Button>        
             </>
           )}
           {row.orderStatus == "delivered" && row.paymentStatus == false && (
@@ -159,7 +228,7 @@ const OrderManagement = () => {
             </Button>
           )}
           {row.orderStatus == "delivered" && row.paymentStatus == true && (
-            <Typography sx={{fontWeight:'bold'}}  color="#4caf50" >
+            <Typography sx={{ fontWeight: "bold" }} color="#4caf50">
               Success
             </Typography>
           )}

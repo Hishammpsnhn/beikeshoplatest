@@ -20,7 +20,11 @@ function Wishlist() {
       if (data) {
         setData(data.items);
         setLoading(false);
+      }else{
+        setLoading(false)
+        setData([]);
       }
+
     };
     fetch();
   }, []);

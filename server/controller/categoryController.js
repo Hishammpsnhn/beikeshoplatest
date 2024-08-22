@@ -66,6 +66,15 @@ export const getProductByCategory = async (req, res) => {
         .json({ message: "Category parameter is required" });
     }
 
+    // Validate and convert category to ObjectId
+    const categoryId = mongoose.Types.ObjectId.isValid(category)
+      ? new mongoose.Types.ObjectId(category)
+      : null;
+
+    if (!categoryId) {
+      return res.status(400).json({ message: "Invalid category ID" });
+    }
+
     let sortOption = {};
     switch (sort) {
       case "lowToHigh":
@@ -85,7 +94,7 @@ export const getProductByCategory = async (req, res) => {
     }
 
     const products = await Products.find({
-      category: category,
+      category: categoryId,
       isDeleted: false,
     }).sort(sortOption);
 

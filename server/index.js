@@ -18,8 +18,8 @@ import cartRoute from "./router/cartRoute.js";
 import orderRoute from "./router/orderRoute.js";
 import cookieParser from "cookie-parser";
 import wishlistRoute from "./router/wishlistRoute.js";
-import couponCode from './router/couponCode.js'
-
+import couponCode from './router/couponCode.js';
+import walletRoute from "./router/walletRoute.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -62,6 +62,7 @@ app.use("/api/upload", uploadRoute);
 app.use("/api/order", orderRoute);
 app.use("/api/wishlist", wishlistRoute);
 app.use("/api/coupon_code", couponCode);
+app.use('/api/wallet',walletRoute)
 
 app.get("/api/check-server", (req, res) => {
   res.status(200).send({ message: "Server is running" });

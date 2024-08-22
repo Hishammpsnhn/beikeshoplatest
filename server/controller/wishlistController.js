@@ -6,7 +6,6 @@ import Wishlist from "../model/whishlist.js";
 // @access  public
 export const getWishlist = async (req, res) => {
   const id = req.user.id;
-  console.log(id);
   try {
     const user = await User.findById(id);
     if (!user) {
@@ -17,6 +16,9 @@ export const getWishlist = async (req, res) => {
       model: "Products",
       select: "name images price",
     })
+    if(!wishlist){
+      return res.status(404).json({ message: "Wishlist not found" });
+    }
     res.status(200).json(wishlist);
   } catch (error) {
     res.status(500).json({ message: "Server error" });

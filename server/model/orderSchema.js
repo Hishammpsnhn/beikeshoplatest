@@ -29,8 +29,19 @@ const ordersSchema = new Schema(
       enum: ["pending", "delivered", "cancelled"],
       default: "pending",
     },
+    orderReturnStatus: {
+      type: String,
+      enum: ["not requested", "requested", "approved", "rejected","completed"],
+      default: "not requested",
+    },
+    returnPickupStatus: {
+      type: String,
+      enum: ["pending", "picked", "not picked"],
+      default: "pending",
+    },
     paymentStatus: { type: Boolean, required: true },
   },
+
   {
     timestamps: true,
   }
@@ -38,4 +49,3 @@ const ordersSchema = new Schema(
 
 const Orders = mongoose.model("Orders", ordersSchema);
 export default Orders;
-
