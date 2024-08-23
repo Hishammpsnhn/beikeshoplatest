@@ -16,9 +16,7 @@ import {
 } from "../../actions/wishlistAction";
 import "./productCard.css";
 
-function ProductCard({ name, price, image, id, wishlist }) {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+function ProductCard({ name, price, image, id, wishlist, offer }) {
   const [wishlistAction, setWishlistAction] = useState(wishlist);
 
   useEffect(() => {
@@ -55,7 +53,6 @@ function ProductCard({ name, price, image, id, wishlist }) {
           className="wishlist-icon"
         >
           <IconButton
-           
             onClick={wishlistAction ? handleWishlistRemove : handleWishlist}
           >
             {wishlistAction ? (
@@ -82,8 +79,8 @@ function ProductCard({ name, price, image, id, wishlist }) {
           <Box
             sx={{
               display: "flex",
-              justifyContent: "space-between",
               alignItems: "center",
+              justifyContent: "center",
             }}
           >
             <Typography
@@ -94,9 +91,13 @@ function ProductCard({ name, price, image, id, wishlist }) {
               }}
               variant="body1"
             >
-              {price}
+              {Math.floor(price - price * (offer / 100))}
             </Typography>
-            <Typography sx={{ textDecoration: "line-through" }}>$45</Typography>
+            {offer > 0 && (
+              <Typography sx={{ textDecoration: "line-through" }}>
+                {price}
+              </Typography>
+            )}
           </Box>
         </CardContent>
       </CardActionArea>

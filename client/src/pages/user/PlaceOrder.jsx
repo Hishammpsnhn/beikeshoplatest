@@ -4,7 +4,7 @@ import ProdcutBref from "../../components/Product/productBref/ProdcutBref";
 import PriceDetails from "../../components/order/priceDetails/PriceDetails";
 import PaymentOptions from "../../components/order/paymentoptions/PaymentOptions";
 import ApplyCoupon from "../../components/order/applyCouponCode/ApplyCoupon";
-import { Box, Button, Container } from "@mui/material";
+import { Box, Button, CircularProgress, Container } from "@mui/material";
 import Header from "../../components/header/Header1";
 import Nav from "../../components/header/Nav";
 import AddIcon from "@mui/icons-material/Add";
@@ -24,6 +24,7 @@ function PlaceOrder() {
   const { items, loading, error, totalAmount, CartId } = useSelector(
     (state) => state.cart
   );
+  const [disable,setDisable] = useState(false)
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [paymentOption, setPaymentOption] = useState(null);
   const [coupon, setCoupon] = useState(null);
@@ -38,22 +39,22 @@ function PlaceOrder() {
       toast.error("selected address");
       return;
     }
-    
+
     if (!paymentOption) {
       toast.error("Selected Payement Option");
       return;
     }
     let discountTotalAmount = totalAmount;
     if (coupon) {
-      const discountedAmount = totalAmount * (coupon.discount / 100);
+      const discountedAmount = coupon.discount * items.length;
       discountTotalAmount = totalAmount - discountedAmount;
     }
-    if(coupon && paymentOption === 'wallet'){
-      toast.error("Can't use coupon with Wallet")
+    if (coupon && paymentOption === "wallet") {
+      toast.error("Can't use coupon with Wallet");
     }
-  
+
     if (paymentOption === "online payment") {
-      const data = await onlinePaymentOrder(totalAmount);
+      const data = await onlinePaymentOrder(discountTotalAmount);
       var options = {
         key: process.env.RAZORPAPY_KEY_ID,
         amount: totalAmount,
@@ -108,6 +109,17 @@ function PlaceOrder() {
       });
       rzp1.open();
     } else {
+      console.log(
+        user._id,
+        selectedAddress,
+        totalAmount,
+        items,
+        paymentOption,
+        CartId,
+        coupon ? coupon.discount : 0,
+        discountTotalAmount
+      );
+
       const data = await createOrder(
         user._id,
         selectedAddress,
@@ -138,13 +150,14 @@ function PlaceOrder() {
     getCartUser();
   }, []);
   useEffect(() => {
-    if (items.length <= 0 || !items) {
-      navigate("/");
-    }
     if (!user) {
       navigate("/login");
     }
   }, []);
+  useEffect(() => {
+    const anyUnavailable = items.some(item => item.availability === false);
+    setDisable(anyUnavailable);
+  }, [items]);
   return (
     <>
       <Header />
@@ -167,42 +180,45 @@ function PlaceOrder() {
         >
           add address
         </Button>
-        <Box display="flex" justifyContent="space-between" marginTop="20px">
-          <Box width="50%">
-            {items?.map((item) => (
-              <ProdcutBref
-                // cart={true}
-                order={true}
-                userId={user._id}
-                productId={item.productId}
-                name={item?.productId?.name}
-                image={item?.productId?.images[0]}
-                price={item?.productSizeDetails?.price}
-                qty={item?.quantity}
-                size={item?.productSizeDetails}
+        {loading ? (
+           <CircularProgress />
+        ) : (
+          <Box display="flex" justifyContent="space-between" marginTop="20px">
+            <Box width="50%">
+              {items?.map((item) => (
+                <ProdcutBref
+                  // cart={true}
+                  order={true}
+                  userId={user._id}
+                  productId={item.productId}
+                  name={item?.productId?.name}
+                  image={item?.productId?.images[0]}
+                  price={item?.productSizeDetails?.price}
+                  qty={item?.quantity}
+                  size={item?.productSizeDetails}
+                  availability={item?.availability}
+                />
+              ))}
+            </Box>
+            <Box>
+              <PriceDetails
+                totalAmount={totalAmount}
+                coupon={coupon}
+                itemsCount={items.length}
               />
-            ))}
+              <ApplyCoupon setCoupon={setCoupon} totalAmount={totalAmount} />
+              <PaymentOptions onSelectPayment={onSelectPayment} />
+              <Button
+                onClick={handlePlaceOrder}
+                variant="contained"
+                disabled={disable}
+                sx={{ width: "100%", marginY: "30px" }}
+              >
+                Place Order
+              </Button>
+            </Box>
           </Box>
-          <Box>
-            <PriceDetails
-              totalAmount={totalAmount}
-              coupon={coupon}
-              itemsCount={items.length}
-            />
-            <ApplyCoupon setCoupon={setCoupon} />
-            <PaymentOptions
-              onSelectPayment={onSelectPayment}
-   
-            />
-            <Button
-              onClick={handlePlaceOrder}
-              variant="contained"
-              sx={{ width: "100%", marginY: "30px" }}
-            >
-              Place Order
-            </Button>
-          </Box>
-        </Box>
+        )}
       </Container>
     </>
   );

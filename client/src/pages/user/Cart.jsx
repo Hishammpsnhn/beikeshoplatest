@@ -12,11 +12,13 @@ import BrefSkeliton from "../../components/Product/productBref/BrefSkeliton";
 function Cart() {
   const { user } = useSelector((state) => state.auth);
 
-  const { items, error, totalAmount, loading,addCartLoading } = useSelector(
+  
+  const { items, error, totalAmount, loading, addCartLoading } = useSelector(
     (state) => state.cart
   );
+  const [disable,setDisable] = useState(false)
   const navigate = useNavigate();
-console.log(items)
+
   const handleOrder = () => {
     navigate("/place_order");
   };
@@ -33,12 +35,16 @@ console.log(items)
     }
     getCartUser();
   }, []);
-  console.log(items);
+
   useEffect(() => {
     if (!user) {
       navigate("/login");
     }
   }, []);
+  useEffect(() => {
+    const anyUnavailable = items.some(item => item.availability === false);
+    setDisable(anyUnavailable);
+  }, [items]);
 
   return (
     <>
@@ -61,7 +67,7 @@ console.log(items)
                     price={item?.productSizeDetails?.price}
                     qty={item?.quantity}
                     size={item?.productSizeDetails}
-                    availability={item?. availability}
+                    availability={item?.availability}
                   />
                 ))}
               </Box>
@@ -72,12 +78,14 @@ console.log(items)
                   <PriceDetails
                     totalAmount={totalAmount}
                     itemsCount={items.length}
+                    offer={items?.productId?.offer}
                   />
                 </Box>
                 <Button
                   variant="contained"
                   sx={{ width: "100%", marginY: "30px" }}
                   onClick={handleOrder}
+                  disabled={disable}
                 >
                   Place Order
                 </Button>

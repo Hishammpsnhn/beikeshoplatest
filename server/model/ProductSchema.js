@@ -28,6 +28,7 @@ const ProductsSchema = new Schema(
     isDeleted: { type: Boolean, default: false },
     averageRating: { type: Number, default: 0 },
     ratingsCount: { type: Number, default: 0 },
+    offer:{type:Number,required: true,default:0},
   },
   {
     timestamps: true,

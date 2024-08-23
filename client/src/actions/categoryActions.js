@@ -5,6 +5,7 @@ import {
   fetchCategoryFailure,
   fetchCategoryStart,
   fetchCategorySuccess,
+  updateCategory,
 } from "../reducers/categoryReducers";
 import {
   fetchProductFailure,
@@ -14,7 +15,6 @@ import {
 
 const url = "http://localhost:4000";
 axios.defaults.withCredentials = true;
-
 
 axios.interceptors.response.use(
   (response) => response,
@@ -129,3 +129,27 @@ export const getProductByCategory = (id, sort) => async (dispatch) => {
     }
   }
 };
+
+export const applyOfferCategory =
+  (categoryId, discount = 0) =>
+  async (dispatch) => {
+    try {
+      const { data } = await axios.post(
+        `${url}/api/admin/category/${categoryId}/offer`,
+        {
+          discount,
+        }
+      );
+      dispatch(updateCategory(data));
+      console.log(data);
+      return data;
+    } catch (error) {
+      console.error("Error:", error);
+      if (error.response && error.response.data) {
+        const errorMessage = error.response.data.message;
+        console.error("Server Error Message:", errorMessage);
+      } else {
+        console.error("Generic Error");
+      }
+    }
+  };

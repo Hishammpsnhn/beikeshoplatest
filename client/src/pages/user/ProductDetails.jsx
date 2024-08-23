@@ -132,6 +132,7 @@ function ProductDetails() {
           <ProductName
             name={product?.name}
             price={product?.sizes[0]?.price}
+            offer = {product?.offer}
             rating={product?.averageRating}
             selectedSize={selectedSize}
           />

@@ -27,6 +27,7 @@ function Products() {
   const isLargeScreen = useMediaQuery(theme.breakpoints.up("md"));
   const { products, loading, error } = useSelector((state) => state.products);
   const { selectedCategory } = useSelector((state) => state.products);
+  const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
 
@@ -53,9 +54,11 @@ function Products() {
 
   useEffect(() => {
     const fetch = async () => {
-      const data = await getWishlist();
-      if (data) {
-        setData(data.items);
+      if (user) {
+        const data = await getWishlist();
+        if (data) {
+          setData(data.items);
+        }
       }
     };
     fetch();
@@ -120,7 +123,7 @@ function Products() {
                   const isInWishlist = data.some(
                     (wishlistItem) => wishlistItem._id === item._id
                   );
-                  console.log(isInWishlist)
+                  console.log(isInWishlist);
 
                   return (
                     <Grid item xs={2} sm={4} md={4} key={index}>
@@ -129,6 +132,7 @@ function Products() {
                         name={item.name}
                         price={item.sizes[0].price}
                         id={item._id}
+                        offer={item.offer}
                         wishlist={isInWishlist}
                       />
                     </Grid>

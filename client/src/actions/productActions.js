@@ -7,6 +7,7 @@ import {
   fetchProductSuccess,
   stopLoading,
   oneProductSuccess,
+  updateProduct,
 } from "../reducers/productReducers";
 
 const url = "http://localhost:4000";
@@ -144,7 +145,7 @@ export const oneProduct = (id) => async (dispatch) => {
 export const addOrUpdateRating = async (productId, userId, rating) => {
   console.log(productId, userId, rating);
   try {
-    const { data } = await axios.post(`${url}/api/admin/product/rating`,{
+    const { data } = await axios.post(`${url}/api/admin/product/rating`, {
       productId,
       userId,
       rating,
@@ -155,13 +156,37 @@ export const addOrUpdateRating = async (productId, userId, rating) => {
     if (error.response && error.response.data) {
       const errorMessage = error.response.data.message;
       console.error("Server Error Message:", errorMessage);
-     // dispatch(fetchProductFailure(errorMessage));
+      // dispatch(fetchProductFailure(errorMessage));
     } else {
       console.error("Generic Error");
-     // dispatch(fetchProductFailure("Something went wrong"));
+      // dispatch(fetchProductFailure("Something went wrong"));
     }
   }
 };
+export const applyProductOffer =
+  (productId, discount = 0) =>
+  async (dispatch) => {
+    try {
+      const { data } = await axios.post(
+        `${url}/api/admin/product/${productId}/offer`,
+        {
+          discount,
+        }
+      );
+      dispatch(updateProduct(data));
+      return data;
+    } catch (error) {
+      console.error("Error:", error);
+      if (error.response && error.response.data) {
+        const errorMessage = error.response.data.message;
+        console.error("Server Error Message:", errorMessage);
+        // dispatch(fetchProductFailure(errorMessage));
+      } else {
+        console.error("Generic Error");
+        // dispatch(fetchProductFailure("Something went wrong"));
+      }
+    }
+  };
 export const uploadFile = async (formdata, files, setUploadProgress) => {
   //dispatch(fetchProductStart());
   try {

@@ -17,11 +17,18 @@ const ordersSchema = new Schema(
     discount: { type: Number, default: 0 },
     finalAmount: { type: Number, required: true },
     couponId: { type: Schema.Types.ObjectId, ref: "Coupon" },
-    addressId: { type: Schema.Types.ObjectId, ref: "Address", required: true },
+    address: {
+      fullName: { type: "string", required: "true" },
+      landmark: { type: "string", required: "true" },
+      city: { type: "string", required: "true" },
+      state: { type: "string", required: "true" },
+      pinCode: { type: "number", required: "true" },
+      phoneNumber: { type: "number", required: "true" },
+    },
     paymentMethod: {
       type: String,
       required: true,
-      enum: ["online payment", "cod","wallet"],
+      enum: ["online payment", "cod", "wallet"],
     },
     orderStatus: {
       type: String,
@@ -31,7 +38,7 @@ const ordersSchema = new Schema(
     },
     orderReturnStatus: {
       type: String,
-      enum: ["not requested", "requested", "approved", "rejected","completed"],
+      enum: ["not requested", "requested", "approved", "rejected", "completed"],
       default: "not requested",
     },
     returnPickupStatus: {

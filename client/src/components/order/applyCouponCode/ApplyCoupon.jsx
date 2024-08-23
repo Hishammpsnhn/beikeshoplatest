@@ -6,10 +6,15 @@ import Box from "@mui/material/Box";
 import { toast } from "react-toastify";
 import { getCouponsByCode } from "../../../actions/couponActions";
 
-function ApplyCoupon({ setCoupon }) {
+function ApplyCoupon({ setCoupon,totalAmount }) {
   const [couponCode, setCouponCode] = useState("");
 
   const handleApplyCouponCode = async () => {
+    if(totalAmount <1000){
+      toast.error("Order amount should be at least 1000");
+      return;
+    }
+
     if (couponCode.length < 5) {
       toast.error("Enter valid coupon code"+couponCode);
       setCoupon(null)

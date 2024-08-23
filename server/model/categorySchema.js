@@ -5,8 +5,7 @@ const { Schema } = mongoose;
 const CategorySchema = new Schema({
   category: { type: String, required: true, unique: true },
   description: { type: String },
-  subCategory: [{ type: String }],
-  products: [{ type: Schema.Types.ObjectId, ref: 'Products' }], 
+  offer:{type:Number,required: true,default:0},
   isDeleted: { type: Boolean, default: false },
 }, {
   timestamps: true,

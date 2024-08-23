@@ -24,6 +24,10 @@ export const createCart = async (req, res) => {
     if (productSize.stock <= 0) {
       return res.status(400).json({ message: "Product out of stock" });
     }
+    const discountedPrice = Math.floor(
+      productSize.price * (1 - (product.offer || 0) / 100)
+    );
+    console.log("discountedPrice: " + discountedPrice);
 
     let cart = await Cart.findOne({ userId });
 
@@ -36,9 +40,10 @@ export const createCart = async (req, res) => {
             quantity: 1,
             productSizeDetails: productSize,
             availability: true,
+            price: discountedPrice,
           },
         ],
-        totalAmount: productSize.price,
+        totalAmount: discountedPrice,
       });
       //productSize.stock--;
 
@@ -48,7 +53,7 @@ export const createCart = async (req, res) => {
       await cart.populate({
         path: "items.productId",
         model: Products,
-        select: "name images sizes ",
+        select: "name images sizes offer",
       });
 
       const itemIndex = cart.items.findIndex(
@@ -59,15 +64,16 @@ export const createCart = async (req, res) => {
 
       if (itemIndex > -1) {
         cart.items[itemIndex].quantity += 1;
-        cart.totalAmount += productSize.price;
+        cart.totalAmount += Math.floor(discountedPrice);
       } else {
         cart.items.push({
           productId,
           quantity: 1,
           productSizeDetails: productSize,
           availability: true,
+          price: discountedPrice,
         });
-        cart.totalAmount += productSize.price;
+        cart.totalAmount += Math.floor(discountedPrice);
       }
 
       // productSize.stock--;
@@ -78,7 +84,7 @@ export const createCart = async (req, res) => {
     await cart.populate({
       path: "items.productId",
       model: Products,
-      select: "name images",
+      select: "name images offer",
     });
     return res.status(201).json(cart);
   } catch (error) {
@@ -96,11 +102,11 @@ export const getCart = async (req, res) => {
     const cart = await Cart.findOne({ userId: id }).populate({
       path: "items.productId",
       model: Products,
-      select: "name images sizes",
+      select: "name images sizes offer",
     });
 
     if (!cart) return res.status(404).json({ message: "Cart not found" });
-
+    let totalAmount = 0;
     cart.items.forEach((item) => {
       const product = item.productId;
 
@@ -109,13 +115,20 @@ export const getCart = async (req, res) => {
       );
 
       if (size && size.stock < item.quantity) {
-        console.log("false", size.stock, item.quantity);
         item.availability = false;
       } else {
         item.availability = true;
       }
+      console.log(item.productId?.offer, size.price);
+      const disPrice =
+        item.productId?.offer === 0
+          ? 0
+          : size.price * (item.productId?.offer / 100);
+      console.log(disPrice)
+      item.price = size.price -  Math.trunc(disPrice);
+      totalAmount += item.price * item.quantity;
     });
-    console.log("cart", cart);
+    cart.totalAmount = totalAmount;
     await cart.save();
     return res.status(200).json(cart);
   } catch (error) {
@@ -156,14 +169,18 @@ export const updateCart = async (req, res) => {
 
     const productSize = product.sizes[productSizeIndex];
 
+    // Calculate the price after applying the offer
+    const discountedPrice = Math.floor(
+      productSize.price * (1 - (product.offer || 0) / 100)
+    );
+
     switch (action) {
       case "inc":
         if (productSize.stock <= qty) {
           return res.status(400).json({ message: "Product out of stock" });
         }
         cart.items[itemIndex].quantity += 1;
-        cart.totalAmount += productSize.price;
-        //productSize.stock--;
+        cart.totalAmount += discountedPrice;
         break;
 
       case "dec":
@@ -174,20 +191,18 @@ export const updateCart = async (req, res) => {
         }
 
         cart.items[itemIndex].quantity -= 1;
-        cart.totalAmount -= productSize.price;
-        //productSize.stock++;
+        cart.totalAmount -= discountedPrice;
         if (cart.items[itemIndex].quantity <= 0) {
           cart.items.splice(itemIndex, 1);
         }
-        console.log(cart.items[itemIndex].quantity , productSize.stock)
         if (cart.items[itemIndex].quantity <= productSize.stock) {
-          cart.items[itemIndex].availability = true
+          cart.items[itemIndex].availability = true;
         }
         break;
 
       case "remove":
-        cart.totalAmount -= productSize.price * cart.items[itemIndex].quantity;
-        //productSize.stock += cart.items[itemIndex].quantity;
+        cart.totalAmount -= discountedPrice * cart.items[itemIndex].quantity;
+        console.log(discountedPrice, cart.totalAmount);
         cart.items.splice(itemIndex, 1);
         break;
 
@@ -201,7 +216,7 @@ export const updateCart = async (req, res) => {
     await cart.populate({
       path: "items.productId",
       model: Products,
-      select: "name images",
+      select: "name images offer",
     });
 
     return res.status(200).json(cart);

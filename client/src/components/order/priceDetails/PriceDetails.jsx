@@ -3,11 +3,11 @@ import React from "react";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { green } from "@mui/material/colors";
 
-function PriceDetails({ totalAmount, itemsCount, coupon }) {
+function PriceDetails({ totalAmount, itemsCount, coupon,offer }) {
   let discountTotalAmount = totalAmount;
   if (coupon) {
-    const discountedAmount = totalAmount * (coupon.discount / 100);
-    discountTotalAmount = totalAmount - discountedAmount;
+    const discountedAmount = coupon.discount *itemsCount ;
+    discountTotalAmount = totalAmount - Math.floor(discountedAmount);
   }
   return (
     <Paper
@@ -36,7 +36,7 @@ function PriceDetails({ totalAmount, itemsCount, coupon }) {
       <Box display="flex" justifyContent="space-between">
         <Typography variant="body2">Discount:</Typography>
         <Typography variant="body2" color="green">
-          -$0
+          -{offer}%
         </Typography>
       </Box>
       <Divider sx={{ margin: "15px 0" }} />

@@ -18,7 +18,7 @@ export const createOrder = async (req, res) => {
     paymentMethod,
     discount,
     CartId,
-    finalPrice
+    finalPrice,
   } = req.body;
 
   if (!userId || !addressId || !items || !paymentMethod) {
@@ -42,23 +42,22 @@ export const createOrder = async (req, res) => {
     return res.status(404).json({ message: "Address not found" });
   }
 
-  if(paymentMethod === "wallet"){
-    const wallet = await Wallet.findOne({userId});
-    if(!wallet){
+  if (paymentMethod === "wallet") {
+    const wallet = await Wallet.findOne({ userId });
+    if (!wallet) {
       return res.status(404).json({ message: "Wallet is Empty" });
     }
-     if(wallet.amount < finalPrice ){
+    if (wallet.amount < finalPrice) {
       return res.status(404).json({ message: "Wallet has no enough money" });
-     }
-     wallet.amount -= finalPrice;
-     wallet.history.push({
+    }
+    wallet.amount -= finalPrice;
+    wallet.history.push({
       amount: finalPrice,
       transactionType: "debit",
       description: "Purchase Product",
     });
     await wallet.save();
   }
-
 
   try {
     const orders = await Promise.all(
@@ -79,13 +78,19 @@ export const createOrder = async (req, res) => {
           }
         });
         const paymentStatus = paymentMethod === "cod" ? false : true;
-        const discountedAmount =
-          item.quantity * product.price * (discount / 100);
+        console.log("disc" ,discount)
         const newOrder = new Orders({
           userId: userId,
-          addressId: addressId,
+          address: {
+            fullName: address.fullName,
+            landmark: address.landmark,
+            city: address.city,
+            state: address.state,
+            pinCode: address.pinCode,
+            phoneNumber: address.phoneNumber,
+          },
           totalAmount: item.quantity * item.productSizeDetails.price,
-          finalAmount: item.quantity * product.price - discountedAmount,
+          finalAmount: (item.quantity * item.price) - discount,
           discount,
           product: [
             {
@@ -334,7 +339,7 @@ export const returnUpdate = async (req, res) => {
       amount
     ) {
       try {
-        let wallet = await Wallet.findOne({ userId:order.userId });
+        let wallet = await Wallet.findOne({ userId: order.userId });
 
         if (wallet) {
           wallet.amount += amount;
@@ -345,7 +350,7 @@ export const returnUpdate = async (req, res) => {
           });
         } else {
           wallet = new Wallet({
-            userId:order.userId,
+            userId: order.userId,
             amount: amount,
             history: [
               {

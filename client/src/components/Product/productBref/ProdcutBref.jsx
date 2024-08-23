@@ -158,7 +158,9 @@ function ProdcutBref({
             <Button
               variant="contained"
               color="error"
-              onClick={() => handleCancelOrder(orderId, name,paymentStatus,finalAmount)}
+              onClick={() =>
+                handleCancelOrder(orderId, name, paymentStatus, finalAmount)
+              }
             >
               cancel
             </Button>
@@ -213,7 +215,9 @@ function ProdcutBref({
             Details
           </Button>
         )}
-        {!availability && cart && <Typography>Out of Stock</Typography>}
+        {(cart || order) && !availability && (
+          <Typography color="red">Out of Stock</Typography>
+        )}
       </Paper>
     </Box>
   );

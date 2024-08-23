@@ -104,3 +104,37 @@ export const getProductByCategory = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+// @desc   apply offer
+// @route   GET /api/admin/category/:id/offer
+// @access  Public
+export const addOffer = async (req, res) => {
+  const { discount } = req.body;
+  const categoryId = req.params.id;
+
+  try {
+    const category = await Category.findById(categoryId);
+    if (!category)
+      return res.status(404).json({ message: "Category not found" });
+    if (discount) {
+      category.offer = discount;
+    }
+
+    const product = await Products.find({ category: categoryId });
+    if (!product) return res.status(404).json({ message: "Product not found" });
+
+    if (discount) {
+      const updatedProducts = await Products.updateMany(
+        { category: categoryId },
+        { $set: { offer: discount } }
+      );
+    }
+
+    await category.save();
+
+    res.status(200).json(category);
+  } catch (error) {
+    console.error("Error getting Product:", error.message);
+    res.status(500).json({ message: "Server error" });
+  }
+};

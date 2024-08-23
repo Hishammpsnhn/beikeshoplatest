@@ -35,6 +35,12 @@ const categorySlice = createSlice({
       state.loading = false;
       state.error = null;
     },
+    updateCategory: (state, action) => {
+      const updateCategory = action.payload;
+      state.categories = state.categories.map((category) =>
+        category._id === updateCategory._id ? updateCategory : category
+      );
+    },
   },
 });
 
@@ -43,6 +49,7 @@ export const {
   fetchCategoryStart,
   fetchCategorySuccess,
   addCategorySuccess,
-  deleteCategoriesSuccess
+  deleteCategoriesSuccess,
+  updateCategory
 } = categorySlice.actions;
 export default categorySlice.reducer;

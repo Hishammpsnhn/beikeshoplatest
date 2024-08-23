@@ -131,7 +131,7 @@ function AdminSidebar() {
             />
             <Item
               title="Promo Code"
-             to="/admin/promocode"
+              to="/admin/promocode"
               icon={<DiscountIcon />}
               selected={selected}
               setSelected={setSelected}
@@ -171,9 +171,9 @@ function AdminSidebar() {
             />
 
             <Item
-              title="Calendar"
-              to="/calendar"
-              icon={<CalendarTodayOutlinedIcon />}
+              title="Offer"
+              to="/admin/offer_management"
+              icon={<DiscountIcon />}
               selected={selected}
               setSelected={setSelected}
             />

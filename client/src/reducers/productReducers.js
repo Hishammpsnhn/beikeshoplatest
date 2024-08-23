@@ -7,8 +7,8 @@ const ProductSlice = createSlice({
     products: [],
     loading: false,
     error: null,
-    product:null,
-    selectedCategory: null
+    product: null,
+    selectedCategory: null,
   },
   reducers: {
     fetchProductStart: (state) => {
@@ -49,7 +49,13 @@ const ProductSlice = createSlice({
     },
     setSelectedCategory: (state, action) => {
       state.selectedCategory = action.payload;
-    }
+    },
+    updateProduct: (state, action) => {
+      const updatedProduct = action.payload;
+      state.products = state.products.map((product) =>
+        product._id === updatedProduct._id ? updatedProduct : product
+      );
+    },
   },
 });
 
@@ -61,6 +67,7 @@ export const {
   deleteProductSuccess,
   oneProductSuccess,
   stopLoading,
-  setSelectedCategory
+  setSelectedCategory,
+  updateProduct
 } = ProductSlice.actions;
 export default ProductSlice.reducer;
