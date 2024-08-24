@@ -41,6 +41,7 @@ export const createCart = async (req, res) => {
             productSizeDetails: productSize,
             availability: true,
             price: discountedPrice,
+            offer:product.offer
           },
         ],
         totalAmount: discountedPrice,
@@ -72,6 +73,7 @@ export const createCart = async (req, res) => {
           productSizeDetails: productSize,
           availability: true,
           price: discountedPrice,
+          offer:product.offer
         });
         cart.totalAmount += Math.floor(discountedPrice);
       }
@@ -125,6 +127,7 @@ export const getCart = async (req, res) => {
           ? 0
           : size.price * (item.productId?.offer / 100);
       console.log(disPrice)
+      item.offer = item.productId?.offer
       item.price = size.price -  Math.trunc(disPrice);
       totalAmount += item.price * item.quantity;
     });

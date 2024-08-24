@@ -91,13 +91,14 @@ export const createOrder = async (req, res) => {
           },
           totalAmount: item.quantity * item.productSizeDetails.price,
           finalAmount: (item.quantity * item.price) - discount,
-          discount,
+          discount:discount,
           product: [
             {
               product: item.productId._id,
               quantity: item.quantity,
               price: item.productSizeDetails.price,
               size: item.productSizeDetails.size,
+              offer:product.offer
             },
           ],
           paymentMethod: paymentMethod,
@@ -247,14 +248,13 @@ export const orderDetails = async (req, res) => {
       res.status(404).json({ message: "Order not found" });
     }
 
-    const user = await User.findById(order.userId);
-    console.log(order.addressId);
-    const address = user.address.find((address) => {
-      return address._id.toString() === order.addressId.toString();
-    });
+    // const user = await User.findById(order.userId);
+    // const address = user.address.find((address) => {
+    //   return address._id.toString() === order.addressId.toString();
+    // });
     res
       .status(200)
-      .json({ message: "Orders fetched successfully", order, address });
+      .json({ message: "Orders fetched successfully", order });
   } catch (error) {
     res
       .status(500)

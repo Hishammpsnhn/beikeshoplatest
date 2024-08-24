@@ -11,6 +11,7 @@ const ordersSchema = new Schema(
         quantity: { type: Number, required: true },
         price: { type: Number, required: true },
         size: { type: String, required: true },
+        offer:{type:Number},
       },
     ],
     totalAmount: { type: Number, required: true },

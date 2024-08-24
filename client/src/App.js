@@ -28,6 +28,7 @@ import Wishlist from "./pages/user/Wishlist.jsx";
 import PromoCode from "./pages/admin/PromoCode.jsx";
 import Wallet from "./pages/user/Wallet.jsx";
 import Offer from "./pages/admin/Offer.jsx";
+import SalesReport from "./pages/admin/SalesReport.jsx";
 
 const theme = createMuiTheme({
   palette: {
@@ -111,6 +112,10 @@ function App() {
               <Route
                 path="/admin/offer_management"
                 element={<Offer />}
+              />
+              <Route
+                path="/admin/sale_reports"
+                element={<SalesReport />}
               />
 
               {/* Catch-all route to handle undefined paths */}

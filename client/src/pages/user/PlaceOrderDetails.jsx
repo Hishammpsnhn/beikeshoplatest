@@ -81,9 +81,8 @@ function PlaceOrderDetails() {
     async function getProductDetail() {
       const data = await getProductDetails(id);
       if (data) {
-        console.log(data.order);
-        setOrder(data.order);
-        setAddress(data.address);
+        setOrder(data?.order);
+        setAddress(data?.order?.address);
       }
     }
     getProductDetail();

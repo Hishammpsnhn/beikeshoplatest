@@ -12,7 +12,8 @@ const CartSchema = new Schema(
         quantity: { type: Number, required: true },
         productSizeDetails:{type: Object, required: true},
         availability:{type:Boolean,required:true},
-        price: { type: Number, required: true}
+        price: { type: Number, required: true},
+        offer:{type:Number}
       },
     ],
     totalAmount: { type: Number, required: true },

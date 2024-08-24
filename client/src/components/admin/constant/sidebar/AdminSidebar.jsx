@@ -178,8 +178,8 @@ function AdminSidebar() {
               setSelected={setSelected}
             />
             <Item
-              title="FAQ Page"
-              to="/faq"
+              title="Sales Report"
+              to="/admin/sale_reports"
               icon={<HelpOutlineOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}

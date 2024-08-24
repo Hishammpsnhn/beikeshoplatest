@@ -24,12 +24,12 @@ function PlaceOrder() {
   const { items, loading, error, totalAmount, CartId } = useSelector(
     (state) => state.cart
   );
-  const [disable,setDisable] = useState(false)
+  const [disable, setDisable] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [paymentOption, setPaymentOption] = useState(null);
   const [coupon, setCoupon] = useState(null);
   // const [wallet, setWallet] = useState(null);
-  const [finalPrice, setFinalPrice] = useState(null);
+  // const [offer, setOffer] = useState(items);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -155,7 +155,7 @@ function PlaceOrder() {
     }
   }, []);
   useEffect(() => {
-    const anyUnavailable = items.some(item => item.availability === false);
+    const anyUnavailable = items.some((item) => item.availability === false);
     setDisable(anyUnavailable);
   }, [items]);
   return (
@@ -181,7 +181,7 @@ function PlaceOrder() {
           add address
         </Button>
         {loading ? (
-           <CircularProgress />
+          <CircularProgress />
         ) : (
           <Box display="flex" justifyContent="space-between" marginTop="20px">
             <Box width="50%">

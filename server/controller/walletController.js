@@ -14,7 +14,7 @@ export const getWalletInfo = async (req, res) => {
 
   try {
     const wallet = await Wallet.findOne({ userId: new mongoose.Types.ObjectId(userId) });
-
+    wallet.history.sort((a, b) => b.date - a.date);
     if (!wallet) {
       return res.status(404).json({ message: "Wallet not found" });
     }

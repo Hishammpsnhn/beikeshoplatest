@@ -172,3 +172,26 @@ export const updateOrdersReturn = async (id, obj) => {
     }
   }
 };
+
+export const salesReport = async (startDate,endDate,sort) => {
+  const query = new URLSearchParams({
+    startDate,
+    endDate,
+    sort
+  }).toString();
+  try {
+    const { data } = await axios.get(`${url}/api/admin/salesReport?${query}`);
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error("Error:", error);
+    if (error.response && error.response.data) {
+      const errorMessage = error.response.data.message;
+      console.error("Server Error Message:", errorMessage);
+      //dispatch(fetchProductFailure(errorMessage));
+    } else {
+      console.error("Generic Error");
+      // dispatch(fetchProductFailure("Something went wrong"));
+    }
+  }
+};
