@@ -76,7 +76,9 @@ function PlaceOrderDetails() {
       ? 1
       : order?.orderReturnStatus === "completed"
       ? 3
-      : 0;
+      : 0
+      ?order?.orderReturnStatus === "rejected":2
+      ;
 
   useEffect(() => {
     async function getProductDetail() {

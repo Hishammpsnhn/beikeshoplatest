@@ -33,6 +33,24 @@ export const getProductsList = (sort) => async (dispatch) => {
     }
   }
 };
+export const getProductsByName = (query) => async (dispatch) => {
+  dispatch(fetchProductStart());
+  try {
+    const { data } = await axios.get(`${url}/api/admin/product/search?query=${query}`);
+    console.log(data);
+    dispatch(fetchProductSuccess(data));
+  } catch (error) {
+    console.error("Error:", error);
+    if (error.response && error.response.data) {
+      const errorMessage = error.response.data.message;
+      console.error("Server Error Message:", errorMessage);
+      dispatch(fetchProductFailure(errorMessage));
+    } else {
+      console.error("Generic Error");
+      dispatch(fetchProductFailure("Something went wrong"));
+    }
+  }
+};
 
 export const addProduct = (formdata) => async (dispatch) => {
   const data = localStorage.getItem("userInfo");
