@@ -99,7 +99,11 @@ function ProdcutBref({
         <Box display="flex" width="50%" justifyContent="space-evenly">
           <Box sx={{ width: "80px", height: "80px" }}>
             <img
-              onClick={() => navigate(`/productDetails/${productId}`)}
+              onClick={() => {
+                cart || order
+                  ? navigate(`/productDetails/${productId._id}`)
+                  : navigate(`/productDetails/${productId}`);
+              }}
               src={image}
               alt="image"
               style={{

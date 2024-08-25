@@ -34,7 +34,7 @@ function Wallet() {
             sx={{ padding: "20px", marginTop: "20px" }}
           >
             <Typography variant="h4" sx={{ marginBottom: "20px" }}>
-              $ {info?.amount}
+            ₹ {info?.amount ? info.amount : 0}
             </Typography>
             <Typography variant="h6" sx={{ marginBottom: "20px" }}>
               Add Amount

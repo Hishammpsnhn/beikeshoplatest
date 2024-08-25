@@ -254,13 +254,13 @@ function Profile() {
         </Typography>
         <Box marginY="10px">
           {user?.address.map((item) => (
-            <AddressDetails cart={false} address={item} />
+            <AddressDetails cart={false} address={item} profile={true} />
           ))}
           <Button
             variant="outlined"
             sx={{ width: "100%", marginY: "10px" }}
             endIcon={<AddIcon />}
-            onClick={() => navigate("/shipping_address")}
+            onClick={() => navigate("/shipping_address",{state:{ action: "profile"}})}
           >
             Add Address
           </Button>

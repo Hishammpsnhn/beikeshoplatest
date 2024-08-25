@@ -26,6 +26,7 @@ const OrderManagement = () => {
 
   const rows = orders?.map((item) => ({
     id: item._id,
+    userName:item.address.fullName,
     productId: item.product[0].product.name,
     size: item.product[0].size,
     quantity: item.product[0].quantity,
@@ -55,7 +56,7 @@ const OrderManagement = () => {
     const data = await updateOrdersReturn(id, obj);
     if (data.updatedOrder) {
       if (data.updatedOrder) {
-        const newOrders = orders.map((order) =>
+        const newOrders = orders?.map((order) =>
           order._id === id ? data.updatedOrder : order
         );
         setOrders(newOrders);
@@ -70,10 +71,9 @@ const OrderManagement = () => {
   useEffect(() => {
     async function getAllOrder() {
       const data = await getAllOrders();
-      console.log(data.orders);
-      if (data.orders) {
+      if (data?.orders) {
         const newOrder = orders.filter((order) => order._id != data.orders._id);
-        setOrders(data.orders);
+        setOrders(data?.orders);
       }
     }
     getAllOrder();
@@ -81,6 +81,7 @@ const OrderManagement = () => {
 
   const columns = [
     { field: "id", headerName: "ID" },
+    { field: "userName", headerName: "User Name" },
     {
       field: "productId",
       headerName: "productId",
@@ -162,6 +163,7 @@ const OrderManagement = () => {
                     orderStatus: "cancelled",
                     paymentStatus: row.paymentStatus,
                     amount: row.price,
+                    userId: row.userId
                   })
                 }
                 variant="contained"

@@ -4,6 +4,7 @@ import {
   loginStart,
   loginSuccess,
 } from "../reducers/authReducers";
+import { toast } from "react-toastify";
 
 const url = "http://localhost:4000";
 
@@ -111,10 +112,12 @@ export const addShippingAddress = (formData) => async (dispatch) => {
     if (error.response && error.response.data) {
       const errorMessage = error.response.data.message;
       console.error("Server Error Message:", errorMessage);
+      toast.error(errorMessage)
       dispatch(loginFailure(errorMessage));
     } else {
       console.error("Generic Error");
       dispatch(loginFailure("Something went wrong"));
+      toast.error("something went error")
     }
     return error.response.data.message;
   }
@@ -156,6 +159,7 @@ export const EditShippingAddress =
       if (error.response && error.response.data) {
         const errorMessage = error.response.data.message;
         console.error("Server Error Message:", errorMessage);
+       
         dispatch(loginFailure(errorMessage));
       } else {
         console.error("Generic Error");

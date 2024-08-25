@@ -8,6 +8,7 @@ import {
   Select,
   TextField,
 } from "@mui/material";
+import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DataGrid } from "@mui/x-data-grid";
@@ -15,9 +16,10 @@ import { useNavigate } from "react-router-dom";
 import { getAllOrders, salesReport } from "../../actions/orderActions";
 import { useTheme } from "@emotion/react";
 import { tokens } from "../../theme";
-import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import * as XLSX from "xlsx";
 import autoTable from "jspdf-autotable";
+import StatBox from "../../components/admin/statsBox/StatBox";
 
 function SalesReport() {
   const pdfRef = useRef();
@@ -29,10 +31,9 @@ function SalesReport() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [res, setRes] = useState({ loading: false, error: null });
-  
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [stats, setStats] = useState(null);
 
   const handleChange = (event) => {
     setStartDate("");
@@ -53,30 +54,46 @@ function SalesReport() {
   const getAllOrder = async () => {
     setRes({ loading: true });
     const data = await salesReport(startDate, endDate, sort);
-    if (data.orders) {
+    if (data) {
       setRes({ loading: false });
       setOrders(data.orders);
+      setStats({
+        overallAmount: data.overallAmount,
+        overallDiscount: data.overallDiscount,
+        numberOfOrders: data.numberOfOrders,
+      });
     } else {
       setRes({ loading: false, error: "Failed to fetch orders" });
     }
   };
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
   };
-console.log(orders)
+
+  // convert to pdf
   const downloadPDF = () => {
     const doc = new jsPDF();
     const title = "Sales Report";
-  
+
+    // Get the current date
+    const currentDate = new Date().toLocaleDateString();
+
     // Add title to PDF
     doc.setFontSize(18);
     doc.setTextColor(40);
     doc.text(title, 14, 22);
-  
+
+    // Add current date below the title
+    doc.setFontSize(12);
+    doc.setTextColor(100);
+    doc.text(`From: ${currentDate}`, 14, 30);
+    doc.text(`To: ${currentDate}`, 14, 36); // Adjusted Y-coordinate for "To" date
+
     // Define column headers
     const headers = [
       "ID",
@@ -89,7 +106,7 @@ console.log(orders)
       "Coupon Code",
       "Final Amount",
     ];
-  
+
     // Define table data
     const data = orders.map((item) => [
       item._id,
@@ -98,16 +115,16 @@ console.log(orders)
       item.paymentMethod,
       item.product[0]?.product.name,
       item.product[0]?.quantity,
-      item.product[0]?.offer+" %",
+      item.product[0]?.offer + " %",
       item.discount,
       item.finalAmount,
     ]);
-  
+
     // Use autoTable to generate table
     doc.autoTable({
       head: [headers],
       body: data,
-      startY: 30, // Adjust as needed to position the table
+      startY: 44, // Adjust as needed to position the table below the date
       margin: { left: 5, right: 5 },
       headStyles: {
         fillColor: [0, 0, 0], // Black header background
@@ -115,10 +132,43 @@ console.log(orders)
       },
       theme: "grid",
     });
-  
+
+    // Add overall amount and total items after the table
+    const finalY = doc.lastAutoTable.finalY + 10; // Position 10 units below the table
+    doc.setFontSize(14);
+    doc.setTextColor(0, 0, 0);
+    doc.text(`Number of Orders: ${stats?.numberOfOrders}`, 14, finalY);
+    doc.text(`Overall Amount: ${stats?.overallAmount}`, 14, finalY + 10);
+    doc.text(`Overall Discount: ${stats?.overallDiscount}`, 14, finalY + 20);
+
     // Save the PDF
     doc.save("sales_report.pdf");
   };
+
+  const handleExelDownload = () => {
+    const flattenedOrders = orders.map((order) => ({
+      orderId: order._id,
+      Date: new Date(order.createdAt).toLocaleString(),
+      fullName: order.address?.fullName || "",
+      city: order.address?.city || "",
+      phoneNumber: order.address?.phoneNumber || "",
+      productName: order.product[0]?.product.name || "",
+      quantity: order.product[0]?.quantity || 0,
+      price: order.product[0]?.price || 0,
+      totalAmount: order.totalAmount,
+      discount: order.discount,
+      finalAmount: order.finalAmount,
+      paymentMethod: order.paymentMethod,
+      orderStatus: order.orderStatus,
+      paymentStatus: order.paymentStatus ? "Paid" : "Pending",
+    }));
+
+    var wb = XLSX.utils.book_new();
+    var ws = XLSX.utils.json_to_sheet(flattenedOrders);
+    XLSX.utils.book_append_sheet(wb, ws, "Sales Report");
+    XLSX.writeFile(wb, "sales_report.xlsx");
+  };
+
   useEffect(() => {
     if (!user.isAdmin || !isAuthenticated) navigate("/");
   }, [dispatch, isAuthenticated, navigate, user.isAdmin]);
@@ -136,7 +186,7 @@ console.log(orders)
       productName: item.product[0].product.name,
       size: item.product[0].size,
       quantity: item.product[0].quantity,
-      offer: item.product[0].offer,
+      offer: `${item.product[0].offer} %`,
       couponCode: item.discount,
       price: item.finalAmount,
       orderDate: formattedOrderDate,
@@ -150,19 +200,19 @@ console.log(orders)
       field: "userName",
       headerName: "User Name",
       flex: 1,
-      minWidth: 150,
+      minWidth: 130,
     },
     {
       field: "paymentMethod",
       headerName: "Payment Method",
       flex: 1,
-      minWidth: 150,
+      minWidth: 130,
     },
     {
       field: "productName",
       headerName: "Product",
       flex: 1,
-      minWidth: 150,
+      minWidth: 130,
     },
     {
       field: "quantity",
@@ -180,13 +230,13 @@ console.log(orders)
       field: "couponCode",
       headerName: "Coupon Code",
       flex: 1,
-      minWidth: 150,
+      minWidth: 130,
     },
     {
       field: "price",
       headerName: "Final Amount",
       flex: 1,
-      minWidth: 150,
+      minWidth: 130,
     },
   ];
 
@@ -210,17 +260,16 @@ console.log(orders)
           sx={{ marginBottom: "20px" }}
         >
           <h1>Sales Report</h1>
-          <Button
-            variant="contained"
-            onClick={downloadPDF}
-            sx={{
-              padding: "6px 16px",
-              fontSize: "16px",
-              height: "auto",
-            }}
-          >
-            Download
-          </Button>
+          <Box gap={2} display='flex'>
+            <Button onClick={downloadPDF} variant="contained">
+              <DownloadOutlinedIcon sx={{ mr: "10px" }} />
+              Download Reports (pdf)
+            </Button>
+            <Button onClick={handleExelDownload} variant="contained">
+              <DownloadOutlinedIcon sx={{ mr: "10px" }} />
+              Download Reports (xlsx)
+            </Button>
+          </Box>
         </Box>
         <Box
           mb="20px"
@@ -263,6 +312,53 @@ console.log(orders)
             Apply
           </Button>
         </Box>
+        <Box
+          display="grid"
+          gridTemplateColumns="repeat(12, 1fr)"
+          gridAutoRows="150px"
+          // gap="20px"
+          columnGap="20px"
+          rowGap="40px"
+          marginY="40px"
+        >
+          <Box
+            gridColumn="1 / 5"
+            backgroundColor={"#461246"}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            // onClick={() => handleOpen()}
+          >
+            <StatBox
+              title={"Number of Orders"}
+              amount={stats?.numberOfOrders}
+            />
+          </Box>
+          <Box
+            gridColumn="5 / 9"
+            backgroundColor={"#461246"}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            // onClick={() => handleOpen()}
+          >
+            <StatBox title={"Overall Amount"} amount={stats?.overallAmount} />
+          </Box>
+          <Box
+            gridColumn="9 / 13"
+            backgroundColor={"#461246"}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            // onClick={() => handleOpen()}
+          >
+            <StatBox
+              title={"Overall Discount"}
+              amount={stats?.overallDiscount}
+            />
+          </Box>
+        </Box>
+
         <Box padding="20px" ref={pdfRef}>
           <Box
             height="75vh"

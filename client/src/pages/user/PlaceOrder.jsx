@@ -28,6 +28,7 @@ function PlaceOrder() {
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [paymentOption, setPaymentOption] = useState(null);
   const [coupon, setCoupon] = useState(null);
+  const [totalPrice, setTotalPrice] = useState(0);
   // const [wallet, setWallet] = useState(null);
   // const [offer, setOffer] = useState(items);
 
@@ -157,6 +158,10 @@ function PlaceOrder() {
   useEffect(() => {
     const anyUnavailable = items.some((item) => item.availability === false);
     setDisable(anyUnavailable);
+    const toalPrice = items.reduce((acc, item) => {
+      return acc + item.productSizeDetails.price * item.quantity;
+    }, 0);
+    setTotalPrice(toalPrice);
   }, [items]);
   return (
     <>
@@ -176,7 +181,7 @@ function PlaceOrder() {
           variant="outlined"
           sx={{ width: "100%", marginY: "30px" }}
           endIcon={<AddIcon />}
-          onClick={() => navigate("/shipping_address")}
+          onClick={() => navigate("/shipping_address",{state:{ action: "place_order"}})}
         >
           add address
         </Button>
@@ -205,6 +210,7 @@ function PlaceOrder() {
                 totalAmount={totalAmount}
                 coupon={coupon}
                 itemsCount={items.length}
+                totalPrice={totalPrice}
               />
               <ApplyCoupon setCoupon={setCoupon} totalAmount={totalAmount} />
               <PaymentOptions onSelectPayment={onSelectPayment} />

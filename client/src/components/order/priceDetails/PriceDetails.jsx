@@ -3,12 +3,13 @@ import React from "react";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { green } from "@mui/material/colors";
 
-function PriceDetails({ totalAmount, itemsCount, coupon,offer }) {
+function PriceDetails({ totalAmount, itemsCount, coupon,offer,totalPrice }) {
   let discountTotalAmount = totalAmount;
   if (coupon) {
     const discountedAmount = coupon.discount *itemsCount ;
     discountTotalAmount = totalAmount - Math.floor(discountedAmount);
   }
+  console.log(discountTotalAmount,totalAmount,totalPrice,coupon,itemsCount);
   return (
     <Paper
       elevation={5}
@@ -27,17 +28,17 @@ function PriceDetails({ totalAmount, itemsCount, coupon,offer }) {
       </Typography>
       <Box display="flex" justifyContent="space-between">
         <Typography variant="body2">Price:({itemsCount} items)</Typography>
-        <Typography variant="body2">{totalAmount}</Typography>
-      </Box>
-      <Box display="flex" justifyContent="space-between">
-        <Typography variant="body2">Shipping:</Typography>
-        <Typography variant="body2">$0</Typography>
+        <Typography variant="body2"> ₹ {totalPrice}</Typography>
       </Box>
       <Box display="flex" justifyContent="space-between">
         <Typography variant="body2">Discount:</Typography>
         <Typography variant="body2" color="green">
-          -{offer}%
+          - ₹{totalPrice-discountTotalAmount}
         </Typography>
+      </Box>
+      <Box display="flex" justifyContent="space-between">
+        <Typography variant="body2">Shipping:</Typography>
+        <Typography variant="body2">₹0</Typography>
       </Box>
       <Divider sx={{ margin: "15px 0" }} />
       <Box display="flex" justifyContent="space-between">
@@ -45,7 +46,7 @@ function PriceDetails({ totalAmount, itemsCount, coupon,offer }) {
           Total:
         </Typography>
         <Typography variant="h6" fontWeight="bold">
-          {discountTotalAmount}
+        ₹ {discountTotalAmount}
         </Typography>
       </Box>
       {coupon && (

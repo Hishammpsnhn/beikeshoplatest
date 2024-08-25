@@ -31,6 +31,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import { logoutCookie } from "../../actions/authActions";
 import { logout } from "../../reducers/authReducers";
 import WalletIcon from "@mui/icons-material/Wallet";
+import { getProductsList } from "../../actions/productActions";
 
 const pages = ["About Us", "Latest Product", "Contact Us"];
 const productsDropdown = ["Product 1", "Product 2", "Product 3"];
@@ -76,7 +77,7 @@ function Nav() {
       navigate("/cart");
     } else if (setting === "Wishlist") {
       navigate("/wishlist");
-    } else if(setting === "Wallet"){
+    } else if (setting === "Wallet") {
       navigate("/wallet");
     }
   };
@@ -178,7 +179,10 @@ function Nav() {
             }}
           >
             <Button
-              onClick={() => navigate("/products")}
+              onClick={() => {
+                navigate("/products");
+                dispatch(getProductsList());
+              }}
               sx={{ my: 2, color: "black", display: "block" }}
             >
               Products
@@ -257,7 +261,7 @@ function Nav() {
                       {index === 0 && <AccountCircleIcon />}{" "}
                       {index === 1 && <ShoppingCartIcon />}{" "}
                       {index === 2 && <FavoriteIcon />}{" "}
-                      {index === 3 && <WalletIcon />} {" "}
+                      {index === 3 && <WalletIcon />}{" "}
                       {index === 4 && <LogoutIcon />}{" "}
                     </ListItemIcon>
                     <Typography textAlign="center" sx={{ color: "black" }}>

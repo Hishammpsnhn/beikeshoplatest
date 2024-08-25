@@ -20,7 +20,7 @@ function AddressDetails({
   selectedAddress,
   onSelect,
   placeOrder,
-  placeOrderDetails,
+  placeOrderDetails,profile
 }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -34,7 +34,12 @@ function AddressDetails({
 
   const handleEdit = () => {
     console.log(user._id, address._id);
-    navigate("/shipping_address", { state: address });
+    if(profile){
+      navigate("/shipping_address",{state:{ action: "profile",address}});
+
+    }else{
+      navigate("/shipping_address",{state:{ action: "place_order",address}});
+    }
   };
 
   return (

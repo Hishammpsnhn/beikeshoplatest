@@ -12,11 +12,11 @@ import BrefSkeliton from "../../components/Product/productBref/BrefSkeliton";
 function Cart() {
   const { user } = useSelector((state) => state.auth);
 
-  
   const { items, error, totalAmount, loading, addCartLoading } = useSelector(
     (state) => state.cart
   );
-  const [disable,setDisable] = useState(false)
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [disable, setDisable] = useState(false);
   const navigate = useNavigate();
 
   const handleOrder = () => {
@@ -42,8 +42,12 @@ function Cart() {
     }
   }, []);
   useEffect(() => {
-    const anyUnavailable = items.some(item => item.availability === false);
+    const anyUnavailable = items.some((item) => item.availability === false);
     setDisable(anyUnavailable);
+    const toalPrice = items.reduce((acc, item) => {
+      return acc + item.productSizeDetails.price * item.quantity;
+    }, 0);
+    setTotalPrice(toalPrice);
   }, [items]);
 
   return (
@@ -76,6 +80,7 @@ function Cart() {
                 {/* <AddressDetails cart={true} /> */}
                 <Box marginTop="10px">
                   <PriceDetails
+                    totalPrice={totalPrice}
                     totalAmount={totalAmount}
                     itemsCount={items.length}
                     offer={items?.productId?.offer}

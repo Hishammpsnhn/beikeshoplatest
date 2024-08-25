@@ -2,7 +2,7 @@ import { Box, Typography, useTheme } from "@mui/material";
 
 import ProgressCircle from "../progressCircle/ProgressCircle";
 import person from '@mui/icons-material/Person2'
-const StatBox = ({ title, subtitle, icon, progress, increase }) => {
+const StatBox = ({ title, amount, icon, progress, increase }) => {
 
 
   return (
@@ -15,24 +15,24 @@ const StatBox = ({ title, subtitle, icon, progress, increase }) => {
             fontWeight="bold"
             sx={{ color: 'white' }}
           >
-            Today Orders
+            {title}
           </Typography>
         </Box>
-        <Box>
+        {/* <Box>
           <ProgressCircle  />
-        </Box>
+        </Box> */}
       </Box>
       <Box display="flex" justifyContent="space-between" mt="2px">
         <Typography variant="h6" sx={{ color: 'white'}}>
-          Subtitle
+          {amount}
         </Typography>
-        <Typography
+        {/* <Typography
           variant="body1"
           fontStyle="italic"
           sx={{ color: 'white' }}
         >
           +98 %
-        </Typography>
+        </Typography> */}
       </Box>
     </Box>
   );

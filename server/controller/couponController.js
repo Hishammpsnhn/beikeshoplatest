@@ -26,7 +26,7 @@ export const createCoupon = async (req, res) => {
 // Get all coupons
 export const getAllCoupons = async (req, res) => {
   try {
-    const coupons = await Coupons.find();
+    const coupons = await Coupons.find().sort({expDate: -1,})
     res.status(200).json(coupons);
   } catch (error) {
     res.status(500).json({ message: "Error fetching coupons", error });

@@ -33,9 +33,8 @@ function ProductDetails() {
       toast.error("select size");
       return;
     }
-    navigate("/cart");
-
-    dispatch(addCart(user._id, product._id, selectedSize));
+    const data = dispatch(addCart(user._id, product._id, selectedSize));
+    if (data) navigate("/cart");
   };
   useEffect(() => {
     if (!product?._id || product?._id !== id) {
@@ -132,7 +131,7 @@ function ProductDetails() {
           <ProductName
             name={product?.name}
             price={product?.sizes[0]?.price}
-            offer = {product?.offer}
+            offer={product?.offer}
             rating={product?.averageRating}
             selectedSize={selectedSize}
           />

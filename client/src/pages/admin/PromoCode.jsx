@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import AdminSubHeader from "../../components/admin/Header/AdminSubHeader";
 import { Box, Button, Paper, TextField, Typography } from "@mui/material";
-import { createCoupon, deleteCoupon, getAllCoupons } from "../../actions/couponActions";
+import {
+  createCoupon,
+  deleteCoupon,
+  getAllCoupons,
+} from "../../actions/couponActions";
 import { toast } from "react-toastify";
 import validator from "validator";
 
@@ -49,7 +53,7 @@ function PromoCode() {
         expDate: "",
       });
       coupons.push(data);
-    }else{
+    } else {
       toast.error("Coupon already exists");
     }
   };
@@ -133,48 +137,50 @@ function PromoCode() {
       <Typography variant="h5" sx={{ textTransform: "capitalize" }}>
         Current Promocodes
       </Typography>
-      {coupons.map((item) => {
-        const expDate = new Date(item.expDate);
-        const today = new Date();
-        const timeDiff = expDate.getTime() - today.getTime();
-        const daysLeft = Math.ceil(timeDiff / (1000 * 3600 * 24));
+      <Box height='35vh' sx={{overflowY:'scroll'}}>
+        {coupons.map((item) => {
+          const expDate = new Date(item.expDate);
+          const today = new Date();
+          const timeDiff = expDate.getTime() - today.getTime();
+          const daysLeft = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
-        return (
-          <Paper
-            key={item.code}
-            elevation={6}
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              maxWidth: "60%",
-              marginX: "auto",
-              marginTop: "20px",
-              padding: "20px",
-            }}
-          >
-            <Box display="flex" gap={5}>
-              <Typography sx={{ textTransform: "uppercase" }}>
-                {item.code}
-              </Typography>
-              <Typography>{item.discount}%</Typography>
-              <Typography>
-                {daysLeft > 0
-                  ? `${daysLeft} Day${daysLeft > 1 ? "s" : ""} Left`
-                  : "Expired"}
-              </Typography>
-            </Box>
-            <Box gap={5} display="flex">
-              <Button
-                variant="contained"
-                color="error"
-                onClick={() => handleDelete(item._id)}
-              >
-                Delete
-              </Button>
-            </Box>
-          </Paper>
-        );
-      })}
+          return (
+            <Paper
+              key={item.code}
+              elevation={6}
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                maxWidth: "60%",
+                marginX: "auto",
+                marginTop: "20px",
+                padding: "20px",
+              }}
+            >
+              <Box display="flex" gap={5}>
+                <Typography sx={{ textTransform: "uppercase" }}>
+                  {item.code}
+                </Typography>
+                <Typography>₹ {item.discount}</Typography>
+                <Typography sx={{ color: daysLeft > 0 ? "green" : "red" }}>
+                  {daysLeft > 0
+                    ? `${daysLeft} Day${daysLeft > 1 ? "s" : ""} Left`
+                    : "Expired"}
+                </Typography>
+              </Box>
+              <Box gap={5} display="flex">
+                <Button
+                  variant="contained"
+                  color="error"
+                  onClick={() => handleDelete(item._id)}
+                >
+                  Delete
+                </Button>
+              </Box>
+            </Paper>
+          );
+        })}
+      </Box>
     </Box>
   );
 }
