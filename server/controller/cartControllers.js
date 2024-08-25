@@ -41,7 +41,7 @@ export const createCart = async (req, res) => {
             productSizeDetails: productSize,
             availability: true,
             price: discountedPrice,
-            offer:product.offer
+            offer: product.offer,
           },
         ],
         totalAmount: discountedPrice,
@@ -73,7 +73,7 @@ export const createCart = async (req, res) => {
           productSizeDetails: productSize,
           availability: true,
           price: discountedPrice,
-          offer:product.offer
+          offer: product.offer,
         });
         cart.totalAmount += Math.floor(discountedPrice);
       }
@@ -115,6 +115,7 @@ export const getCart = async (req, res) => {
       const size = product.sizes.find(
         (s) => s.size === item.productSizeDetails.size
       );
+      item.productSizeDetails = size;
 
       if (size && size.stock < item.quantity) {
         item.availability = false;
@@ -126,9 +127,9 @@ export const getCart = async (req, res) => {
         item.productId?.offer === 0
           ? 0
           : size.price * (item.productId?.offer / 100);
-      console.log(disPrice)
-      item.offer = item.productId?.offer
-      item.price = size.price -  Math.trunc(disPrice);
+      console.log(disPrice);
+      item.offer = item.productId?.offer;
+      item.price = size.price - Math.trunc(disPrice);
       totalAmount += item.price * item.quantity;
     });
     cart.totalAmount = totalAmount;

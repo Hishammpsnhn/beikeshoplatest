@@ -78,7 +78,7 @@ export const createOrder = async (req, res) => {
           }
         });
         const paymentStatus = paymentMethod === "cod" ? false : true;
-        console.log("disc" ,discount)
+        console.log("disc", discount);
         const newOrder = new Orders({
           userId: userId,
           address: {
@@ -90,15 +90,15 @@ export const createOrder = async (req, res) => {
             phoneNumber: address.phoneNumber,
           },
           totalAmount: item.quantity * item.productSizeDetails.price,
-          finalAmount: (item.quantity * item.price) - discount,
-          discount:discount,
+          finalAmount: item.quantity * item.price - discount,
+          discount: discount,
           product: [
             {
               product: item.productId._id,
               quantity: item.quantity,
               price: item.productSizeDetails.price,
               size: item.productSizeDetails.size,
-              offer:product.offer
+              offer: product.offer,
             },
           ],
           paymentMethod: paymentMethod,
@@ -163,9 +163,15 @@ export const getOrdersList = async (req, res) => {
 // @access  Private
 export const updateOrder = async (req, res) => {
   const { id } = req.params;
-  const userId = req.user;
-  const { orderStatus, paymentStatus, amount } = req.body.obj;
-
+  // const userId = req.user;
+  let { orderStatus, paymentStatus, amount, userId } = req.body.obj;
+  let walletUserId;
+  if (userId) {
+    walletUserId = userId;
+  } else {
+    walletUserId = req.user;
+  }
+  console.log(walletUserId)
   if (orderStatus === undefined && paymentStatus === undefined) {
     return res.status(400).json({ message: "Field is required" });
   }
@@ -180,11 +186,15 @@ export const updateOrder = async (req, res) => {
     if (!order) {
       return res.status(404).json({ message: "Order not found" });
     }
+    paymentStatus = order.paymentStatus;
+    amount = order.finalAmount;
+    console.log(amount, paymentStatus);
+    console.log(orderStatus);
 
     if (orderStatus === "cancelled" && paymentStatus === true && amount) {
       try {
-        let wallet = await Wallet.findOne({ userId });
-
+        let wallet = await Wallet.findOne({ userId:walletUserId });
+        console.log(wallet)
         if (wallet) {
           wallet.amount += amount;
           wallet.history.push({
@@ -194,7 +204,7 @@ export const updateOrder = async (req, res) => {
           });
         } else {
           wallet = new Wallet({
-            userId,
+            userId:walletUserId,
             amount: amount,
             history: [
               {
@@ -252,9 +262,7 @@ export const orderDetails = async (req, res) => {
     // const address = user.address.find((address) => {
     //   return address._id.toString() === order.addressId.toString();
     // });
-    res
-      .status(200)
-      .json({ message: "Orders fetched successfully", order });
+    res.status(200).json({ message: "Orders fetched successfully", order });
   } catch (error) {
     res
       .status(500)
