@@ -40,13 +40,15 @@ function Profile() {
     email: user?.email,
     phoneNumber: user?.phoneNumber,
   });
-
+  const [alertOpen, setAlertOpen] = useState(false);
   const [isEditing, setIsEditing] = useState({
     userName: false,
     phoneNumber: false,
     email: false,
   });
-
+  const handleCancelOrderClick = () => {
+    setAlertOpen(true);
+  };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setProfile((prevProfile) => ({
@@ -303,7 +305,7 @@ function Profile() {
               finalAmount={order?.finalAmount}
               productId={order?.product[0].product._id}
               ratings={order?.product[0].product.ratings}
-       
+              handleCancelOrderClick={handleCancelOrderClick}
             />
           ))}
         </Paper>

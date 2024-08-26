@@ -1,11 +1,10 @@
 import express from 'express';
 import { addOffer, createCategory, getCategory, getProductByCategory, softDeleteCategory } from '../controller/categoryController.js';
 import verifyToken from '../middleware/authMiddleware.js';
-import checkUserStatus from '../middleware/checkUserStatus.js';
+import{ checkUserStatus }from '../middleware/checkUserStatus.js';
 
 
 const router = express.Router()
-
 
 
 

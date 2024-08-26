@@ -13,7 +13,7 @@ import AdminSidebar from "./components/admin/constant/sidebar/AdminSidebar";
 import ProductList from "./pages/admin/ProductList";
 import ProductManagement from "./pages/admin/ProductManagement";
 import UsersManagement from "./pages/admin/UsersManagement";
-import Error500Page from "./pages/Error500"; 
+import Error500Page from "./pages/Error500";
 import { useDispatch, useSelector } from "react-redux";
 import { createMuiTheme, ThemeProvider } from "@mui/material";
 import PlaceOrder from "./pages/user/PlaceOrder";
@@ -29,6 +29,7 @@ import PromoCode from "./pages/admin/PromoCode.jsx";
 import Wallet from "./pages/user/Wallet.jsx";
 import Offer from "./pages/admin/Offer.jsx";
 import SalesReport from "./pages/admin/SalesReport.jsx";
+import OrderDetails from "./pages/admin/OrderDetails.jsx";
 
 const theme = createMuiTheme({
   palette: {
@@ -46,14 +47,11 @@ const theme = createMuiTheme({
 
 function App() {
   const [ForgotPassword, setForgotPassword] = useState(false);
-  
 
   const dispatch = useDispatch();
   const { user, isAuthenticated, loading, error } = useSelector(
     (state) => state.auth
   );
-
-
 
   return (
     <ThemeProvider theme={theme}>
@@ -61,69 +59,57 @@ function App() {
       <div className={user?.isAdmin ? "app" : ""}>
         {user?.isAdmin && <AdminSidebar />}
         <Routes>
-          
-        
-              {/* Authentication Routes */}
-              <Route path="/signup" element={<SignupPage />} />
-              <Route
-                path="/login"
-                element={
-                  <Login
-                    forgotPassword={ForgotPassword}
-                    setForgotPassword={setForgotPassword}
-                  />
-                }
+          {/* Authentication Routes */}
+          <Route path="/signup" element={<SignupPage />} />
+          <Route
+            path="/login"
+            element={
+              <Login
+                forgotPassword={ForgotPassword}
+                setForgotPassword={setForgotPassword}
               />
-              <Route path="/otp" element={<OtpPage />} />
-              <Route path="/changePassword" element={<ChangePassword />} />
+            }
+          />
+          <Route path="/otp" element={<OtpPage />} />
+          <Route path="/changePassword" element={<ChangePassword />} />
 
-              {/* User Routes */}
-              <Route path="/" element={<Home />} />
-              <Route path="/products" element={<Products />} />
-              <Route path="/productDetails/:id" element={<ProductDetails />} />
-              <Route path="/place_order" element={<PlaceOrder />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/shipping_address" element={<ShippingAddress />} />
-              <Route path="/success" element={<Success />} />
-              <Route path="/orderDetails/:id" element={<PlaceOrderDetails />} />
-              <Route path="/wishlist" element={<Wishlist />} />
-              <Route path="/wallet" element={<Wallet />} />
+          {/* User Routes */}
+          <Route path="/" element={<Home />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/productDetails/:id" element={<ProductDetails />} />
+          <Route path="/place_order" element={<PlaceOrder />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/shipping_address" element={<ShippingAddress />} />
+          <Route path="/success" element={<Success />} />
+          <Route path="/orderDetails/:id" element={<PlaceOrderDetails />} />
+          <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="/wallet" element={<Wallet />} />
 
-              {/* Admin Routes */}
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/admin/productlist" element={<ProductList />} />
-              <Route
-                path="/admin/users_management"
-                element={<UsersManagement />}
-              />
-              <Route
-                path="/admin/product_management"
-                element={<ProductManagement />}
-              />
-              <Route
-                path="/admin/orders_management"
-                element={<OrdersManagement />}
-              />
-              <Route
-                path="/admin/promocode"
-                element={<PromoCode />}
-              />
-              <Route
-                path="/admin/offer_management"
-                element={<Offer />}
-              />
-              <Route
-                path="/admin/sale_reports"
-                element={<SalesReport />}
-              />
+          {/* Admin Routes */}
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/admin/productlist" element={<ProductList />} />
+          <Route path="/admin/users_management" element={<UsersManagement />} />
+          <Route
+            path="/admin/product_management"
+            element={<ProductManagement />}
+          />
+          <Route
+            path="/admin/orders_management"
+            element={<OrdersManagement />}
+          />
+          <Route path="/admin/promocode" element={<PromoCode />} />
+          <Route path="/admin/offer_management" element={<Offer />} />
+          <Route path="/admin/sale_reports" element={<SalesReport />} />
+          <Route
+            path="/admin/orderDetails/:id"
+            element={<OrderDetails />}
+          />
 
-              {/* Catch-all route to handle undefined paths */}
-              <Route path="*" element={<Home />} />
-          
-      
+          {/* Catch-all route to handle undefined paths */}
+          <Route path="*" element={<Home />} />
         </Routes>
-        <ToastContainer/>
+        <ToastContainer />
       </div>
     </ThemeProvider>
   );

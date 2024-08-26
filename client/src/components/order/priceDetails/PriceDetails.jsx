@@ -6,7 +6,7 @@ import { green } from "@mui/material/colors";
 function PriceDetails({ totalAmount, itemsCount, coupon,offer,totalPrice }) {
   let discountTotalAmount = totalAmount;
   if (coupon) {
-    const discountedAmount = coupon.discount *itemsCount ;
+    const discountedAmount = coupon.discount  ;
     discountTotalAmount = totalAmount - Math.floor(discountedAmount);
   }
   console.log(discountTotalAmount,totalAmount,totalPrice,coupon,itemsCount);

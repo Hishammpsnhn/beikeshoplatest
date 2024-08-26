@@ -19,4 +19,4 @@ const checkUserStatus = async (req, res, next) => {
   }
 };
 
-export default checkUserStatus;
+export {checkUserStatus} ;

@@ -47,7 +47,7 @@ function PlaceOrder() {
     }
     let discountTotalAmount = totalAmount;
     if (coupon) {
-      const discountedAmount = coupon.discount * items.length;
+      const discountedAmount = coupon.discount ;
       discountTotalAmount = totalAmount - discountedAmount;
     }
     if (coupon && paymentOption === "wallet") {

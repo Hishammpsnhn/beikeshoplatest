@@ -24,7 +24,7 @@ import {
 } from "../../actions/productActions";
 import { getWishlist } from "../../actions/wishlistAction";
 import { fetchProductSuccess } from "../../reducers/productReducers";
-import  debounce  from 'lodash/debounce';
+import debounce from "lodash/debounce";
 
 function Products() {
   const theme = useTheme();
@@ -74,10 +74,8 @@ function Products() {
   useEffect(() => {
     const debouncedFetch = debounce((query) => {
       dispatch(getProductsByName(query));
-    }, 500); 
-    
-      debouncedFetch(query);
-    
+    }, 500);
+    if (query) debouncedFetch(query);
 
     return () => {
       debouncedFetch.cancel();

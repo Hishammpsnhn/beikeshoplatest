@@ -20,7 +20,7 @@ export const createOrder = async (req, res) => {
     CartId,
     finalPrice,
   } = req.body;
-
+  let balanceDiscount = discount || 0;
   if (!userId || !addressId || !items || !paymentMethod) {
     return res.status(400).json({ message: "Missing required fields" });
   }
@@ -77,8 +77,23 @@ export const createOrder = async (req, res) => {
             }
           }
         });
+
         const paymentStatus = paymentMethod === "cod" ? false : true;
         console.log("disc", discount);
+        let remainingDiscount = balanceDiscount;
+        let lastdiscount = 0;
+        if (remainingDiscount > 0) {
+          const maxDiscountForItem = Math.min(
+            item.quantity * item.price,
+            remainingDiscount
+          );
+          lastdiscount = maxDiscountForItem;
+          balanceDiscount -= maxDiscountForItem;
+        } else {
+          lastdiscount = 0;
+        }
+        console.log("last discount", lastdiscount);
+
         const newOrder = new Orders({
           userId: userId,
           address: {
@@ -90,8 +105,8 @@ export const createOrder = async (req, res) => {
             phoneNumber: address.phoneNumber,
           },
           totalAmount: item.quantity * item.productSizeDetails.price,
-          finalAmount: item.quantity * item.price - discount,
-          discount: discount,
+          finalAmount: item.quantity * item.price - lastdiscount,
+          discount: lastdiscount,
           product: [
             {
               product: item.productId._id,
@@ -181,7 +196,7 @@ export const updateOrder = async (req, res) => {
   if (userId) {
     walletUserId = userId;
   } else {
-    walletUserId = req.user;
+    walletUserId = req.user._id;
   }
   console.log(walletUserId);
   if (orderStatus === undefined && paymentStatus === undefined) {
@@ -289,7 +304,7 @@ export const onlinePaymentOrder = async (req, res) => {
       key_secret: process.env.RAZORPAPY_KEY_SECRET,
     });
     const options = {
-      amount: req.body.totalAmount,
+      amount: req.body.totalAmount * 100,
       currency: "INR",
       receipt: "rqwol",
     };

@@ -36,6 +36,8 @@ function ProdcutBref({
   availability,
   details,
   handleWishlistRemove,
+  admin,
+  handleCancelOrderClick,
 }) {
   const [quantity, setQuantity] = useState(qty);
   const [qtyLoading, setQtyLoading] = useState(false);
@@ -144,7 +146,7 @@ function ProdcutBref({
             </Box>
           )}
         </Box>
-        {profile && orderStatus === "delivered" && paymentStatus && (
+        {profile && orderStatus === "delivered" && paymentStatus && !admin && (
           <HoverRating
             userId={userId}
             productId={productId}
@@ -157,24 +159,26 @@ function ProdcutBref({
           </Typography>
         )}
 
-        {profile && orderStatus === "pending" && (
+        {details && orderStatus === "pending" && !admin && (
           <Box>
             <Button
               variant="contained"
               color="error"
-              onClick={() =>
-                handleCancelOrder(orderId, name, paymentStatus, finalAmount)
+              onClick={
+                handleCancelOrderClick
+                //handleCancelOrder(orderId, name, paymentStatus, finalAmount)
               }
             >
               cancel
             </Button>
           </Box>
         )}
-        {order && (
-          <Typography variant="body1" sx={{ margin: "" }}>
-            Qty: {quantity}
-          </Typography>
-        )}
+        {order &&
+            <Typography variant="body1" sx={{ margin: "" }}>
+              Qty: {quantity}
+            </Typography>
+          }
+
 
         {cart && (
           <Box display="flex" alignItems="center">

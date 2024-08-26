@@ -145,6 +145,7 @@ function SalesReport() {
     doc.save("sales_report.pdf");
   };
 
+// convert to xl
   const handleExelDownload = () => {
     const flattenedOrders = orders.map((order) => ({
       orderId: order._id,
@@ -157,6 +158,7 @@ function SalesReport() {
       price: order.product[0]?.price || 0,
       totalAmount: order.totalAmount,
       discount: order.discount,
+      offer: order.product[0].offer,
       finalAmount: order.finalAmount,
       paymentMethod: order.paymentMethod,
       orderStatus: order.orderStatus,

@@ -26,13 +26,13 @@ const OrderManagement = () => {
 
   const rows = orders?.map((item) => ({
     id: item._id,
-    userName:item.address.fullName,
+    userName: item.address.fullName,
     productId: item.product[0].product.name,
     size: item.product[0].size,
     quantity: item.product[0].quantity,
     price: item.finalAmount,
     orderStatus:
-      item.orderReturnStatus != "not requested"
+      item.orderReturnStatus !== "not requested"
         ? `RE - ${item.orderReturnStatus}`
         : item.orderStatus,
     payment: item.paymentMethod,
@@ -44,23 +44,20 @@ const OrderManagement = () => {
     const data = await updateOrders(id, obj);
     console.log(data);
     if (data.updatedOrder) {
-      if (data.updatedOrder) {
-        const newOrders = orders.map((order) =>
-          order._id === id ? data.updatedOrder : order
-        );
-        setOrders(newOrders);
-      }
+      const newOrders = orders.map((order) =>
+        order._id === id ? data.updatedOrder : order
+      );
+      setOrders(newOrders);
     }
   };
+
   const handleReturnUpdate = async (id, obj) => {
     const data = await updateOrdersReturn(id, obj);
     if (data.updatedOrder) {
-      if (data.updatedOrder) {
-        const newOrders = orders?.map((order) =>
-          order._id === id ? data.updatedOrder : order
-        );
-        setOrders(newOrders);
-      }
+      const newOrders = orders?.map((order) =>
+        order._id === id ? data.updatedOrder : order
+      );
+      setOrders(newOrders);
     }
   };
 
@@ -72,19 +69,22 @@ const OrderManagement = () => {
     async function getAllOrder() {
       const data = await getAllOrders();
       if (data?.orders) {
-        const newOrder = orders.filter((order) => order._id != data.orders._id);
         setOrders(data?.orders);
       }
     }
     getAllOrder();
   }, []);
 
+  const handleRowClick = (params) => {
+    navigate(`/admin/orderDetails/${params.id}`);
+  };
+
   const columns = [
     { field: "id", headerName: "ID" },
     { field: "userName", headerName: "User Name" },
     {
       field: "productId",
-      headerName: "productId",
+      headerName: "Product",
       flex: 1,
       cellClassName: "name-column--cell",
     },
@@ -109,7 +109,7 @@ const OrderManagement = () => {
       flex: 1,
       renderCell: ({ row }) => (
         <>
-          {row.paymentStatus == true ? (
+          {row.paymentStatus ? (
             <CheckCircleOutlineIcon />
           ) : (
             <CloseIcon />
@@ -119,7 +119,7 @@ const OrderManagement = () => {
     },
     {
       field: "orderStatus",
-      headerName: "orderStatus",
+      headerName: "Order Status",
       type: "string",
       flex: 1,
       renderCell: ({ row }) => (
@@ -163,13 +163,13 @@ const OrderManagement = () => {
                     orderStatus: "cancelled",
                     paymentStatus: row.paymentStatus,
                     amount: row.price,
-                    userId: row.userId
+                    userId: row.userId,
                   })
                 }
                 variant="contained"
                 color="error"
               >
-                cancel
+                Cancel
               </Button>
             </>
           )}
@@ -186,7 +186,7 @@ const OrderManagement = () => {
                 color="info"
                 size="small"
               >
-                approve
+                Approve
               </Button>
               <Button
                 onClick={() =>
@@ -202,25 +202,25 @@ const OrderManagement = () => {
               </Button>
             </>
           )}
-          {row.orderStatus === "RE - approved"  && (
+          {row.orderStatus === "RE - approved" && (
             <>
               <Button
                 onClick={() =>
                   handleReturnUpdate(row.id, {
                     orderReturnStatus: "completed",
                     returnPickupStatus: "picked",
-                    amount: row.price
+                    amount: row.price,
                   })
                 }
                 variant="contained"
                 color="info"
                 size="small"
               >
-                picked
-              </Button>        
+                Picked
+              </Button>
             </>
           )}
-          {row.orderStatus == "delivered" && row.paymentStatus == false && (
+          {row.orderStatus === "delivered" && !row.paymentStatus && (
             <Button
               onClick={() => handleUpdate(row.id, { paymentStatus: true })}
               variant="contained"
@@ -229,7 +229,7 @@ const OrderManagement = () => {
               Pay
             </Button>
           )}
-          {row.orderStatus == "delivered" && row.paymentStatus == true && (
+          {row.orderStatus === "delivered" && row.paymentStatus && (
             <Typography sx={{ fontWeight: "bold" }} color="#4caf50">
               Success
             </Typography>
@@ -242,7 +242,7 @@ const OrderManagement = () => {
   return (
     <Box m="20px" width="100%">
       <Box display="flex" justifyContent="space-between">
-        <Header title="USERS" subtitle="Managing The Users" />
+        <Header title="ORDERS" subtitle="Managing The Orders" />
       </Box>
       <Box
         m="40px 0 0 0"
@@ -284,6 +284,7 @@ const OrderManagement = () => {
           columns={columns}
           loading={loading}
           error={error}
+          onRowClick={handleRowClick} // Add this line to handle row clicks
         />
       </Box>
     </Box>

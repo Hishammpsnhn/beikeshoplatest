@@ -213,3 +213,30 @@ export const addOffer = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+
+// @desc    Search products by name
+// @route   GET /api/admin/products/search
+// @access  Public
+export const searchProductsByName = async (req, res) => {
+  const { query } = req.query;
+
+  try {
+    let products;
+
+    if (!query || query.trim() === "") {
+      products = await Products.find({ isDeleted: false });
+    } else {
+      const lowercasedQuery = query.toLowerCase();
+      products = await Products.find({
+        isDeleted: false,
+        name: { $regex: lowercasedQuery, $options: 'i' } 
+      });
+    }
+
+    res.status(200).json(products);
+  } catch (error) {
+    console.error("Error searching products by name:", error.message);
+    res.status(500).json({ message: "Server error" });
+  }
+};

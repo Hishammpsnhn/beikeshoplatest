@@ -23,16 +23,14 @@ import ProdcutBref from "../../components/Product/productBref/ProdcutBref";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import CircularProgress from "@mui/material/CircularProgress";
-import CustomAlert from "../../components/alert/CustomAlert";
 
 const BASE_URL = "http://localhost:3000/";
-function PlaceOrderDetails() {
+function OrderDetails() {
   const { id } = useParams();
 
   const [address, setAddress] = useState(null);
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [alertOpen, setAlertOpen] = useState(false);
 
   const steps = ["Order Placed", "In Transit", order?.orderStatus];
   const returnSteps =
@@ -41,23 +39,22 @@ function PlaceOrderDetails() {
       : ["requested", "approved", "picked"];
   const { user, error } = useSelector((state) => state.auth);
 
-  const handleCancelOrderClick = () => {
-    setAlertOpen(true);
-  };
   const handleCancelOrder = async (id, name) => {
-    try {
-      const data = await updateOrders(order._id, {
-        orderStatus: "cancelled",
-      });
-      if (data.updatedOrder) {
-        toast.success("Order cancelled successfully");
+    if (window.confirm("Are you sure you want to cancel " + name + "?")) {
+      try {
+        const data = await updateOrders(order._id, {
+          orderStatus: "cancelled",
+        });
+        if (data.updatedOrder) {
+          toast.success("Order cancelled successfully");
 
-        // Update the orders state
-        setOrder(data.updatedOrder);
+          // Update the orders state
+          setOrder(data.updatedOrder);
+        }
+      } catch (error) {
+        toast.error("Failed to cancel the order");
+        console.error("Error cancelling order:", error);
       }
-    } catch (error) {
-      toast.error("Failed to cancel the order");
-      console.error("Error cancelling order:", error);
     }
   };
   const handleReturn = async () => {
@@ -80,8 +77,9 @@ function PlaceOrderDetails() {
       : order?.orderReturnStatus === "completed"
       ? 3
       : 0
-      ? order?.orderReturnStatus === "rejected"
-      : 2;
+      ?order?.orderReturnStatus === "rejected":2
+      ;
+
   useEffect(() => {
     async function getProductDetail() {
       setLoading(true);
@@ -97,8 +95,6 @@ function PlaceOrderDetails() {
 
   return (
     <>
-      <Header1 />
-      <Nav />
       {loading ? (
         <Container>
           <CircularProgress />
@@ -147,8 +143,7 @@ function PlaceOrderDetails() {
                 productId={order?.product[0].product._id}
                 profile={true}
                 details={true}
-                handleCancelOrderClick={handleCancelOrderClick}
-                
+                admin={true}
               />
             </Box>
             <Paper elevation={6} sx={{ width: "40%", padding: "20px" }}>
@@ -171,12 +166,12 @@ function PlaceOrderDetails() {
               )}
             </Paper>
           </Box>
-          {order?.orderStatus === "delivered" &&
+          {/* {order?.orderStatus === "delivered" &&
             order?.orderReturnStatus === "not requested" && (
               <Button onClick={handleReturn} variant="contained">
                 Return
               </Button>
-            )}
+            )} */}
           {order?.orderStatus === "delivered" &&
             order?.paymentStatus &&
             order?.orderReturnStatus != "not requested" && (
@@ -195,17 +190,10 @@ function PlaceOrderDetails() {
                 </Stepper>
               </>
             )}
-          <CustomAlert
-            open={alertOpen}
-            handleClose={() => setAlertOpen(false)}
-            title="Confirm Action"
-            message={`Are you sure you want to cancel the order for?`}
-            onConfirm={handleCancelOrder} // This will receive true/false based on the user's action
-          />
         </Container>
       )}
     </>
   );
 }
 
-export default PlaceOrderDetails;
+export default OrderDetails;

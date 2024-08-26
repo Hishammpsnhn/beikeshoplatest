@@ -32,12 +32,8 @@ function PromoCode() {
       toast.error("At least 5 Letters required");
       return;
     }
-    if (
-      promoData.discount < 0 ||
-      promoData.discount > 100 ||
-      validator.isEmpty(promoData.discount)
-    ) {
-      toast.error("Enter valid Amount in %");
+    if (promoData.discount < 0 || validator.isEmpty(promoData.discount)) {
+      toast.error("Enter valid Amount ");
       return;
     }
     if (validator.isEmpty(promoData.expDate)) {
@@ -137,7 +133,7 @@ function PromoCode() {
       <Typography variant="h5" sx={{ textTransform: "capitalize" }}>
         Current Promocodes
       </Typography>
-      <Box height='35vh' sx={{overflowY:'scroll'}}>
+      <Box height="35vh" sx={{ overflowY: "scroll" }}>
         {coupons.map((item) => {
           const expDate = new Date(item.expDate);
           const today = new Date();

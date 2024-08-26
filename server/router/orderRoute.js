@@ -1,10 +1,10 @@
 import express from "express";
 import { createOrder, getOrdersList, getUserOrders, onlinePaymentOrder, onlinePaymentOrderVerify, orderDetails, returnUpdate, updateOrder } from "../controller/orderController.js";
-import checkUserStatus from "../middleware/checkUserStatus.js";
+import {checkUserStatus} from "../middleware/checkUserStatus.js";
+import verifyToken from "../middleware/authMiddleware.js";
 
 const router = express.Router();
-router.use(checkUserStatus);
-
+router.use(verifyToken)
 router.get("/:id", getUserOrders);
 router.get("/:id/order_details", orderDetails);
 router.get("/", getOrdersList);

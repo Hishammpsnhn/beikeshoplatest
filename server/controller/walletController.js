@@ -2,7 +2,7 @@ import Wallet from "../model/walletSchema.js";
 import mongoose from "mongoose";
 
 export const getWalletInfo = async (req, res) => {
-  const userId = req.user;
+  const userId = req.user._id;
   
   if (!userId) {
     return res.status(401).json({ message: "Unauthorized" });

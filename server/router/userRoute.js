@@ -7,7 +7,7 @@ import {
   deleteAddress,
   EditAddress,
 } from "../controller/userController.js";
-import checkUserStatus from "../middleware/checkUserStatus.js";
+import {checkUserStatus} from "../middleware/checkUserStatus.js";
 
 const router = express.Router();
 router.use(checkUserStatus);
