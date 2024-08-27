@@ -11,7 +11,8 @@ export const createOrder = async (
   paymentMethod,
   CartId,
   discount,
-  finalPrice
+  finalPrice,
+  paymentStatus
 ) => {
   //dispatch(fetchProductStart());
   try {
@@ -24,6 +25,7 @@ export const createOrder = async (
       CartId,
       discount,
       finalPrice,
+      paymentStatus
     });
     console.log(data);
     //dispatch(fetchProductSuccess(data));

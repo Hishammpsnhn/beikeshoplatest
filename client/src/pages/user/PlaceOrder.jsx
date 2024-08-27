@@ -78,7 +78,8 @@ function PlaceOrder() {
               paymentOption,
               CartId,
               coupon ? coupon.discount : 0,
-              discountTotalAmount
+              discountTotalAmount,
+              true
             );
             if (data) {
               navigate("/success", { state: { order: true } });
@@ -99,14 +100,23 @@ function PlaceOrder() {
         },
       };
       var rzp1 = new window.Razorpay(options);
-      rzp1.on("payment.failed", function (response) {
+      rzp1.on("payment.failed", async function (response) {
         alert(response.error.code);
-        alert(response.error.description);
-        alert(response.error.source);
-        alert(response.error.step);
-        alert(response.error.reason);
-        alert(response.error.metadata.order_id);
-        alert(response.error.metadata.payment_id);
+        const data = await createOrder(
+          user._id,
+          selectedAddress,
+          totalAmount,
+          items,
+          paymentOption,
+          CartId,
+          coupon ? coupon.discount : 0,
+          discountTotalAmount,
+          false
+        );
+        if (data) {
+          navigate("/success", { state: { order: true } });
+          dispatch(clearCart());
+        }
       });
       rzp1.open();
     } else {
@@ -118,7 +128,8 @@ function PlaceOrder() {
         paymentOption,
         CartId,
         coupon ? coupon.discount : 0,
-        discountTotalAmount
+        discountTotalAmount,
+        true
       );
 
       const data = await createOrder(

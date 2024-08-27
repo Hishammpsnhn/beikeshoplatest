@@ -317,6 +317,7 @@ function Profile() {
               price={order?.totalAmount}
               orderStatus={order?.orderStatus}
               paymentStatus={order?.paymentStatus}
+              paymentMethod={order?.paymentMethod}
               profile={true}
               orderId={order._id}
               handleCancelOrder={handleCancelOrder}

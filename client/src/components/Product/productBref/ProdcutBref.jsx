@@ -38,6 +38,7 @@ function ProdcutBref({
   handleWishlistRemove,
   admin,
   handleCancelOrderClick,
+  paymentMethod,
 }) {
   const [quantity, setQuantity] = useState(qty);
   const [qtyLoading, setQtyLoading] = useState(false);
@@ -146,6 +147,14 @@ function ProdcutBref({
             </Box>
           )}
         </Box>
+        {profile &&
+          paymentMethod === "online payment" &&
+          !paymentStatus &&
+          !admin && (
+            <Typography color='red'>
+             Payment Failed
+            </Typography>
+          )}
         {profile && orderStatus === "delivered" && paymentStatus && !admin && (
           <HoverRating
             userId={userId}
@@ -173,12 +182,11 @@ function ProdcutBref({
             </Button>
           </Box>
         )}
-        {order &&
-            <Typography variant="body1" sx={{ margin: "" }}>
-              Qty: {quantity}
-            </Typography>
-          }
-
+        {order && (
+          <Typography variant="body1" sx={{ margin: "" }}>
+            Qty: {quantity}
+          </Typography>
+        )}
 
         {cart && (
           <Box display="flex" alignItems="center">

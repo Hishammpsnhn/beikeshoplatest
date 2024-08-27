@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import Header1 from "../../components/header/Header1";
 import Nav from "../../components/header/Nav";
 import AddressDetails from "../../components/address/AddressDetails";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   getProductDetails,
+  onlinePaymentOrder,
+  onlinePaymentOrderVerify,
   updateOrders,
   updateOrdersReturn,
 } from "../../actions/orderActions";
@@ -35,6 +37,10 @@ function PlaceOrderDetails() {
   const [loading, setLoading] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
   const [open, setOpen] = React.useState(false);
+
+  const navigate = useNavigate()
+
+  const failedStep = ["Order Placed", "payment Failed"]
   const steps = ["Order Placed", "In Transit", order?.orderStatus];
   const returnSteps =
     order?.orderReturnStatus === "rejected"
@@ -61,17 +67,53 @@ function PlaceOrderDetails() {
       console.error("Error cancelling order:", error);
     }
   };
+
+  const handleFailedPayment = async() => {
+    const data = await onlinePaymentOrder(order?.finalAmount);
+    var options = {
+      key: process.env.RAZORPAPY_KEY_ID,
+      amount: order?.finalAmount,
+      currency: "INR",
+      name: "Beike shop",
+      description: "Test Transaction",
+      image: "https://example.com/your_logo",
+      order_id: data.id,
+      handler: async function (response) {
+        const body = {
+          ...response,
+        };
+        const verify = onlinePaymentOrderVerify(body);
+        if (verify) {
+          const data = await updateOrders(order._id, {
+            orderStatus: "pending",
+            paymentStatus:true
+          });
+          if(data)
+            toast.success("Payment successfully");
+            navigate(`/profile`)
+        }
+      },
+      prefill: {
+        name: "hishammps",
+        email: "hishammpsn@gmail.com",
+        contact: "9000090000",
+      },
+      notes: {
+        address: "Razorpay Corporate Office",
+      },
+      theme: {
+        color: "#461246",
+      },
+    };
+    var rzp1 = new window.Razorpay(options);
+    rzp1.on("payment.failed", async function (response) {
+      alert(response.error.code);
+    });
+    rzp1.open();
+  }
+
   const handleReturn = async () => {
     setOpen(true);
-    // if (window.confirm("Are you sure you want to return")) {
-    //   const data = await updateOrdersReturn(order._id, {
-    //     orderReturnStatus: "requested",
-    //   });
-    //   if (data) {
-    //     toast.success("Return request sent successfully");
-    //     setOrder(data.updatedOrder);
-    //   }
-    // }
   };
 
   const returnActiveStep =
@@ -114,18 +156,36 @@ function PlaceOrderDetails() {
             placeOrderDetails={true}
           />
           <Box sx={{ width: "100%", marginY: "20px" }}>
-            <Stepper
-              activeStep={order?.orderStatus === "pending" ? 1 : 3}
-              alternativeLabel
-            >
-              {steps.map((label) => (
-                <Step key={label}>
-                  <StepLabel sx={{ textTransform: "capitalize" }}>
-                    {label}
-                  </StepLabel>
-                </Step>
-              ))}
-            </Stepper>
+            {order?.paymentMethod === "online payment" &&
+            !order?.paymentStatus ? (
+              <Stepper
+                activeStep={order?.orderStatus === "payment Failed" ? 2 : 1}
+                alternativeLabel
+              >
+                {failedStep.map((label) => (
+                  <Step key={label}>
+                    <StepLabel color="red" sx={{ textTransform: "capitalize" }}>
+                      {label}
+                    </StepLabel>
+                  </Step>
+                ))}
+              </Stepper>
+            ) : (
+              <>
+                <Stepper
+                  activeStep={order?.orderStatus === "pending" ? 1 : 3}
+                  alternativeLabel
+                >
+                  {steps.map((label) => (
+                    <Step key={label}>
+                      <StepLabel sx={{ textTransform: "capitalize" }}>
+                        {label}
+                      </StepLabel>
+                    </Step>
+                  ))}
+                </Stepper>
+              </>
+            )}
           </Box>
           <Box
             sx={{
@@ -176,6 +236,16 @@ function PlaceOrderDetails() {
             order?.orderReturnStatus === "not requested" && (
               <Button onClick={handleReturn} variant="contained">
                 Return
+              </Button>
+            )}
+          {order?.paymentMethod === "online payment" &&
+            !order?.paymentStatus && (
+              <Button
+                onClick={handleFailedPayment}
+                variant="contained"
+                sx={{ backgroundColor: "red" }}
+              >
+                Pay Again
               </Button>
             )}
           {order?.orderStatus === "delivered" &&

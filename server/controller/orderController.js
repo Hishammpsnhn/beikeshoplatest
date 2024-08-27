@@ -19,6 +19,7 @@ export const createOrder = async (req, res) => {
     discount,
     CartId,
     finalPrice,
+    paymentStatus
   } = req.body;
   let balanceDiscount = discount || 0;
   if (!userId || !addressId || !items || !paymentMethod) {
@@ -78,7 +79,7 @@ export const createOrder = async (req, res) => {
           }
         });
 
-        const paymentStatus = paymentMethod === "cod" ? false : true;
+        // const paymentStatus = paymentMethod === "cod" ? false : true;
         console.log("disc", discount);
         let remainingDiscount = balanceDiscount;
         let lastdiscount = 0;
