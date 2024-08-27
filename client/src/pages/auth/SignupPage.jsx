@@ -11,19 +11,16 @@ import {
   Link,
   InputAdornment,
   IconButton,
+  Divider,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import googleImg from "../../public/images/google.png";
-import { googleAuth, signUp } from "../../actions/authActions";
 import { useDispatch, useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
-import axios from "axios";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import validator from "validator";
-import { isValidUsername, validation } from "../../utils/utils";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { signUp } from "../../actions/authActions";
+import { validation } from "../../utils/utils";
 
 function SignupPage() {
   const userData = {
@@ -33,16 +30,16 @@ function SignupPage() {
     phoneNumber: "",
     password: "",
     confirmPassword: "",
+    referralCode: "",
   };
+  
   const [data, setData] = useState(userData);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isAuthenticated, loading, error } = useSelector(
-    (state) => state.auth
-  );
+  const { isAuthenticated, loading, error } = useSelector((state) => state.auth);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -51,6 +48,7 @@ function SignupPage() {
       [name]: value,
     }));
   };
+
   const options = {
     minLength: 6,
     minLowercase: 1,
@@ -58,12 +56,15 @@ function SignupPage() {
     minNumbers: 1,
     minSymbols: 1,
   };
+
   const handleClickShowPassword = () => {
     setShowPassword((prev) => !prev);
   };
-  const handleClickShowconfirmPassword = () => {
+
+  const handleClickShowConfirmPassword = () => {
     setShowConfirmPassword((prev) => !prev);
   };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -81,9 +82,11 @@ function SignupPage() {
 
       return toast.error(errorMessage);
     }
+
     if (!validator.equals(data.password, data.confirmPassword)) {
-      return toast.error("password is not match confirm password");
+      return toast.error("Password does not match the confirm password.");
     }
+
     try {
       const res = await dispatch(signUp(data));
       if (res) {
@@ -97,41 +100,7 @@ function SignupPage() {
   const handleSignupError = (err) => {
     toast.error(`Signup failed! ${err.message}`);
   };
-  // const handleGoogle = useGoogleLogin({
-  //   onSuccess: async (tokenResponse) => {
-  //     console.log("Google login response:", tokenResponse);
 
-  //     try {
-  //       const { access_token } = tokenResponse;
-  //       if (!access_token) {
-  //         throw new Error("Access token not found in the response");
-  //       }
-  //       const userInfoResponse = await axios.get(
-  //         "https://www.googleapis.com/oauth2/v2/userinfo",
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${access_token}`,
-  //           },
-  //         }
-  //       );
-
-  //       const userInfo = userInfoResponse.data;
-  //       console.log("User Info:", userInfo);
-  //       dispatch(googleAuth(userInfo.email, userInfo.name));
-
-  //       // Dispatch login action and navigate
-  //       // dispatch(login(userInfo));
-  //       // navigate('/');
-  //     } catch (error) {
-  //       console.error("Failed to fetch user info:", error);
-  //       toast.error("Google login failed");
-  //     }
-  //   },
-  //   onError: (error) => {
-  //     console.error("Google login error:", error);
-  //     toast.error("Google login failed");
-  //   },
-  // });
   useEffect(() => {
     if (error) {
       toast.error(`Signup failed! ${error}`);
@@ -147,32 +116,34 @@ function SignupPage() {
   return (
     <Box
       sx={{
-        backgroundColor: "secondary.main",
+        backgroundColor: "#E4D5E4",
         minHeight: "100vh",
         display: "flex",
-        // alignItems: "center",
-        // justifyContent: "center",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "0 20px",
       }}
     >
-      <Grid container justifyContent="end">
-        <Grid item xs={12} md={10} lg={10}>
-          <Card sx={{ height: "100vh" }}>
+      <Grid container justifyContent="center">
+        <Grid item xs={12} md={8} lg={6}>
+          <Card elevation={10} sx={{ borderRadius: 3 }}>
             <CardContent>
               <form onSubmit={handleSubmit} noValidate>
-                <Typography variant="h3" align="center" gutterBottom>
-                  BeikeShop
+                <Typography variant="h4" align="center" gutterBottom>
+                  Welcome to BeikeShop
                 </Typography>
-                <Typography variant="h5" align="center" gutterBottom>
-                  SIGN UP
+                <Typography variant="subtitle1" align="center" gutterBottom>
+                  Create your account
                 </Typography>
                 <Box
                   sx={{
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
+                    gap: 2,
                   }}
                 >
-                  <Box sx={{ display: "flex", width: "100%", marginBottom: 2 }}>
+                  <Box sx={{ display: "flex", width: "100%", gap: 2 }}>
                     <TextField
                       fullWidth
                       margin="normal"
@@ -182,7 +153,6 @@ function SignupPage() {
                       value={data.userName}
                       onChange={handleChange}
                       required
-                      sx={{ marginRight: 1 }}
                     />
                     <TextField
                       fullWidth
@@ -193,10 +163,9 @@ function SignupPage() {
                       value={data.email}
                       onChange={handleChange}
                       required
-                      sx={{ marginLeft: 1 }}
                     />
                   </Box>
-                  <Box sx={{ display: "flex", width: "100%", marginBottom: 2 }}>
+                  <Box sx={{ display: "flex", width: "100%", gap: 2 }}>
                     <TextField
                       fullWidth
                       margin="normal"
@@ -210,7 +179,6 @@ function SignupPage() {
                       InputLabelProps={{
                         shrink: true,
                       }}
-                      sx={{ marginRight: 1 }}
                     />
                     <TextField
                       fullWidth
@@ -221,21 +189,19 @@ function SignupPage() {
                       value={data.phoneNumber}
                       onChange={handleChange}
                       required
-                      sx={{ marginLeft: 1 }}
                     />
                   </Box>
-                  <Box sx={{ display: "flex", width: "100%", marginBottom: 4 }}>
+                  <Box sx={{ display: "flex", width: "100%", gap: 2 }}>
                     <TextField
                       fullWidth
                       margin="normal"
                       variant="outlined"
                       label="Password"
-                      type={`${showPassword ? "text" : "password"}`}
+                      type={showPassword ? "text" : "password"}
                       name="password"
                       value={data.password}
                       onChange={handleChange}
                       required
-                      sx={{ marginRight: 1 }}
                       InputProps={{
                         endAdornment: (
                           <InputAdornment position="end">
@@ -244,11 +210,7 @@ function SignupPage() {
                               onClick={handleClickShowPassword}
                               edge="end"
                             >
-                              {showPassword ? (
-                                <VisibilityOff />
-                              ) : (
-                                <Visibility />
-                              )}
+                              {showPassword ? <VisibilityOff /> : <Visibility />}
                             </IconButton>
                           </InputAdornment>
                         ),
@@ -259,18 +221,17 @@ function SignupPage() {
                       margin="normal"
                       variant="outlined"
                       label="Confirm Password"
-                      type={`${showConfirmPassword ? "text" : "password"}`}
+                      type={showConfirmPassword ? "text" : "password"}
                       name="confirmPassword"
                       value={data.confirmPassword}
                       onChange={handleChange}
                       required
-                      sx={{ marginLeft: 1 }}
                       InputProps={{
                         endAdornment: (
                           <InputAdornment position="end">
                             <IconButton
                               aria-label="toggle password visibility"
-                              onClick={handleClickShowconfirmPassword}
+                              onClick={handleClickShowConfirmPassword}
                               edge="end"
                             >
                               {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
@@ -278,56 +239,45 @@ function SignupPage() {
                           </InputAdornment>
                         ),
                       }}
-                      
                     />
                   </Box>
+                  <TextField
+                    fullWidth
+                    margin="normal"
+                    variant="outlined"
+                    label="Referral Code (Optional)"
+                    name="referralCode"
+                    value={data.referralCode}
+                    onChange={handleChange}
+                  />
                   <Button
                     fullWidth
                     variant="contained"
                     color="primary"
                     type="submit"
-                    sx={{ marginBottom: 2 }}
+                    sx={{ marginTop: 2, marginBottom: 2, fontWeight: 'bold', padding: '10px' }}
                     disabled={loading}
                   >
                     {loading ? (
                       <>
                         <CircularProgress size={24} sx={{ marginRight: 2 }} />
-                        Loading...
+                        Signing Up...
                       </>
                     ) : (
                       "SIGN UP"
                     )}
                   </Button>
-                  {/* <Button
-                    fullWidth
-                    variant="outlined"
-                    onClick={handleGoogle}
-                    sx={{
-                      marginTop: 2,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                    startIcon={
-                      <img
-                        src={googleImg}
-                        alt="Google"
-                        style={{ width: "24px" }}
-                      />
-                    }
-                    type="button"
-                  >
-                    GOOGLE
-                  </Button> */}
-
-                  <Link href="/login">Already have Account? login</Link>
+                  <Divider sx={{ width: "100%", marginY: 2 }} />
+                  <Link href="/login" variant="body2">
+                    Already have an account? Log in
+                  </Link>
                 </Box>
               </form>
             </CardContent>
           </Card>
         </Grid>
       </Grid>
-      {/* <ToastContainer /> */}
+      <ToastContainer />
     </Box>
   );
 }

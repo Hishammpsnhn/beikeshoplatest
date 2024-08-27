@@ -351,8 +351,9 @@ export const onlinePaymentOrderVerify = async (req, res) => {
 // @access  Private
 export const returnUpdate = async (req, res) => {
   const { id } = req.params;
-  const { orderReturnStatus, returnPickupStatus, amount } = req.body.obj;
-  console.log(orderReturnStatus, amount, returnPickupStatus, id);
+  const { orderReturnStatus, returnPickupStatus, amount, reason } = req.body.obj;
+  console.log(req.body)
+  console.log(orderReturnStatus, amount, returnPickupStatus, id,reason);
   if (orderReturnStatus === undefined) {
     return res.status(400).json({ message: "Field is required" });
   }
@@ -411,6 +412,9 @@ export const returnUpdate = async (req, res) => {
 
     if (returnPickupStatus !== undefined && amount) {
       order.returnPickupStatus = returnPickupStatus;
+    }
+    if (reason !== undefined ) {
+      order.returnReason = reason;
     }
 
     const updatedOrder = await order.save();

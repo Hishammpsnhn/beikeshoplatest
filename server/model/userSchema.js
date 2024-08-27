@@ -20,6 +20,7 @@ const userSchema = new mongoose.Schema(
     phoneNumber: { type: String,},
     profile: { type: String },
     address:[addressSchema],
+    refferralCode:{type:String},
     block: { type: Boolean, required: true,default: false },
     isAdmin: { type: Boolean, required: true, default: false },
   },

@@ -6,6 +6,8 @@ import { sendOtpSms } from "../service/smsService.js";
 import { Otp } from "../model/otpSchema.js";
 import validator from "validator";
 import sentOtpToMail from "../service/mailService.js";
+import generateReferralCode from "../utils/referalCode.js";
+import Wallet from "../model/walletSchema.js";
 
 const options = {
   minLength: 6,
@@ -47,7 +49,7 @@ export const login = async (req, res) => {
           httpOnly: true,
           secure: false,
           sameSite: "Strict",
-          maxAge: 86400000
+          maxAge: 86400000,
         });
 
         res.status(200).json({
@@ -128,6 +130,7 @@ export const signUp = async (req, res) => {
 export const verifyOtp = async (req, res) => {
   const { otp } = req.body;
   const { formData } = req.body;
+  console.log(formData);
 
   if (!otp) {
     return res.status(400).json({ message: "Please provide valid OTP" });
@@ -140,6 +143,35 @@ export const verifyOtp = async (req, res) => {
   if (otpEntry && otpEntry.expiresAt > Date.now()) {
     // OTP is valid
     const otpEntry = await Otp.deleteOne({ email: formData.email, otp });
+
+    const referUser = await User.findOne({
+      refferralCode: formData?.referralCode,
+    });
+    console.log("referUser", referUser);
+    if (referUser) {
+      const wallet = await Wallet.findOne({ userId: referUser._id });
+      if (wallet) {
+        wallet.amount += 200;
+        wallet.history.push({
+          amount: 200,
+          transactionType: "credit",
+          description: "refferal ",
+        });
+        await wallet.save();
+      } else {
+        const newWallet = await Wallet.create({
+          userId: referUser._id,
+          amount: 200,
+          history: [
+            {
+              amount: 200,
+              transactionType: "credit",
+              description: "referal",
+            },
+          ],
+        });
+      }
+    }
 
     try {
       // const { userName, email, password, dob, phoneNumber } =
@@ -157,16 +189,31 @@ export const verifyOtp = async (req, res) => {
         password: formData.password,
         dob: formData.dob,
         phoneNumber: formData.phoneNumber,
+        refferralCode: generateReferralCode(),
         block: false,
         isAdmin: false,
       });
+
+      if (newUser && referUser) {
+        const newWallet = await Wallet.create({
+          userId: newUser._id,
+          amount: 150,
+          history: [
+            {
+              amount: 150,
+              transactionType: "credit",
+              description: "referal",
+            },
+          ],
+        });
+      }
 
       const token = generateToken(newUser._id);
       res.cookie("token", token, {
         httpOnly: false,
         secure: false,
         sameSite: "Strict",
-        maxAge: 86400000
+        maxAge: 86400000,
       });
 
       return res
@@ -198,6 +245,7 @@ export const googleLogin = async (req, res) => {
         userName: name,
         email,
         block: false,
+        refferralCode: generateReferralCode(),
         isAdmin: false,
       });
     }
@@ -207,7 +255,7 @@ export const googleLogin = async (req, res) => {
       httpOnly: false,
       secure: false,
       sameSite: "Strict",
-      maxAge: 86400000
+      maxAge: 86400000,
     });
 
     res.status(200).json({

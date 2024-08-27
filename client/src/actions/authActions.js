@@ -32,7 +32,7 @@ export const login = (email, password) => async (dispatch) => {
 };
 
 export const signUp =
-  ({ confirmPassword, dob, email, password, phoneNumber, userName }) =>
+  ({ confirmPassword, dob, email, password, phoneNumber, userName,referralCode }) =>
   async (dispatch) => {
     dispatch(loginStart());
     try {
@@ -43,6 +43,7 @@ export const signUp =
         dob,
         phoneNumber,
         userName,
+        referralCode
       });
       console.log(data);
       dispatch(initial());

@@ -39,7 +39,9 @@ function Profile() {
     userName: user?.userName,
     email: user?.email,
     phoneNumber: user?.phoneNumber,
+    referCode: user?.refferralCode,
   });
+  console.log(user);
   const [alertOpen, setAlertOpen] = useState(false);
   const [isEditing, setIsEditing] = useState({
     userName: false,
@@ -111,10 +113,18 @@ function Profile() {
     navigate("/login");
   };
 
-  const handleCancelOrder = async (orderId,name,paymentStatus,amount) => {
-    if (window.confirm("Are you sure you want to cancel " + name + "?"+paymentStatus+amount)) {
+  const handleCancelOrder = async (orderId, name, paymentStatus, amount) => {
+    if (
+      window.confirm(
+        "Are you sure you want to cancel " + name + "?" + paymentStatus + amount
+      )
+    ) {
       try {
-        const data = await updateOrders(orderId, { orderStatus: "cancelled",paymentStatus,amount });
+        const data = await updateOrders(orderId, {
+          orderStatus: "cancelled",
+          paymentStatus,
+          amount,
+        });
         if (data.updatedOrder) {
           toast.success("Order cancelled successfully");
 
@@ -188,43 +198,50 @@ function Profile() {
                 <EditIcon />
               </IconButton>
             </Box>
+
             <Box sx={{ width: "70%" }}>
               <Grid container spacing={2}>
-                {["email", "userName", "phoneNumber"].map((field) => (
-                  <Grid
-                    item
-                    xs={field === "firstName" || field === "lastName" ? 6 : 12}
-                    key={field}
-                  >
-                    <TextField
-                      fullWidth
-                      variant="outlined"
-                      label={
-                        field.charAt(0).toUpperCase() +
-                        field.slice(1).replace(/([A-Z])/g, " $1")
+                {["email", "userName", "phoneNumber", "referCode"].map(
+                  (field) => (
+                    <Grid
+                      item
+                      xs={
+                        field === "firstName" || field === "lastName" ? 6 : 12
                       }
-                      name={field}
-                      value={profile[field]}
-                      onChange={handleInputChange}
-                      disabled={!isEditing[field]}
-                      sx={{ marginBottom: "15px" }}
-                      InputProps={{
-                        endAdornment: field !== "email" && (
-                          <IconButton
-                            onClick={() =>
-                              isEditing[field]
-                                ? handleSave(field)
-                                : handleEdit(field)
-                            }
-                            edge="end"
-                          >
-                            {isEditing[field] ? <SaveIcon /> : <EditIcon />}
-                          </IconButton>
-                        ),
-                      }}
-                    />
-                  </Grid>
-                ))}
+                      key={field}
+                    >
+                      <TextField
+                        fullWidth
+                        variant="outlined"
+                        label={
+                          field.charAt(0).toUpperCase() +
+                          field.slice(1).replace(/([A-Z])/g, " $1")
+                        }
+                        name={field}
+                        value={profile[field]}
+                        onChange={handleInputChange}
+                        disabled={!isEditing[field]}
+                        sx={{ marginBottom: "15px" }}
+                        InputProps={{
+                          endAdornment: (field === "userName" ||
+                            field === "phoneNumber") && (
+                            <IconButton
+                              onClick={() =>
+                                isEditing[field]
+                                  ? handleSave(field)
+                                  : handleEdit(field)
+                              }
+                              edge="end"
+                            >
+                              {isEditing[field] ? <SaveIcon /> : <EditIcon />}
+                            </IconButton>
+                          ),
+                        }}
+                      />
+                    </Grid>
+                  )
+                )}
+
                 <Grid item xs={12}>
                   <Box display="flex" justifyContent="space-between" mt={2}>
                     <Button
@@ -262,7 +279,9 @@ function Profile() {
             variant="outlined"
             sx={{ width: "100%", marginY: "10px" }}
             endIcon={<AddIcon />}
-            onClick={() => navigate("/shipping_address",{state:{ action: "profile"}})}
+            onClick={() =>
+              navigate("/shipping_address", { state: { action: "profile" } })
+            }
           >
             Add Address
           </Button>

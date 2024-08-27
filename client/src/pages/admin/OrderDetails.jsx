@@ -179,6 +179,9 @@ function OrderDetails() {
                 <Typography variant="h6" sx={{ marginY: "20px" }}>
                   Return Status
                 </Typography>
+                <Typography variant="body1" sx={{ marginY: "20px" }}>
+                  Reason:{order?.returnRea}
+                </Typography>
                 <Stepper activeStep={returnActiveStep} alternativeLabel>
                   {returnSteps.map((label) => (
                     <Step key={label}>

@@ -24,6 +24,7 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import CircularProgress from "@mui/material/CircularProgress";
 import CustomAlert from "../../components/alert/CustomAlert";
+import FormDialog from "../../components/FormDialog/FormDialog";
 
 const BASE_URL = "http://localhost:3000/";
 function PlaceOrderDetails() {
@@ -33,7 +34,7 @@ function PlaceOrderDetails() {
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
-
+  const [open, setOpen] = React.useState(false);
   const steps = ["Order Placed", "In Transit", order?.orderStatus];
   const returnSteps =
     order?.orderReturnStatus === "rejected"
@@ -61,15 +62,16 @@ function PlaceOrderDetails() {
     }
   };
   const handleReturn = async () => {
-    if (window.confirm("Are you sure you want to return")) {
-      const data = await updateOrdersReturn(order._id, {
-        orderReturnStatus: "requested",
-      });
-      if (data) {
-        toast.success("Return request sent successfully");
-        setOrder(data.updatedOrder);
-      }
-    }
+    setOpen(true);
+    // if (window.confirm("Are you sure you want to return")) {
+    //   const data = await updateOrdersReturn(order._id, {
+    //     orderReturnStatus: "requested",
+    //   });
+    //   if (data) {
+    //     toast.success("Return request sent successfully");
+    //     setOrder(data.updatedOrder);
+    //   }
+    // }
   };
 
   const returnActiveStep =
@@ -148,7 +150,6 @@ function PlaceOrderDetails() {
                 profile={true}
                 details={true}
                 handleCancelOrderClick={handleCancelOrderClick}
-                
               />
             </Box>
             <Paper elevation={6} sx={{ width: "40%", padding: "20px" }}>
@@ -184,6 +185,11 @@ function PlaceOrderDetails() {
                 <Typography variant="h6" sx={{ marginY: "20px" }}>
                   Return Status
                 </Typography>
+                {order?.orderReturnStatus && (
+                  <Typography variant="body1" sx={{ marginY: "20px" }}>
+                    Reason:{order?.returnReason}
+                  </Typography>
+                )}
                 <Stepper activeStep={returnActiveStep} alternativeLabel>
                   {returnSteps.map((label) => (
                     <Step key={label}>
@@ -201,6 +207,12 @@ function PlaceOrderDetails() {
             title="Confirm Action"
             message={`Are you sure you want to cancel the order for?`}
             onConfirm={handleCancelOrder} // This will receive true/false based on the user's action
+          />
+          <FormDialog
+            open={open}
+            setOpen={setOpen}
+            setOrder={setOrder}
+            orderId={order?._id}
           />
         </Container>
       )}

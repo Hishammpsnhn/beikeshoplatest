@@ -37,6 +37,7 @@ const ordersSchema = new Schema(
       enum: ["pending", "delivered", "cancelled"],
       default: "pending",
     },
+    returnReason:{type: "string"},
     orderReturnStatus: {
       type: String,
       enum: ["not requested", "requested", "approved", "rejected", "completed"],
