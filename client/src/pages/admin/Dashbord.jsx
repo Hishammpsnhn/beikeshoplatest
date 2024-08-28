@@ -1,13 +1,25 @@
-import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
+import React from "react";
+import {
+  Box,
+  Button,
+  FormControl,
+  IconButton,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import { tokens } from "../../theme";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import StatBox from "../../components/admin/statsBox/StatBox";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import BarChart from "../../components/admin/barchart/BarChart";
+// import BarChart from "../../components/admin/barchart/BarChart";
 import AdminSubHeader from "../../components/admin/Header/AdminSubHeader";
-
+import LineChart from "../../components/admin/barchart/BarChart";
+import { dashboardLineGraph } from "../../actions/dashboard";
 
 // import {
 //   adminDashboard,
@@ -19,7 +31,7 @@ import AdminSubHeader from "../../components/admin/Header/AdminSubHeader";
 
 const Dashboard = () => {
   // const user = useSelector((state) => state.user.user)
-  const {  isAuthenticated,user } = useSelector((state) => state.auth);
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -29,9 +41,25 @@ const Dashboard = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [sort, setSort] = React.useState('week');
+  const [data,setData] = useState([]);
 
+  const handleChange = (event) => {
+    console.log(event.target.value)
+    setSort(event.target.value);
+  };
+  // useEffect(async() => {
+  //   console.log(sort);
+  //   const data = await dashboardLineGraph(sort);
+  //   if(data){
+  //     setData(data)
+  //   }
+
+  // }, [sort]);
+  
   useEffect(() => {
     if (!user?.isAdmin || !isAuthenticated) navigate("/");
+   
   }, [dispatch]);
 
   return (
@@ -120,6 +148,23 @@ const Dashboard = () => {
                 <Typography variant="h6" fontWeight="bold" color={"#461246"}>
                   Sales Perfomance
                 </Typography>
+                <Box sx={{ minWidth: 120 }}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={sort}
+                      label="Sort"
+                      size="small"
+                      onChange={handleChange}
+                    >
+                      <MenuItem value='week'>Weekly</MenuItem>
+                      <MenuItem value='month'>Monthly</MenuItem>
+                      <MenuItem value='year'>Yearly</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Box>
               </Box>
               <Box>
                 <IconButton>
@@ -130,7 +175,8 @@ const Dashboard = () => {
               </Box>
             </Box>
             <Box height="300px" m="-20px 0 0 0">
-              <BarChart isDashboard={true} />
+              {/* <BarChart isDashboard={true} /> */}
+              <LineChart isDashboard={true} sort={sort} data={data}/>
             </Box>
           </Box>
         </Box>

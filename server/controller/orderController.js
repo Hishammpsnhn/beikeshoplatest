@@ -22,7 +22,7 @@ export const createOrder = async (req, res) => {
     paymentStatus
   } = req.body;
   let balanceDiscount = discount || 0;
-  if (!userId || !addressId || !items || !paymentMethod) {
+  if (!userId || !addressId || !items || !paymentMethod || !paymentStatus) {
     return res.status(400).json({ message: "Missing required fields" });
   }
 
@@ -79,8 +79,7 @@ export const createOrder = async (req, res) => {
           }
         });
 
-        // const paymentStatus = paymentMethod === "cod" ? false : true;
-        console.log("disc", discount);
+
         let remainingDiscount = balanceDiscount;
         let lastdiscount = 0;
         if (remainingDiscount > 0) {
@@ -93,7 +92,6 @@ export const createOrder = async (req, res) => {
         } else {
           lastdiscount = 0;
         }
-        console.log("last discount", lastdiscount);
 
         const newOrder = new Orders({
           userId: userId,
@@ -193,6 +191,7 @@ export const updateOrder = async (req, res) => {
   const { id } = req.params;
   // const userId = req.user;
   let { orderStatus, paymentStatus, amount, userId } = req.body.obj;
+  console.log(paymentStatus)
   let walletUserId;
   if (userId) {
     walletUserId = userId;
@@ -218,8 +217,6 @@ export const updateOrder = async (req, res) => {
     if (orderStatus === "cancelled" && paymentStatus === true && amount) {
       paymentStatus = order.paymentStatus;
       amount = order.finalAmount;
-      console.log(amount, paymentStatus);
-      console.log(orderStatus);
       try {
         let wallet = await Wallet.findOne({ userId: walletUserId });
         console.log(wallet);

@@ -120,17 +120,7 @@ function PlaceOrder() {
       });
       rzp1.open();
     } else {
-      console.log(
-        user._id,
-        selectedAddress,
-        totalAmount,
-        items,
-        paymentOption,
-        CartId,
-        coupon ? coupon.discount : 0,
-        discountTotalAmount,
-        true
-      );
+    
 
       const data = await createOrder(
         user._id,
@@ -140,7 +130,8 @@ function PlaceOrder() {
         paymentOption,
         CartId,
         coupon ? coupon.discount : 0,
-        discountTotalAmount
+        discountTotalAmount,
+        false
       );
       if (data) {
         navigate("/success", { state: { order: true } });

@@ -21,6 +21,7 @@ import wishlistRoute from "./router/wishlistRoute.js";
 import couponCode from './router/couponCode.js';
 import walletRoute from "./router/walletRoute.js";
 import salesRoute from "./router/saleReportRoute.js";
+import dashboardRoute from "./router/dashboardRoute.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -65,6 +66,7 @@ app.use("/api/order", orderRoute);
 app.use("/api/wishlist", wishlistRoute);
 app.use("/api/coupon_code", couponCode);
 app.use('/api/wallet',walletRoute)
+app.use("/api/dashboard",dashboardRoute)
 
 app.get("/api/check-server", (req, res) => {
   res.status(200).send({ message: "Server is running" });

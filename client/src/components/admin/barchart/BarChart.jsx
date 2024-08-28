@@ -1,16 +1,45 @@
-import { Box, useTheme } from '@mui/material';
-import { ResponsiveBar } from '@nivo/bar';
-import { tokens } from '../../../theme';
-import { mockBarData as data } from '../../../mockdata'; // Assuming mockBarData is the static mock data
-
-const BarChart = ({ isDashboard }) => {
+import { Box, CircularProgress, useTheme } from "@mui/material";
+import { ResponsiveLine } from "@nivo/line";
+import { tokens } from "../../../theme";
+// import { mockLineData as data } from '../../../mockdata'; // Assuming mockLineData is the static mock data for the line chart
+import {
+  weeklyOrdersData,
+  monthlyOrdersData,
+  yearlyOrdersData,
+} from "../../../mockdata";
+import { useEffect, useState } from "react";
+import { dashboardLineGraph } from "../../../actions/dashboard";
+const LineChart = ({ isDashboard, sort }) => {
+  const [data, setData] = useState([]);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await dashboardLineGraph(sort);
+      if (result) {
+        setData(result);
+      }
+    };
+    fetchData();
+  }, [sort]);
+
+  if (data.length === 0) {
+    return (
+      <Box
+        height="100%"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
   return (
-    <Box height={`${isDashboard ? '100%' : '90%'}`} overflow="hidden">
-      <ResponsiveBar
-        data={data}
+    <Box height={`${isDashboard ? "100%" : "90%"}`} overflow="hidden">
+      <ResponsiveLine
+        data={data.length > 0 && data}
         theme={{
           axis: {
             domain: {
@@ -38,80 +67,66 @@ const BarChart = ({ isDashboard }) => {
               fill: colors.grey[100],
             },
           },
+          tooltip: {
+            container: {
+              background: colors.grey[900],
+              color: colors.grey[100],
+            },
+          },
         }}
-        keys={['Shirt', 'T-shirt', 'Jeans', 'Jacket', 'Accessories']}
-        indexBy="country"
         margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
-        padding={0.3}
-        valueScale={{ type: 'linear' }}
-        indexScale={{ type: 'band', round: true }}
-        colors={{ scheme: 'nivo' }}
-        defs={[
-          {
-            id: 'dots',
-            type: 'patternDots',
-            background: 'inherit',
-            color: '#38bcb2',
-            size: 4,
-            padding: 1,
-            stagger: true,
-          },
-          {
-            id: 'lines',
-            type: 'patternLines',
-            background: 'inherit',
-            color: '#eed312',
-            rotation: -45,
-            lineWidth: 6,
-            spacing: 10,
-          },
-        ]}
-        borderColor={{
-          from: 'color',
-          modifiers: [['darker', '1.6']],
+        xScale={{ type: "point" }}
+        yScale={{
+          type: "linear",
+          min: "auto",
+          max: "auto",
+          stacked: true,
+          reverse: false,
         }}
+        yFormat=" >-.2f"
         axisTop={null}
         axisRight={null}
         axisBottom={{
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          legend: isDashboard ? undefined : 'country',
-          legendPosition: 'middle',
-          legendOffset: 32,
+          legend: isDashboard ? undefined : "country",
+          legendOffset: 36,
+          legendPosition: "middle",
         }}
         axisLeft={{
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          legend: isDashboard ? undefined : 'food',
-          legendPosition: 'middle',
+          legend: isDashboard ? undefined : "food",
           legendOffset: -40,
+          legendPosition: "middle",
         }}
-        enableLabel={false}
-        labelSkipWidth={12}
-        labelSkipHeight={12}
-        labelTextColor={{
-          from: 'color',
-          modifiers: [['darker', 1.6]],
-        }}
+        colors={{ scheme: "nivo" }}
+        lineWidth={2}
+        pointSize={10}
+        pointColor={{ theme: "background" }}
+        pointBorderWidth={2}
+        pointBorderColor={{ from: "serieColor" }}
+        pointLabelYOffset={-12}
+        useMesh={true}
         legends={[
           {
-            dataFrom: 'keys',
-            anchor: 'bottom-right',
-            direction: 'column',
+            anchor: "bottom-right",
+            direction: "column",
             justify: false,
             translateX: 120,
             translateY: 0,
             itemsSpacing: 2,
             itemWidth: 100,
             itemHeight: 20,
-            itemDirection: 'left-to-right',
+            itemDirection: "left-to-right",
             itemOpacity: 0.85,
-            symbolSize: 20,
+            symbolSize: 12,
+            symbolShape: "circle",
             effects: [
               {
-                on: 'hover',
+                on: "hover",
                 style: {
                   itemOpacity: 1,
                 },
@@ -120,12 +135,12 @@ const BarChart = ({ isDashboard }) => {
           },
         ]}
         role="application"
-        barAriaLabel={function (e) {
-          return e.id + ': ' + e.formattedValue + ' in country: ' + e.indexValue;
+        ariaLabel={function (e) {
+          return `${e.serie.id}: ${e.point.data.yFormatted} in ${e.point.data.x}`;
         }}
       />
     </Box>
   );
 };
 
-export default BarChart;
+export default LineChart;

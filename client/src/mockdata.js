@@ -94,3 +94,52 @@ export const mockBarData = [
       role: 'Admin',
     },
   ];
+
+  export const weeklyOrdersData = [
+    {
+      id: 'Orders',
+      data: [
+        { x: 'Monday', y: 120 },
+        { x: 'Tuesday', y: 150 },
+        { x: 'Wednesday', y: 130 },
+        { x: 'Thursday', y: 180 },
+        { x: 'Friday', y: 200 },
+        { x: 'Saturday', y: 170 },
+        { x: 'Sunday', y: 140 },
+      ],
+    },
+  ];
+  export const monthlyOrdersData = [
+    {
+      id: 'Orders',
+      data: [
+        { x: 'January', y: 1200 },
+        { x: 'February', y: 1500 },
+        { x: 'March', y: 1300 },
+        { x: 'April', y: 1800 },
+        { x: 'May', y: 2000 },
+        { x: 'June', y: 1700 },
+        { x: 'July', y: 1400 },
+        { x: 'August', y: 1600 },
+        { x: 'September', y: 1900 },
+        { x: 'October', y: 2100 },
+        { x: 'November', y: 2300 },
+        { x: 'December', y: 2500 },
+      ],
+    },
+  ];
+    
+  export const yearlyOrdersData = [
+    {
+      id: 'Orders',
+      data: [
+        { x: '2018', y: 15000 },
+        { x: '2019', y: 18000 },
+        { x: '2020', y: 20000 },
+        { x: '2021', y: 22000 },
+        { x: '2022', y: 25000 },
+        { x: '2023', y: 27000 },
+      ],
+    },
+  ];
+  
