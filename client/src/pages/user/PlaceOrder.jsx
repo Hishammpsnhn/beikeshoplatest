@@ -47,7 +47,7 @@ function PlaceOrder() {
     }
     let discountTotalAmount = totalAmount;
     if (coupon) {
-      const discountedAmount = coupon.discount ;
+      const discountedAmount = coupon.discount;
       discountTotalAmount = totalAmount - discountedAmount;
     }
     if (coupon && paymentOption === "wallet") {
@@ -120,8 +120,6 @@ function PlaceOrder() {
       });
       rzp1.open();
     } else {
-    
-
       const data = await createOrder(
         user._id,
         selectedAddress,
@@ -131,7 +129,7 @@ function PlaceOrder() {
         CartId,
         coupon ? coupon.discount : 0,
         discountTotalAmount,
-        false
+        paymentOption === "wallet" ? true : false
       );
       if (data) {
         navigate("/success", { state: { order: true } });
@@ -183,7 +181,9 @@ function PlaceOrder() {
           variant="outlined"
           sx={{ width: "100%", marginY: "30px" }}
           endIcon={<AddIcon />}
-          onClick={() => navigate("/shipping_address",{state:{ action: "place_order"}})}
+          onClick={() =>
+            navigate("/shipping_address", { state: { action: "place_order" } })
+          }
         >
           add address
         </Button>

@@ -34,7 +34,7 @@ function Wallet() {
             sx={{ padding: "20px", marginTop: "20px" }}
           >
             <Typography variant="h4" sx={{ marginBottom: "20px" }}>
-            ₹ {info?.amount ? info.amount : 0}
+              ₹ {info?.amount ? info.amount : 0}
             </Typography>
             <Typography variant="h6" sx={{ marginBottom: "20px" }}>
               Add Amount
@@ -81,8 +81,10 @@ function Wallet() {
             <Typography variant="h6" padding="10px">
               History
             </Typography>
-            {info?.history.map((item) => (
-              <Box margin="10px">
+            {info?.history.map((item) => {
+              const hours = new Date(item.date).getUTCHours().toString().padStart(2, '0');
+              const minutes = new Date(item.date).getUTCMinutes().toString().padStart(2, '0');
+             return <Box margin="10px">
                 <Paper elevation={2} sx={{ padding: "20px" }}>
                   <Typography variant="body1" color="purple">
                     {" "}
@@ -90,16 +92,19 @@ function Wallet() {
                   </Typography>
                   <Typography
                     variant="body2"
-                    color={item.transactionType === 'credit' ? "green" : "red"}
+                    color={item.transactionType === "credit" ? "green" : "red"}
                   >
                     {item.transactionType}
                   </Typography>{" "}
                   <Typography variant="body2" color="gray">
                     {new Date(item.date).toLocaleDateString()}
                   </Typography>
+                  {/* <Typography variant="body2" color="gray">
+                    {hours}:{minutes}
+                  </Typography> */}
                 </Paper>
-              </Box>
-            ))}
+              </Box>;
+            })}
           </Paper>
         </Box>
       </Container>

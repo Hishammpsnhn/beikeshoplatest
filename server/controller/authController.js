@@ -156,6 +156,7 @@ export const verifyOtp = async (req, res) => {
           amount: 200,
           transactionType: "credit",
           description: "refferal ",
+          date:Date.now(),
         });
         await wallet.save();
       } else {
@@ -167,6 +168,7 @@ export const verifyOtp = async (req, res) => {
               amount: 200,
               transactionType: "credit",
               description: "referal",
+              date:Date.now(),
             },
           ],
         });

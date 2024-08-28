@@ -19,10 +19,16 @@ export const createOrder = async (req, res) => {
     discount,
     CartId,
     finalPrice,
-    paymentStatus
+    paymentStatus,
   } = req.body;
   let balanceDiscount = discount || 0;
-  if (!userId || !addressId || !items || !paymentMethod || !paymentStatus) {
+  if (
+    !userId ||
+    !addressId ||
+    !items ||
+    !paymentMethod ||
+    paymentStatus === undefined
+  ) {
     return res.status(400).json({ message: "Missing required fields" });
   }
 
@@ -56,6 +62,7 @@ export const createOrder = async (req, res) => {
       amount: finalPrice,
       transactionType: "debit",
       description: "Purchase Product",
+      date:Date.now(),
     });
     await wallet.save();
   }
@@ -78,7 +85,6 @@ export const createOrder = async (req, res) => {
             }
           }
         });
-
 
         let remainingDiscount = balanceDiscount;
         let lastdiscount = 0;
@@ -191,7 +197,9 @@ export const updateOrder = async (req, res) => {
   const { id } = req.params;
   // const userId = req.user;
   let { orderStatus, paymentStatus, amount, userId } = req.body.obj;
-  console.log(paymentStatus)
+  console.log(orderStatus, orderStatus, amount, userId);
+  console.log("userID", userId);
+  console.log(paymentStatus);
   let walletUserId;
   if (userId) {
     walletUserId = userId;
@@ -199,7 +207,7 @@ export const updateOrder = async (req, res) => {
     walletUserId = req.user._id;
   }
   console.log(walletUserId);
-  if (orderStatus === undefined && paymentStatus === undefined) {
+  if (orderStatus === undefined) {
     return res.status(400).json({ message: "Field is required" });
   }
 
@@ -214,11 +222,12 @@ export const updateOrder = async (req, res) => {
       return res.status(404).json({ message: "Order not found" });
     }
 
-    if (orderStatus === "cancelled" && paymentStatus === true && amount) {
+    if (orderStatus === "cancelled" && order.paymentStatus) {
+      console.log("walletUserID", walletUserId);
       paymentStatus = order.paymentStatus;
       amount = order.finalAmount;
       try {
-        let wallet = await Wallet.findOne({ userId: walletUserId });
+        let wallet = await Wallet.findOne({ userId: order.userId });
         console.log(wallet);
         if (wallet) {
           wallet.amount += amount;
@@ -226,16 +235,18 @@ export const updateOrder = async (req, res) => {
             amount: amount,
             transactionType: "credit",
             description: "Added funds to wallet",
+            date:Date.now(),
           });
         } else {
           wallet = new Wallet({
-            userId: walletUserId,
+            userId: order.userId,
             amount: amount,
             history: [
               {
                 amount: amount,
                 transactionType: "credit",
                 description: "Initial deposit to wallet",
+                date:Date.now(),
               },
             ],
           });
@@ -349,9 +360,10 @@ export const onlinePaymentOrderVerify = async (req, res) => {
 // @access  Private
 export const returnUpdate = async (req, res) => {
   const { id } = req.params;
-  const { orderReturnStatus, returnPickupStatus, amount, reason } = req.body.obj;
-  console.log(req.body)
-  console.log(orderReturnStatus, amount, returnPickupStatus, id,reason);
+  const { orderReturnStatus, returnPickupStatus, amount, reason } =
+    req.body.obj;
+  console.log(req.body);
+  console.log(orderReturnStatus, amount, returnPickupStatus, id, reason);
   if (orderReturnStatus === undefined) {
     return res.status(400).json({ message: "Field is required" });
   }
@@ -381,6 +393,7 @@ export const returnUpdate = async (req, res) => {
             amount: amount,
             transactionType: "credit",
             description: "order returned",
+            date:Date.now(),
           });
         } else {
           wallet = new Wallet({
@@ -411,7 +424,7 @@ export const returnUpdate = async (req, res) => {
     if (returnPickupStatus !== undefined && amount) {
       order.returnPickupStatus = returnPickupStatus;
     }
-    if (reason !== undefined ) {
+    if (reason !== undefined) {
       order.returnReason = reason;
     }
 
