@@ -4,10 +4,12 @@ import bcrypt from "bcrypt";
 const addressSchema = mongoose.Schema({
   fullName:{type:"string",required:"true",},
   landmark: {type:"string",required:"true",},
-  city: {type:"string",required:"true",},
-  state: {type:"string",required:"true",},
+  // city: {type:"string",required:"true",},
+  // state: {type:"string",required:"true",},
   pinCode: {type:"number",required:"true",},
   phoneNumber: {type:"number",required:"true",},
+  distance: {type:"number",},
+  placeDetails: {type:"string",},
 });
 
 

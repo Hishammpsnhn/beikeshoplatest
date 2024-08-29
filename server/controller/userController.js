@@ -86,7 +86,9 @@ export const profileUpdate = async (req, res) => {
 // @access  Public
 export const addAddress = async (req, res) => {
   const { id } = req.params;
-  const { fullName, city, state, landmark, pinCode, phoneNumber } = req.body;
+  const { fullName, city, state, landmark, pinCode, phoneNumber,distance,placeDetails } = req.body;
+  console.log(req.body);
+  
   const user = await User.findById(id);
   if (!user) res.status(404).json({ message: "User not Found" });
   if (user.address.length > 2) {
@@ -96,11 +98,14 @@ export const addAddress = async (req, res) => {
   }
   user.address.push({
     fullName,
-    city,
-    state,
+    // city,
+    // state,
     landmark,
     pinCode,
     phoneNumber,
+    distance,
+    placeDetails,
+
   });
   await user.save();
   res.status(200).json({ message: "Address added successfully", user });
@@ -138,7 +143,7 @@ export const deleteAddress = async (req, res) => {
 // @access  Public
 export const EditAddress = async (req, res) => {
   const { id, addressId } = req.params;
-  const { fullName, city, state, landmark, pinCode, phoneNumber } =
+  const { fullName, city, state, landmark, pinCode, phoneNumber,distance,placeDetails } =
     req.body.formData;
   console.log(req.body);
 
@@ -162,6 +167,8 @@ export const EditAddress = async (req, res) => {
     if (landmark) user.address[addressIndex].landmark = landmark;
     if (pinCode) user.address[addressIndex].pinCode = pinCode;
     if (phoneNumber) user.address[addressIndex].phoneNumber = phoneNumber;
+    if(placeDetails) user.address[addressIndex].placeDetails = placeDetails;
+    if(distance) user.address[addressIndex].distance = distance;
 
     await user.save();
 

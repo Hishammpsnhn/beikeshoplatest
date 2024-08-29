@@ -127,9 +127,10 @@ export const getCart = async (req, res) => {
         item.productId?.offer === 0
           ? 0
           : size.price * (item.productId?.offer / 100);
-      console.log(disPrice);
+      console.log("disprice",Math.round(disPrice));
       item.offer = item.productId?.offer;
-      item.price = size.price - Math.trunc(disPrice);
+      item.price = size.price - Math.round(disPrice);
+      console.log("item.price",item.price)
       totalAmount += item.price * item.quantity;
     });
     cart.totalAmount = totalAmount;

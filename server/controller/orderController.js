@@ -57,15 +57,17 @@ export const createOrder = async (req, res) => {
     if (wallet.amount < finalPrice) {
       return res.status(404).json({ message: "Wallet has no enough money" });
     }
-    wallet.amount -= finalPrice;
+    const deliveryCharge = address.distance > 20 ? parseInt(address.distance * 0.5/items.length) : 0;
+    wallet.amount -= finalPrice + deliveryCharge;
     wallet.history.push({
       amount: finalPrice,
       transactionType: "debit",
       description: "Purchase Product",
-      date:Date.now(),
+      date: Date.now(),
     });
     await wallet.save();
   }
+  console.log(items)
 
   try {
     const orders = await Promise.all(
@@ -98,19 +100,27 @@ export const createOrder = async (req, res) => {
         } else {
           lastdiscount = 0;
         }
+        const deliveryCharge = address.distance > 20 ? parseInt(address.distance * 0.5/items.length) : 0;
 
+        const finalAmount = item.price - lastdiscount + deliveryCharge;
+        console.log("finalAmount",finalAmount)
+        console.log("totalAmount",totalAmount);
+        // console.log("itemTotal",itemTotal)
         const newOrder = new Orders({
           userId: userId,
           address: {
             fullName: address.fullName,
             landmark: address.landmark,
-            city: address.city,
-            state: address.state,
+            // city: address.city,
+            // state: address.state,
+            distance: address.distance,
+            location: address.placeDetails,
             pinCode: address.pinCode,
             phoneNumber: address.phoneNumber,
           },
-          totalAmount: item.quantity * item.productSizeDetails.price,
-          finalAmount: item.quantity * item.price - lastdiscount,
+          deliveryCharge: deliveryCharge,
+          totalAmount:item.price,
+          finalAmount: finalAmount,
           discount: lastdiscount,
           product: [
             {
@@ -197,7 +207,7 @@ export const updateOrder = async (req, res) => {
   const { id } = req.params;
   // const userId = req.user;
   let { orderStatus, paymentStatus, amount, userId } = req.body.obj;
-  console.log(orderStatus, orderStatus, amount, userId);
+  console.log(orderStatus, orderStatus, amount, userId, id);
   console.log("userID", userId);
   console.log(paymentStatus);
   let walletUserId;
@@ -205,10 +215,6 @@ export const updateOrder = async (req, res) => {
     walletUserId = userId;
   } else {
     walletUserId = req.user._id;
-  }
-  console.log(walletUserId);
-  if (orderStatus === undefined) {
-    return res.status(400).json({ message: "Field is required" });
   }
 
   try {
@@ -235,7 +241,7 @@ export const updateOrder = async (req, res) => {
             amount: amount,
             transactionType: "credit",
             description: "Added funds to wallet",
-            date:Date.now(),
+            date: Date.now(),
           });
         } else {
           wallet = new Wallet({
@@ -246,7 +252,7 @@ export const updateOrder = async (req, res) => {
                 amount: amount,
                 transactionType: "credit",
                 description: "Initial deposit to wallet",
-                date:Date.now(),
+                date: Date.now(),
               },
             ],
           });
@@ -393,7 +399,7 @@ export const returnUpdate = async (req, res) => {
             amount: amount,
             transactionType: "credit",
             description: "order returned",
-            date:Date.now(),
+            date: Date.now(),
           });
         } else {
           wallet = new Wallet({

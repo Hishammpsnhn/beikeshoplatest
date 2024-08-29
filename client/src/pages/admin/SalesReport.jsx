@@ -145,20 +145,22 @@ function SalesReport() {
     doc.save("sales_report.pdf");
   };
 
-// convert to xl
+  // convert to xl
   const handleExelDownload = () => {
     const flattenedOrders = orders.map((order) => ({
       orderId: order._id,
       Date: new Date(order.createdAt).toLocaleString(),
       fullName: order.address?.fullName || "",
-      city: order.address?.city || "",
+      location: order.address?.location || "",
+      distance: order.address?.distance,
       phoneNumber: order.address?.phoneNumber || "",
       productName: order.product[0]?.product.name || "",
       quantity: order.product[0]?.quantity || 0,
       price: order.product[0]?.price || 0,
       totalAmount: order.totalAmount,
-      discount: order.discount,
+      CouponCode: order.discount,
       offer: order.product[0].offer,
+      deliveryCharge: order?.deliveryCharge,
       finalAmount: order.finalAmount,
       paymentMethod: order.paymentMethod,
       orderStatus: order.orderStatus,
@@ -262,7 +264,7 @@ function SalesReport() {
           sx={{ marginBottom: "20px" }}
         >
           <h1>Sales Report</h1>
-          <Box gap={2} display='flex'>
+          <Box gap={2} display="flex">
             <Button onClick={downloadPDF} variant="contained">
               <DownloadOutlinedIcon sx={{ mr: "10px" }} />
               Download Reports (pdf)

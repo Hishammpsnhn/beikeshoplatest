@@ -108,13 +108,7 @@ const OrderManagement = () => {
       headerName: "Payment Info",
       flex: 1,
       renderCell: ({ row }) => (
-        <>
-          {row.paymentStatus ? (
-            <CheckCircleOutlineIcon />
-          ) : (
-            <CloseIcon />
-          )}
-        </>
+        <>{row.paymentStatus ? <CheckCircleOutlineIcon /> : <CloseIcon />}</>
       ),
     },
     {
@@ -150,22 +144,24 @@ const OrderManagement = () => {
           {row.orderStatus === "pending" && (
             <>
               <Button
-                onClick={() =>
-                  handleUpdate(row.id, { orderStatus: "delivered" })
-                }
+                onClick={(event) => {
+                  event.stopPropagation();
+                  handleUpdate(row.id, { orderStatus: "delivered" });
+                }}
                 variant="contained"
               >
                 Deliver
               </Button>
               <Button
-                onClick={() =>
+                onClick={(event) => {
+                  event.stopPropagation();
                   handleUpdate(row.id, {
                     orderStatus: "cancelled",
                     paymentStatus: row.paymentStatus,
                     amount: row.price,
                     userId: row.userId,
-                  })
-                }
+                  });
+                }}
                 variant="contained"
                 color="error"
               >
@@ -176,12 +172,13 @@ const OrderManagement = () => {
           {row.orderStatus === "RE - requested" && (
             <>
               <Button
-                onClick={() =>
+                onClick={(event) => {
+                  event.stopPropagation();
                   handleReturnUpdate(row.id, {
                     orderReturnStatus: "approved",
                     returnPickupStatus: "not picked",
-                  })
-                }
+                  });
+                }}
                 variant="contained"
                 color="info"
                 size="small"
@@ -189,11 +186,12 @@ const OrderManagement = () => {
                 Approve
               </Button>
               <Button
-                onClick={() =>
+                onClick={(event) => {
+                  event.stopPropagation();
                   handleReturnUpdate(row.id, {
                     orderReturnStatus: "rejected",
-                  })
-                }
+                  });
+                }}
                 variant="contained"
                 color="error"
                 size="small"
@@ -205,13 +203,14 @@ const OrderManagement = () => {
           {row.orderStatus === "RE - approved" && (
             <>
               <Button
-                onClick={() =>
+                onClick={(event) => {
+                  event.stopPropagation();
                   handleReturnUpdate(row.id, {
                     orderReturnStatus: "completed",
                     returnPickupStatus: "picked",
                     amount: row.price,
-                  })
-                }
+                  });
+                }}
                 variant="contained"
                 color="info"
                 size="small"
@@ -222,7 +221,10 @@ const OrderManagement = () => {
           )}
           {row.orderStatus === "delivered" && !row.paymentStatus && (
             <Button
-              onClick={() => handleUpdate(row.id, { paymentStatus: true })}
+              onClick={(event) => {
+                event.stopPropagation();
+                handleUpdate(row.id, { paymentStatus: true });
+              }}
               variant="contained"
               color="info"
             >

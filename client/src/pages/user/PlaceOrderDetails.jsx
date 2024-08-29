@@ -38,9 +38,9 @@ function PlaceOrderDetails() {
   const [alertOpen, setAlertOpen] = useState(false);
   const [open, setOpen] = React.useState(false);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const failedStep = ["Order Placed", "payment Failed"]
+  const failedStep = ["Order Placed", "payment Failed"];
   const steps = ["Order Placed", "In Transit", order?.orderStatus];
   const returnSteps =
     order?.orderReturnStatus === "rejected"
@@ -68,7 +68,7 @@ function PlaceOrderDetails() {
     }
   };
 
-  const handleFailedPayment = async() => {
+  const handleFailedPayment = async () => {
     const data = await onlinePaymentOrder(order?.finalAmount);
     var options = {
       key: process.env.RAZORPAPY_KEY_ID,
@@ -86,11 +86,10 @@ function PlaceOrderDetails() {
         if (verify) {
           const data = await updateOrders(order._id, {
             orderStatus: "pending",
-            paymentStatus:true
+            paymentStatus: true,
           });
-          if(data)
-            toast.success("Payment successfully");
-            navigate(`/profile`)
+          if (data) toast.success("Payment successfully");
+          navigate(`/profile`);
         }
       },
       prefill: {
@@ -110,7 +109,7 @@ function PlaceOrderDetails() {
       alert(response.error.code);
     });
     rzp1.open();
-  }
+  };
 
   const handleReturn = async () => {
     setOpen(true);
@@ -200,7 +199,7 @@ function PlaceOrderDetails() {
                 image={`${BASE_URL}/${order?.product[0]?.product?.images[0]}`}
                 size={order?.product[0].size}
                 qty={order?.product[0].quantity}
-                price={order?.product[0].price}
+                price={order?.totalAmount}
                 orderStatus={order?.orderStatus}
                 paymentStatus={order?.paymentStatus}
                 handleCancelOrder={handleCancelOrder}
@@ -214,7 +213,13 @@ function PlaceOrderDetails() {
             </Box>
             <Paper elevation={6} sx={{ width: "40%", padding: "20px" }}>
               <Typography variant="body1">
-                Amount : {order?.finalAmount}
+                Applied Coupon: {order?.discount}
+              </Typography>
+              <Typography variant="body1">
+                Delivery Charge: {order?.deliveryCharge}
+              </Typography>
+              <Typography variant="body1">
+                Total Amount : {order?.finalAmount}
               </Typography>
               <Typography variant="body1">
                 Payment Method : {order?.paymentMethod}

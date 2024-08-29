@@ -68,7 +68,7 @@ function Cart() {
                     productId={item.productId}
                     name={item?.productId?.name}
                     image={item?.productId?.images[0]}
-                    price={item?.productSizeDetails?.price}
+                    price={item?.price}
                     qty={item?.quantity}
                     size={item?.productSizeDetails}
                     availability={item?.availability}
@@ -80,6 +80,7 @@ function Cart() {
                 {/* <AddressDetails cart={true} /> */}
                 <Box marginTop="10px">
                   <PriceDetails
+                    cart={true}
                     totalPrice={totalPrice}
                     totalAmount={totalAmount}
                     itemsCount={items.length}

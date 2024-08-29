@@ -29,6 +29,7 @@ function PlaceOrder() {
   const [paymentOption, setPaymentOption] = useState(null);
   const [coupon, setCoupon] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [shipping, setShipping] = useState(0);
   // const [wallet, setWallet] = useState(null);
   // const [offer, setOffer] = useState(items);
 
@@ -55,10 +56,10 @@ function PlaceOrder() {
     }
 
     if (paymentOption === "online payment") {
-      const data = await onlinePaymentOrder(discountTotalAmount);
+      const data = await onlinePaymentOrder(discountTotalAmount+shipping);
       var options = {
         key: process.env.RAZORPAPY_KEY_ID,
-        amount: totalAmount,
+        amount: totalAmount+shipping,
         currency: "INR",
         name: "Beike shop",
         description: "Test Transaction",
@@ -138,8 +139,13 @@ function PlaceOrder() {
     }
   };
 
-  const onSelect = (address) => {
+  const onSelect = (address, distance) => {
     setSelectedAddress(address);
+    if (parseInt(distance) > 20) {
+      setShipping(parseInt(distance * 0.5));
+    } else {
+      setShipping(0);
+    }
   };
   const onSelectPayment = (payment) => {
     setPaymentOption(payment);
@@ -200,7 +206,7 @@ function PlaceOrder() {
                   productId={item.productId}
                   name={item?.productId?.name}
                   image={item?.productId?.images[0]}
-                  price={item?.productSizeDetails?.price}
+                  price={item?.price}
                   qty={item?.quantity}
                   size={item?.productSizeDetails}
                   availability={item?.availability}
@@ -213,6 +219,7 @@ function PlaceOrder() {
                 coupon={coupon}
                 itemsCount={items.length}
                 totalPrice={totalPrice}
+                shipping={shipping}
               />
               <ApplyCoupon setCoupon={setCoupon} totalAmount={totalAmount} />
               <PaymentOptions onSelectPayment={onSelectPayment} />

@@ -18,16 +18,22 @@ import {
 import { toast, ToastContainer } from "react-toastify";
 import { useLocation, useNavigate } from "react-router-dom";
 import validator from "validator";
+import GoogleMaps from "../../components/location/AutoCompleteLocation";
 function ShippingAddress() {
   const { loading, error, user } = useSelector((state) => state.auth);
   const location = useLocation();
-  const { action,address } = location.state || {action:'null'};
-  if(!action){
-    navigate('/profile')
+  const { action, address } = location.state || { action: "null" };
+  const [distance, setDistance] = useState(null);
+  const [placeDetails, setPlaceDetails] = React.useState(null);
+  if (!action) {
+    navigate("/profile");
   }
   console.log(address);
+
   const initialState = {
     fullName: "",
+    placeDetails: placeDetails,
+    distance: distance,
     city: "",
     state: "",
     landmark: "",
@@ -45,14 +51,22 @@ function ShippingAddress() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("Form Data:", formData);
+
+    if (!distance || !placeDetails  ) {
+      toast.error("Please fill all fields");
+      return;
+    }
+    formData.distance = distance;
+    formData.placeDetails = placeDetails;
 
     const { fullName, city, state, landmark, pinCode, phoneNumber } = formData;
+    console.log("Form Data:", formData);
     if (
       validator.isEmpty(fullName) ||
-      validator.isEmpty(city) ||
-      validator.isEmpty(state) ||
-      validator.isEmpty(landmark)
+      // validator.isEmpty(city) ||
+      // validator.isEmpty(state) ||
+      validator.isEmpty(landmark) ||
+      validator.isEmpty(placeDetails)
     ) {
       toast.error("Please fill all fields");
       return;
@@ -69,8 +83,9 @@ function ShippingAddress() {
       toast.error("Please enter a valid postal code");
       return;
     }
+    console.log(formData);
     if (address) {
-      console.log(address)
+      console.log(address);
       const res = await dispatch(
         EditShippingAddress(user._id, address._id, formData)
       );
@@ -121,7 +136,7 @@ function ShippingAddress() {
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
+                {/* <TextField
                   fullWidth
                   label="City"
                   name="city"
@@ -129,9 +144,15 @@ function ShippingAddress() {
                   onChange={handleChange}
                   variant="outlined"
                   required
+                /> */}
+                <GoogleMaps
+                  placeDetails={placeDetails}
+                  setPlaceDetails={setPlaceDetails}
+                  setDistance={setDistance}
+                  formData={formData}
                 />
               </Grid>
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <TextField
                   fullWidth
                   label="State"
@@ -141,7 +162,7 @@ function ShippingAddress() {
                   variant="outlined"
                   required
                 />
-              </Grid>
+              </Grid> */}
               <Grid item xs={12}>
                 <TextField
                   fullWidth
