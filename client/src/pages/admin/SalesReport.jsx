@@ -18,7 +18,6 @@ import { useTheme } from "@emotion/react";
 import { tokens } from "../../theme";
 import jsPDF from "jspdf";
 import * as XLSX from "xlsx";
-import autoTable from "jspdf-autotable";
 import StatBox from "../../components/admin/statsBox/StatBox";
 
 function SalesReport() {

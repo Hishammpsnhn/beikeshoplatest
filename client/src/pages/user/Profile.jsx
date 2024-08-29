@@ -130,7 +130,7 @@ function Profile() {
 
           // Update the orders state
           setOrders(
-            orders.map((order) =>
+            orders?.map((order) =>
               order._id === orderId ? data.updatedOrder : order
             )
           );
@@ -145,7 +145,7 @@ function Profile() {
   useEffect(() => {
     async function getUserOrder() {
       const data = await getOrders(user?._id);
-      setOrders(data.orders);
+      setOrders(data?.orders);
     }
     getUserOrder();
   }, []);
@@ -319,7 +319,7 @@ function Profile() {
               paymentStatus={order?.paymentStatus}
               paymentMethod={order?.paymentMethod}
               profile={true}
-              orderId={order._id}
+              orderId={order?._id}
               handleCancelOrder={handleCancelOrder}
               userId={user._id}
               finalAmount={order?.finalAmount}

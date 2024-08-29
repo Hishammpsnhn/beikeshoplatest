@@ -27,6 +27,7 @@ import { toast } from "react-toastify";
 import CircularProgress from "@mui/material/CircularProgress";
 import CustomAlert from "../../components/alert/CustomAlert";
 import FormDialog from "../../components/FormDialog/FormDialog";
+import jsPDF from "jspdf";
 
 const BASE_URL = "http://localhost:3000/";
 function PlaceOrderDetails() {
@@ -50,6 +51,85 @@ function PlaceOrderDetails() {
 
   const handleCancelOrderClick = () => {
     setAlertOpen(true);
+  };
+
+  //handle for download invoice bil
+  const handleInvoiceDownload = () => {
+    // Create a new jsPDF instance
+    const doc = new jsPDF();
+  
+    // Mock invoice data
+    const invoiceData = {
+      invoiceNumber: order?._id || "INV-12345",
+      date: new Date(order?.createdAt).toLocaleDateString() || "2024-08-29",
+      customer: order?.address?.fullName || "John Doe",
+      billingAddress: {
+        street: order?.address?.location || "123 Main St",
+        zip: order?.address?.pincode || "12345",
+      },
+      items: [
+        {
+          description: order?.product[0].product?.name,
+          quantity: order?.product[0].quantity,
+          price: order?.totalAmount,
+        },
+      ],
+      totalAmount:order?.totalAmount
+    };
+  
+    // Set up the PDF document
+    doc.setFontSize(20);
+    doc.text("Invoice", 20, 20);
+  
+    // Invoice details
+    doc.setFontSize(12);
+    doc.text(`Invoice Number: ${invoiceData.invoiceNumber}`, 20, 40);
+    doc.text(`Date: ${invoiceData.date}`, 20, 50);
+    doc.text(`Customer: ${invoiceData.customer}`, 20, 60);
+  
+    // Billing Address
+    doc.setFontSize(12);
+    doc.text("Billing Address:", 20, 70);
+    doc.text(`${invoiceData.billingAddress.street}`, 20, 80);
+    doc.text(
+      ` ${invoiceData.billingAddress.zip}`,
+      20,
+      90
+    );
+  
+    // Add a line break
+    doc.text(
+      "---------------------------------------------------------------------",
+      20,
+      110
+    );
+  
+    // Add invoice items
+    invoiceData.items.forEach((item, index) => {
+      const itemYPosition = 120 + index * 10;
+      doc.text(
+        `${item.description} - Quantity: ${item.quantity} - Price: ${item.price} `,
+        20,
+        itemYPosition
+      );
+    });
+  
+    // Add total amount
+    const totalYPosition = 120 + invoiceData.items.length * 10 + 10;
+    doc.text(
+      "---------------------------------------------------------------------",
+      20,
+      totalYPosition
+    );
+    doc.setFontSize(14);
+    doc.text(
+      `Total Amount: ${invoiceData.totalAmount} `,
+      20,
+      totalYPosition + 10
+    );
+  
+    // Save the PDF and trigger download
+    doc.save(`Invoice_${invoiceData.invoiceNumber}.pdf`);
   };
   const handleCancelOrder = async (id, name) => {
     try {
@@ -148,6 +228,9 @@ function PlaceOrderDetails() {
         </Container>
       ) : (
         <Container sx={{ marginTop: "20px" }}>
+          <Button variant="outlined" onClick={handleInvoiceDownload}>
+            Invoice Download
+          </Button>
           <Typography variant="h6">Delivered Address</Typography>
           <AddressDetails
             address={address}
