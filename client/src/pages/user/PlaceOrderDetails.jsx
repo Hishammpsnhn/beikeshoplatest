@@ -57,7 +57,7 @@ function PlaceOrderDetails() {
   const handleInvoiceDownload = () => {
     // Create a new jsPDF instance
     const doc = new jsPDF();
-  
+
     // Mock invoice data
     const invoiceData = {
       invoiceNumber: order?._id || "INV-12345",
@@ -74,36 +74,32 @@ function PlaceOrderDetails() {
           price: order?.totalAmount,
         },
       ],
-      totalAmount:order?.totalAmount
+      totalAmount: order?.totalAmount,
     };
-  
+
     // Set up the PDF document
     doc.setFontSize(20);
     doc.text("Invoice", 20, 20);
-  
+
     // Invoice details
     doc.setFontSize(12);
     doc.text(`Invoice Number: ${invoiceData.invoiceNumber}`, 20, 40);
     doc.text(`Date: ${invoiceData.date}`, 20, 50);
     doc.text(`Customer: ${invoiceData.customer}`, 20, 60);
-  
+
     // Billing Address
     doc.setFontSize(12);
     doc.text("Billing Address:", 20, 70);
     doc.text(`${invoiceData.billingAddress.street}`, 20, 80);
-    doc.text(
-      ` ${invoiceData.billingAddress.zip}`,
-      20,
-      90
-    );
-  
+    doc.text(` ${invoiceData.billingAddress.zip}`, 20, 90);
+
     // Add a line break
     doc.text(
       "---------------------------------------------------------------------",
       20,
       110
     );
-  
+
     // Add invoice items
     invoiceData.items.forEach((item, index) => {
       const itemYPosition = 120 + index * 10;
@@ -113,7 +109,7 @@ function PlaceOrderDetails() {
         itemYPosition
       );
     });
-  
+
     // Add total amount
     const totalYPosition = 120 + invoiceData.items.length * 10 + 10;
     doc.text(
@@ -127,7 +123,7 @@ function PlaceOrderDetails() {
       20,
       totalYPosition + 10
     );
-  
+
     // Save the PDF and trigger download
     doc.save(`Invoice_${invoiceData.invoiceNumber}.pdf`);
   };
@@ -228,9 +224,11 @@ function PlaceOrderDetails() {
         </Container>
       ) : (
         <Container sx={{ marginTop: "20px" }}>
-          <Button variant="outlined" onClick={handleInvoiceDownload}>
-            Invoice Download
-          </Button>
+          {order?.orderStatus === "delivered" && (
+            <Button variant="outlined" onClick={handleInvoiceDownload}>
+              Invoice Download
+            </Button>
+          )}
           <Typography variant="h6">Delivered Address</Typography>
           <AddressDetails
             address={address}
