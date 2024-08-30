@@ -1,3 +1,4 @@
+import Category from "../model/categorySchema.js";
 import Orders from "../model/orderSchema.js";
 import Products from "../model/ProductSchema.js";
 import { getStartAndEndOfWeek } from "../utils/weekDataCalc.js";
@@ -190,11 +191,12 @@ export const getYearOrdersData = async (req, res) => {
   }
 };
 
-// @desc    get Top 10 product
-// @route   GET /api/dashboard/week
+// @desc    Get Top 10 products
+// @route   GET /api/dashboard/getTopProducts
 // @access  Private
-export const getTop10Product =async (req, res) => {
+export const getTop10Product = async (req, res) => {
   try {
+    // Get top products with their counts
     const topproducts = await Orders.aggregate([
       {
         $match: {
@@ -202,8 +204,11 @@ export const getTop10Product =async (req, res) => {
         },
       },
       {
+        $unwind: "$product",
+      },
+      {
         $group: {
-          _id: "$product.product",
+          _id: "$product.product", 
           count: {
             $sum: 1,
           },
@@ -219,8 +224,26 @@ export const getTop10Product =async (req, res) => {
       },
     ]);
 
+    const productIds = topproducts.map((item) => item._id);
+    const counts = topproducts.reduce((acc, item) => {
+      acc[item._id] = item.count;
+      return acc;
+    }, {});
+
+
+    const products = await Products.find(
+      { _id: { $in: productIds } },
+      { name: 1, price: 1, averageRating: 1 }
+    );
+
+    // Merge product details with counts
+    const productsWithCount = products.map((product) => ({
+      ...product.toObject(),
+      count: counts[product._id] || 0,
+    }));
+
     res.status(200).json({
-      data: topproducts,
+      data: productsWithCount,
     });
   } catch (error) {
     res.status(500).json({
@@ -230,9 +253,9 @@ export const getTop10Product =async (req, res) => {
 };
 
 // @desc    get Top 10 Categories
-// @route   GET /api/dashboard/week
+// @route   GET /api/dashboard/getTopCategory
 // @access  Private
-export const getTop10Category =async (req, res) => {
+export const getTop10Category = async (req, res) => {
   try {
     const topproducts = await Orders.aggregate([
       {
@@ -240,6 +263,7 @@ export const getTop10Category =async (req, res) => {
           orderStatus: "delivered",
         },
       },
+      
       {
         $group: {
           _id: "$product.product",
@@ -261,11 +285,18 @@ export const getTop10Category =async (req, res) => {
       path: "_id",
       select: "category",
     });
-
+    console.log("pop",populatedProducts);
     // Extract categories from the populated products
     const categories = populatedProducts.map((item) => item._id.category);
+    const uniqueCategoryIds = [...new Set(categories)];
+    console.log(uniqueCategoryIds);
+    const category = await Category.find(
+      { _id: { $in: uniqueCategoryIds } },
+      { category: 1 }
+    );
 
-    return res.json(categories);
+
+    return res.json(category);
   } catch (error) {
     res.status(500).json({
       error: error.message,

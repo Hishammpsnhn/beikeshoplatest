@@ -19,7 +19,7 @@ import { tokens } from "../../theme";
 import jsPDF from "jspdf";
 import * as XLSX from "xlsx";
 import StatBox from "../../components/admin/statsBox/StatBox";
-
+import "jspdf-autotable";
 function SalesReport() {
   const pdfRef = useRef();
   const theme = useTheme();

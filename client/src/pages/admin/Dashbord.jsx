@@ -19,7 +19,13 @@ import { useEffect, useState } from "react";
 // import BarChart from "../../components/admin/barchart/BarChart";
 import AdminSubHeader from "../../components/admin/Header/AdminSubHeader";
 import LineChart from "../../components/admin/barchart/BarChart";
-import { dashboardLineGraph } from "../../actions/dashboard";
+import {
+  dashboardLineGraph,
+  getTopCategories,
+  getTopProduct,
+  getTopProuct,
+} from "../../actions/dashboard";
+import TopModal from "../../components/admin/modalTop/TopModal";
 
 // import {
 //   adminDashboard,
@@ -38,14 +44,15 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const [sort, setSort] = React.useState('week');
-  const [data,setData] = useState([]);
+  const [openProduct, setOpenProduct] = useState(false);
+  const handleOpenProduct = () => setOpenProduct(true);
+  const [openCategory, setOpenCategory] = useState(false);
+  const handleOpenCategory = () => setOpenCategory(true);
+  const [sort, setSort] = React.useState("week");
+  const [data, setData] = useState([]);
 
   const handleChange = (event) => {
-    console.log(event.target.value)
+    console.log(event.target.value);
     setSort(event.target.value);
   };
   // useEffect(async() => {
@@ -56,10 +63,23 @@ const Dashboard = () => {
   //   }
 
   // }, [sort]);
-  
+  const handleStateProduct = async () => {
+    setData([]);
+    const data = await getTopProduct();
+    if (data) {
+      setData(data);
+    }
+  };
+  const handleStateCategory = async () => {
+    setData([]);
+    const data = await getTopCategories();
+    if (data) {
+      setData(data);
+    }
+  };
+
   useEffect(() => {
     if (!user?.isAdmin || !isAuthenticated) navigate("/");
-   
   }, [dispatch]);
 
   return (
@@ -105,9 +125,12 @@ const Dashboard = () => {
             display="flex"
             alignItems="center"
             justifyContent="center"
-            onClick={() => handleOpen()}
+            onClick={() => {
+              handleOpenProduct();
+              handleStateProduct();
+            }}
           >
-            <StatBox />
+            <StatBox title={"Top 10 Product"} />
           </Box>
           <Box
             gridColumn="5 / 9"
@@ -115,9 +138,12 @@ const Dashboard = () => {
             display="flex"
             alignItems="center"
             justifyContent="center"
-            onClick={() => handleOpen()}
+            onClick={() => {
+              handleOpenCategory();
+              handleStateCategory();
+            }}
           >
-            <StatBox />
+            <StatBox title={"Top 10 Category"} />
           </Box>
           <Box
             gridColumn="9 / 13"
@@ -125,9 +151,9 @@ const Dashboard = () => {
             display="flex"
             alignItems="center"
             justifyContent="center"
-            onClick={() => handleOpen()}
+            // onClick={() => handleOpen()}
           >
-            <StatBox />
+            <StatBox title={"Top 10 Product"} />
           </Box>
 
           {/* ROW 2 */}
@@ -159,9 +185,9 @@ const Dashboard = () => {
                       size="small"
                       onChange={handleChange}
                     >
-                      <MenuItem value='week'>Weekly</MenuItem>
-                      <MenuItem value='month'>Monthly</MenuItem>
-                      <MenuItem value='year'>Yearly</MenuItem>
+                      <MenuItem value="week">Weekly</MenuItem>
+                      <MenuItem value="month">Monthly</MenuItem>
+                      <MenuItem value="year">Yearly</MenuItem>
                     </Select>
                   </FormControl>
                 </Box>
@@ -176,11 +202,24 @@ const Dashboard = () => {
             </Box>
             <Box height="300px" m="-20px 0 0 0">
               {/* <BarChart isDashboard={true} /> */}
-              <LineChart isDashboard={true} sort={sort} data={data}/>
+              <LineChart isDashboard={true} sort={sort} />
             </Box>
           </Box>
         </Box>
       </Box>
+      <TopModal
+        open={openProduct}
+        setOpen={setOpenProduct}
+        handleOpen={handleOpenProduct}
+        product={true}
+        products={data}
+      />
+      <TopModal
+        open={openCategory}
+        setOpen={setOpenCategory}
+        handleOpen={handleOpenCategory}
+        products={data}
+      />
     </>
   );
 };
