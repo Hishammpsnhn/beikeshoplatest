@@ -215,7 +215,7 @@ export const addOffer = async (req, res) => {
 };
 
 
-// @desc    Search products by name
+// @desc    search products by name
 // @route   GET /api/admin/products/search
 // @access  Public
 export const searchProductsByName = async (req, res) => {
