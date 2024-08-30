@@ -57,7 +57,6 @@ export const addProduct = (formdata) => async (dispatch) => {
   const userInfo = JSON.parse(data);
   dispatch(fetchProductStart());
   try {
-    console.log(formdata);
     const { data } = await axios.post(
       `${url}/api/admin/product`,
       {
