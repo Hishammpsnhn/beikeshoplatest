@@ -40,11 +40,10 @@ export default function FormDialog({ open, setOpen, orderId,setOrder }) {
           },
         }}
       >
-        <DialogTitle>Subscribe</DialogTitle>
+        <DialogTitle>Return Reason</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            To subscribe to this website, please enter your email address here.
-            We will send updates occasionally{orderId}
+            Enter your reason for Return and mention your feedback
           </DialogContentText>
           <TextField
             autoFocus
@@ -60,7 +59,9 @@ export default function FormDialog({ open, setOpen, orderId,setOrder }) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button type="submit">Subscribe</Button>
+          <Button type="submit">
+            confirm
+          </Button>
         </DialogActions>
       </Dialog>
     </React.Fragment>

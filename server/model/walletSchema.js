@@ -7,7 +7,7 @@ const transactionSchema = new mongoose.Schema(
       required: true,
       enum: ["credit", "debit"],
     },
-    date: { type: Date, required: true },
+    date: { type: Date,},
     description: { type: String },
   },
   { timestamps: true },

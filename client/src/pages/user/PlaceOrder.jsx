@@ -54,6 +54,10 @@ function PlaceOrder() {
     if (coupon && paymentOption === "wallet") {
       toast.error("Can't use coupon with Wallet");
     }
+     if(discountTotalAmount > 1000 && paymentOption == "cod") {
+       toast.error("Order about 1000 not allowed for cod");
+       return;
+     }
 
     if (paymentOption === "online payment") {
       const data = await onlinePaymentOrder(discountTotalAmount+shipping);

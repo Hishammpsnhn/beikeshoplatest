@@ -1,4 +1,5 @@
 import axios from "axios";
+import {toast} from 'react-toastify'
 import {
   initial,
   loginFailure,
@@ -76,6 +77,7 @@ export const verifyOtp = (otp, formData) => async (dispatch) => {
     if (error.response && error.response.data) {
       const errorMessage = error.response.data.message;
       console.error("Server Error Message:", errorMessage);
+      toast.error(errorMessage)
       dispatch(loginFailure(errorMessage));
     } else {
       console.error("Generic Error");

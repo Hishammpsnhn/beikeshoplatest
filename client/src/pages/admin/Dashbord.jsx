@@ -120,7 +120,7 @@ const Dashboard = () => {
           {/* ROW 1 */}
 
           <Box
-            gridColumn="1 / 5"
+            gridColumn="1 / 6"
             backgroundColor={"#461246"}
             display="flex"
             alignItems="center"
@@ -133,7 +133,7 @@ const Dashboard = () => {
             <StatBox title={"Top 10 Product"} />
           </Box>
           <Box
-            gridColumn="5 / 9"
+            gridColumn="6 / 11"
             backgroundColor={"#461246"}
             display="flex"
             alignItems="center"
@@ -145,16 +145,7 @@ const Dashboard = () => {
           >
             <StatBox title={"Top 10 Category"} />
           </Box>
-          <Box
-            gridColumn="9 / 13"
-            backgroundColor={"#461246"}
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            // onClick={() => handleOpen()}
-          >
-            <StatBox title={"Top 10 Product"} />
-          </Box>
+      
 
           {/* ROW 2 */}
 

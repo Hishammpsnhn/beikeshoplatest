@@ -39,6 +39,7 @@ function ProdcutBref({
   admin,
   handleCancelOrderClick,
   paymentMethod,
+  returnStatus,
 }) {
   const [quantity, setQuantity] = useState(qty);
   const [qtyLoading, setQtyLoading] = useState(false);
@@ -150,17 +151,21 @@ function ProdcutBref({
         {profile &&
           paymentMethod === "online payment" &&
           !paymentStatus &&
-          !admin && (
-            <Typography color='red'>
-             Payment Failed
-            </Typography>
+          !admin && <Typography color="red">Payment Failed</Typography>}
+        {profile &&
+          orderStatus === "delivered" &&
+          paymentStatus &&
+          !admin &&(
+            <HoverRating
+              userId={userId}
+              productId={productId}
+              userRating={userRating}
+            />
           )}
-        {profile && orderStatus === "delivered" && paymentStatus && !admin && (
-          <HoverRating
-            userId={userId}
-            productId={productId}
-            userRating={userRating}
-          />
+        {returnStatus === "picked" && (
+          <Typography variant="body2" color="error">
+            Returned
+          </Typography>
         )}
         {profile && orderStatus === "cancelled" && (
           <Typography variant="body2" color="error">

@@ -323,6 +323,7 @@ function Profile() {
               handleCancelOrder={handleCancelOrder}
               userId={user._id}
               finalAmount={order?.finalAmount}
+              returnStatus={order?.returnPickupStatus}
               productId={order?.product[0].product._id}
               ratings={order?.product[0].product.ratings}
               handleCancelOrderClick={handleCancelOrderClick}

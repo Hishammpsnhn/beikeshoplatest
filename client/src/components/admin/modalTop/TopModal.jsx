@@ -42,12 +42,13 @@ export default function TopModal({
       >
         <Box sx={style}>
           <Typography variant="h6" component="h2" gutterBottom>
-            Product List
+          { product ? 'Product List':'Category List'}
           </Typography>
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 350 }} aria-label="simple table">
               <TableHead>
                 <TableRow>
+                  <TableCell>SI.NO</TableCell>
                   <TableCell>Name</TableCell>
                   {product && (
                     <>
@@ -59,8 +60,11 @@ export default function TopModal({
                 </TableRow>
               </TableHead>
               <TableBody>
-                {products.map((product) => (
+                {products.map((product,i) => (
                   <TableRow key={product.name}>
+                    <TableCell component="th" scope="row">
+                      {i+1}
+                    </TableCell>
                     <TableCell component="th" scope="row">
                       {product.name || product?.category}
                     </TableCell>

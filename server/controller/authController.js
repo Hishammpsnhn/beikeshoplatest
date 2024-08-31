@@ -205,6 +205,7 @@ export const verifyOtp = async (req, res) => {
               amount: 150,
               transactionType: "credit",
               description: "referal",
+              date:Date.now(),
             },
           ],
         });
