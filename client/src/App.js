@@ -30,6 +30,7 @@ import Wallet from "./pages/user/Wallet.jsx";
 import Offer from "./pages/admin/Offer.jsx";
 import SalesReport from "./pages/admin/SalesReport.jsx";
 import OrderDetails from "./pages/admin/OrderDetails.jsx";
+import MyOrders from "./pages/user/MyOrders.jsx";
 
 const theme = createMuiTheme({
   palette: {
@@ -85,6 +86,7 @@ function App() {
           <Route path="/orderDetails/:id" element={<PlaceOrderDetails />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/wallet" element={<Wallet />} />
+          <Route path="/my_orders" element={<MyOrders />} />
 
           {/* Admin Routes */}
           <Route path="/dashboard" element={<Dashboard />} />

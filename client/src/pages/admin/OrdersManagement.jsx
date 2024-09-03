@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Typography, useTheme } from "@mui/material";
+import { Box, Button, Switch, Typography, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/admin/Header/AdminSubHeader";
@@ -40,9 +40,7 @@ const OrderManagement = () => {
   }));
 
   const handleUpdate = async (id, obj) => {
-    console.log(id, obj);
     const data = await updateOrders(id, obj);
-    console.log(data);
     if (data.updatedOrder) {
       const newOrders = orders.map((order) =>
         order._id === id ? data.updatedOrder : order
@@ -108,7 +106,15 @@ const OrderManagement = () => {
       headerName: "Payment Info",
       flex: 1,
       renderCell: ({ row }) => (
-        <>{row.paymentStatus ? <CheckCircleOutlineIcon /> : <CloseIcon />}</>
+        <Switch
+          disabled
+          checked={row.paymentStatus}
+          onChange={(event) => {
+            event.stopPropagation(); // Prevent row click
+            handleUpdate(row.id, { paymentStatus: event.target.checked });
+          }}
+          color="success"
+        />
       ),
     },
     {
@@ -138,7 +144,7 @@ const OrderManagement = () => {
     {
       field: "accessLevel",
       headerName: "Manage",
-      flex: 1,
+      flex: 2,
       renderCell: ({ row }) => (
         <Box display="flex" justifyContent="center" gap="10px">
           {row.orderStatus === "pending" && (
@@ -148,6 +154,7 @@ const OrderManagement = () => {
                   event.stopPropagation();
                   handleUpdate(row.id, { orderStatus: "delivered" });
                 }}
+                sx={{ padding: "10px" }}
                 variant="contained"
               >
                 Deliver
@@ -219,7 +226,7 @@ const OrderManagement = () => {
               </Button>
             </>
           )}
-          {row.orderStatus === "delivered" && !row.paymentStatus && (
+          {row.orderStatus === "delivered" && row.paymentMethod != 'online payment' && !row.paymentStatus && (
             <Button
               onClick={(event) => {
                 event.stopPropagation();
