@@ -1,41 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { ResponsivePie } from "@nivo/pie";
+import { getTopProduct } from "../../actions/dashboard";
 
-const data = [
-    {
-      "id": "css",
-      "label": "css",
-      "value": 151,
-      "color": "hsl(262, 70%, 50%)"
-    },
-    {
-      "id": "go",
-      "label": "go",
-      "value": 103,
-      "color": "hsl(234, 70%, 50%)"
-    },
-    {
-      "id": "java",
-      "label": "java",
-      "value": 575,
-      "color": "hsl(78, 70%, 50%)"
-    },
-    {
-      "id": "python",
-      "label": "python",
-      "value": 50,
-      "color": "hsl(338, 70%, 50%)"
-    },
-    {
-      "id": "scala",
-      "label": "scala",
-      "value": 186,
-      "color": "hsl(126, 70%, 50%)"
-    }
-  ]
 function PieGraph() {
+  const [mappedData, setMappedData] = useState([]);
+
+  useEffect(() => {
+    const getTop = async () => {
+      const data = await getTopProduct();
+      console.log(data);
+      if (data) {
+        const mappedData = data.map((item) => ({
+          id: item.name,
+          label: item.name,
+          value: item.count,
+          color: `hsl(${Math.floor(Math.random() * 360)}, 70%, 50%)`,
+        }));
+        setMappedData(mappedData);
+      }
+    };
+    getTop();
+  }, []);
+  console.log("maped",mappedData)
+  if(mappedData.length <= 0){
+    return <div>Loading...</div>
+  }
   return (
     <ResponsivePie
-      data={data}
+      data={mappedData}
       margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
       innerRadius={0.5}
       padAngle={0.7}
@@ -78,49 +70,31 @@ function PieGraph() {
       fill={[
         {
           match: {
-            id: "ruby",
+            id: "Men Printed Regular Fit Shirt with Spread Collar",
           },
           id: "dots",
         },
         {
           match: {
-            id: "c",
+            id: "Men Zip-Front Regular Fit Jacket",
           },
           id: "dots",
         },
         {
           match: {
-            id: "go",
+            id: "Floral Print Slim Fit Shirt",
           },
           id: "dots",
         },
         {
           match: {
-            id: "python",
+            id: "Men Regallo Mid-Wash Skinny",
           },
           id: "dots",
         },
         {
           match: {
-            id: "scala",
-          },
-          id: "lines",
-        },
-        {
-          match: {
-            id: "lisp",
-          },
-          id: "lines",
-        },
-        {
-          match: {
-            id: "elixir",
-          },
-          id: "lines",
-        },
-        {
-          match: {
-            id: "javascript",
+            id: "Men Fitted Track Pant",
           },
           id: "lines",
         },
@@ -128,11 +102,11 @@ function PieGraph() {
       legends={[
         {
           anchor: "bottom",
-          direction: "row",
+          direction: "column",
           justify: false,
-          translateX: 0,
-          translateY: 56,
-          itemsSpacing: 0,
+          translateX: 150,
+          translateY: 70,
+          itemsSpacing: 5,
           itemWidth: 100,
           itemHeight: 18,
           itemTextColor: "#999",

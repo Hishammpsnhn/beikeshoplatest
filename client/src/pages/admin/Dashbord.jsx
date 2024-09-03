@@ -26,6 +26,7 @@ import {
   getTopProuct,
 } from "../../actions/dashboard";
 import TopModal from "../../components/admin/modalTop/TopModal";
+import PieGraph from "../../components/pieGraph/PieGraph";
 
 // import {
 //   adminDashboard,
@@ -84,7 +85,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <Box m="20px" width="100%">
+      <Box m="20px" width="100% " sx={{maxHeight:'100vh',overflowY:'scroll'}}>
         {/* HEADER */}
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <AdminSubHeader
@@ -194,6 +195,7 @@ const Dashboard = () => {
             <Box height="300px" m="-20px 0 0 0">
               {/* <BarChart isDashboard={true} /> */}
               <LineChart isDashboard={true} sort={sort} />
+              <PieGraph/>
             </Box>
           </Box>
         </Box>
