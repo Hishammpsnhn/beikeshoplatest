@@ -42,6 +42,23 @@ export const getAllCoupons = async () => {
     }
   }
 };
+export const getActiveCoupons = async () => {
+  try {
+    const  {data}  = await axios.get(`${url}/api/coupon_code/active_coupon`);
+
+    return data;
+  } catch (error) {
+    console.error("Error:", error);
+    if (error.response && error.response.data) {
+      const errorMessage = error.response.data.message;
+      console.error("Server Error Message:", errorMessage);
+      // dispatch(fetchCategoryFailure(errorMessage));
+    } else {
+      console.error("Generic Error");
+      // dispatch(fetchCategoryFailure("Something went wrong"));
+    }
+  }
+};
 
 export const getCouponsByCode = async (code) => {
   try {

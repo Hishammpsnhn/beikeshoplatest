@@ -102,7 +102,7 @@ export const createOrder = async (req, res) => {
         }
         const deliveryCharge = address.distance > 20 ? parseInt(address.distance * 0.5/items.length) : 0;
 
-        const finalAmount = item.price - lastdiscount + deliveryCharge;
+        const finalAmount = (item.price*item.quantity) - lastdiscount + deliveryCharge;
         console.log("finalAmount",finalAmount)
         console.log("totalAmount",totalAmount);
         // console.log("itemTotal",itemTotal)
@@ -120,7 +120,7 @@ export const createOrder = async (req, res) => {
           },
           deliveryCharge: deliveryCharge,
           totalAmount:item.price,
-          finalAmount: finalAmount,
+          finalAmount: finalAmount ,
           discount: lastdiscount,
           product: [
             {

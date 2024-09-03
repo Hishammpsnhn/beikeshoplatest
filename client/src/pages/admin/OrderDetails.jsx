@@ -77,9 +77,8 @@ function OrderDetails() {
       : order?.orderReturnStatus === "completed"
       ? 3
       : 0
-      ?order?.orderReturnStatus === "rejected":2
-      ;
-
+      ? order?.orderReturnStatus === "rejected"
+      : 2;
   useEffect(() => {
     async function getProductDetail() {
       setLoading(true);
@@ -148,7 +147,7 @@ function OrderDetails() {
             </Box>
             <Paper elevation={6} sx={{ width: "40%", padding: "20px" }}>
               <Typography variant="body1">
-                Amount : {order?.finalAmount}
+                Amount : {order?.product[0].quantity * order?.finalAmount}
               </Typography>
               <Typography variant="body1">
                 Payment Method : {order?.paymentMethod}

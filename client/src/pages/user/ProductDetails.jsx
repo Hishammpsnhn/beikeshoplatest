@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import ProductName from "../../components/Product/productName/ProductName";
 import ProductDetailsSection from "../../components/Product/productDetail/ProductDetailsSection";
 import SelectSize from "../../components/Product/selectSize/SelectSize";
-import { Box, Button, Container } from "@mui/material";
+import { Box, Button, Container, Grid, useMediaQuery } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { oneProduct } from "../../actions/productActions";
@@ -14,7 +14,9 @@ import { toast, ToastContainer } from "react-toastify";
 
 import ReactImageMagnify from "react-image-magnify";
 import { addCart } from "../../actions/cartActions";
+
 const BASE_URL = "http://localhost:3000/";
+
 function ProductDetails() {
   const { product, loading } = useSelector((state) => state.products);
   const { user } = useSelector((state) => state.auth);
@@ -24,18 +26,21 @@ function ProductDetails() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+
   const handleCart = () => {
     if (!user) {
       navigate("/login");
       return;
     }
     if (selectedSize === null) {
-      toast.error("select size");
+      toast.error("Select a size");
       return;
     }
     const data = dispatch(addCart(user._id, product._id, selectedSize));
     if (data) navigate("/cart");
   };
+
   useEffect(() => {
     if (!product?._id || product?._id !== id) {
       dispatch(oneProduct(id));
@@ -43,101 +48,98 @@ function ProductDetails() {
   }, [dispatch, id, product]);
 
   if (loading) {
-    return <div>Loading......</div>;
+    return <div>Loading...</div>;
   }
 
   return (
     <>
       <Header1 />
       <Nav />
-      <Container maxWidth="lg" sx={{ display: "flex", marginTop: "22px" }}>
-        <Box sx={{ width: "50%" }}>
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Box>
-              {product?.images.map((item, index) => (
-                <div key={index}>
-                  <img
-                    style={{
-                      width: "70px",
-                      height: "70px",
-                      objectFit: "contain",
-                      marginBottom: "10px",
-                    }}
-                    src={`${BASE_URL}${item}`}
-                    alt={item}
-                  />
-                </div>
-              ))}
+      <Container maxWidth="lg" sx={{ marginTop: "22px" }}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={6}>
+            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+              <Box>
+                {product?.images.map((item, index) => (
+                  <div key={index}>
+                    <img
+                      style={{
+                        width: "70px",
+                        height: "70px",
+                        objectFit: "contain",
+                        marginBottom: "10px",
+                      }}
+                      src={`${BASE_URL}${item}`}
+                      alt={item}
+                    />
+                  </div>
+                ))}
+              </Box>
+              <Box sx={{ flex: 1 }}>
+                <ReactImageMagnify
+                  {...{
+                    smallImage: {
+                      alt: "Wristwatch by Ted Baker London",
+                      isFluidWidth: true,
+                      src: `${BASE_URL}${product?.images[0]}`,
+                    },
+                    largeImage: {
+                      src: `${BASE_URL}${product?.images[0]}`,
+                      width: 1200,
+                      height: 1800,
+                    },
+                  }}
+                />
+              </Box>
             </Box>
-            <Box>
-              <ReactImageMagnify
-                {...{
-                  smallImage: {
-                    alt: "Wristwatch by Ted Baker London",
-                    isFluidWidth: true,
-                    src: `${BASE_URL}${product?.images[0]}`,
-                  },
-                  largeImage: {
-                    src: `${BASE_URL}${product?.images[0]}`,
-                    width: 1200,
-                    height: 1800,
-                  },
+            <Box
+              justifyContent="space-between"
+              display="flex"
+              marginTop="10px"
+              gap={isMobile ? "10px" : "150px"}
+              flexDirection={isMobile ? "column" : "row"}
+            >
+              <Button
+                variant="outlined"
+                startIcon={<AddShoppingCartIcon />}
+                onClick={handleCart}
+                sx={{
+                  padding: "15px",
+                  flexGrow: 1,
+                  minWidth: "150px",
                 }}
-              />
-              {/* <img
-                style={{ width: "100%" }}
-                src={`${BASE_URL}${product?.images[0]}`}
-                alt={product?.name}
-              /> */}
+              >
+                ADD to cart
+              </Button>
+              <Button
+                variant="contained"
+                onClick={handleCart}
+                startIcon={<ShoppingBagIcon />}
+                sx={{
+                  padding: "15px",
+                  flexGrow: 1,
+                  minWidth: "150px",
+                }}
+              >
+                BUY NOW
+              </Button>
             </Box>
-          </Box>
-          <Box
-            justifyContent="space-between"
-            display="flex"
-            marginTop="10px"
-            gap="150px"
-          >
-            <Button
-              variant="outlined"
-              startIcon={<AddShoppingCartIcon />}
-              onClick={handleCart}
-              sx={{
-                padding: "15px",
-                flexGrow: 1,
-                minWidth: "150px",
-              }}
-            >
-              ADD to cart
-            </Button>
-            <Button
-              variant="contained"
-              onClick={handleCart}
-              startIcon={<ShoppingBagIcon />}
-              sx={{
-                padding: "15px",
-                flexGrow: 1,
-                minWidth: "150px",
-              }}
-            >
-              BUY NOW
-            </Button>
-          </Box>
-          <SelectSize
-            sizes={product?.sizes}
-            setSelectedSize={setSelectedSize}
-          />
-        </Box>
-        <Box width={"50%"}>
-          <ProductName
-            name={product?.name}
-            price={product?.sizes[0]?.price}
-            offer={product?.offer}
-            rating={product?.averageRating}
-            selectedSize={selectedSize}
-          />
-          <ProductDetailsSection />
-        </Box>
-        {/* <ToastContainer /> */}
+            <SelectSize
+              sizes={product?.sizes}
+              setSelectedSize={setSelectedSize}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <ProductName
+              name={product?.name}
+              price={product?.sizes[0]?.price}
+              offer={product?.offer}
+              rating={product?.averageRating}
+              selectedSize={selectedSize}
+            />
+            <ProductDetailsSection />
+          </Grid>
+        </Grid>
       </Container>
     </>
   );

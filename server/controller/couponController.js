@@ -23,6 +23,20 @@ export const createCoupon = async (req, res) => {
   }
 };
 
+export const getActiveCoupons = async (req, res) => {
+  try {
+    const currentDate = new Date();
+
+    const coupons = await Coupons.find({
+      expDate: { $gte: currentDate },
+    });
+console.log(coupons)
+    res.status(200).json(coupons);
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to fetch coupons', error });
+  }
+};
+
 // Get all coupons
 export const getAllCoupons = async (req, res) => {
   try {
