@@ -23,7 +23,6 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import validateFormData from "../../utils/validation";
-import Cropper from "react-easy-crop";
 import CropperImg from "../../components/cropper/CropperImg";
 import TitlebarImageList from "../../components/imagelist/ImgList";
 

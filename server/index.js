@@ -68,6 +68,9 @@ app.use("/api/coupon_code", couponCode);
 app.use('/api/wallet',walletRoute)
 app.use("/api/dashboard",dashboardRoute)
 
+app.get('/',(req, res) => {
+  res.send("welcome to the service")
+})
 app.get("/api/check-server", (req, res) => {
   res.status(200).send({ message: "Server is running" });
 });
