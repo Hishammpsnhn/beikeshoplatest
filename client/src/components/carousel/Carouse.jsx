@@ -1,6 +1,6 @@
 import React from "react";
 import Carousel from "react-material-ui-carousel";
-import { Paper, Typography } from "@mui/material";
+import { Paper} from "@mui/material";
 
 function Carouse({ Banner1, Banner2, Banner3 }) {
   const items = [

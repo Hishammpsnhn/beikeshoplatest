@@ -1,8 +1,7 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, Typography} from "@mui/material";
 
-import ProgressCircle from "../progressCircle/ProgressCircle";
-import person from '@mui/icons-material/Person2'
-const StatBox = ({ title, amount, icon, progress, increase }) => {
+
+const StatBox = ({ title, amount }) => {
 
 
   return (

@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Box,
   Button,
@@ -6,7 +7,6 @@ import {
   Radio,
   FormControlLabel,
 } from "@mui/material";
-import React, { useState } from "react";
 import EditBtn from "@mui/icons-material/Edit";
 import DeleteBtn from "@mui/icons-material/Delete";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,14 +16,13 @@ import { useNavigate } from "react-router-dom";
 function AddressDetails({
   cart,
   address,
-  setSelectedAddress,
   selectedAddress,
   onSelect,
   placeOrder,
   placeOrderDetails,
   profile,
 }) {
-  console.log(address);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
@@ -61,7 +60,7 @@ function AddressDetails({
         <FormControlLabel
           control={
             <Radio
-              checked={selectedAddress == address._id}
+              checked={selectedAddress === address._id}
               onChange={() => {
                 onSelect(address._id, address?.distance);
               }}

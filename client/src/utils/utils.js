@@ -1,4 +1,4 @@
-import { toast } from "react-toastify";
+
 import validator, { isNumeric } from "validator";
 
 export const isValidUsername = (username) => {
@@ -6,7 +6,6 @@ export const isValidUsername = (username) => {
   const isValidCharacters = validator.matches(username, /^[a-zA-Z0-9_-]+$/);
   return isValidLength && isValidCharacters;
 };
-const phoneRegex = /^\(\d{3}\) \d{3}-\d{4}$/;
 export const validation = (data) => {
   if (!validator.isEmail(data.email)) return `Enter valid email address`;
   if (!isValidUsername(data.userName)) return `Enter valid UserName`;

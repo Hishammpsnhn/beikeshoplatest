@@ -5,8 +5,6 @@ import { tokens } from "../../theme";
 import Header from "../../components/admin/Header/AdminSubHeader";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import CloseIcon from "@mui/icons-material/Close";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import {
   getAllOrders,
   updateOrders,
@@ -16,7 +14,7 @@ import {
 const OrderManagement = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const { products, loading, error } = useSelector((state) => state.products);
+  const {  loading, error } = useSelector((state) => state.products);
   const { user, isAuthenticated } = useSelector((state) => state.auth);
   const [orders, setOrders] = useState([]);
   console.log(orders);
@@ -61,7 +59,7 @@ const OrderManagement = () => {
 
   useEffect(() => {
     if (!user?.isAdmin || !isAuthenticated) navigate("/");
-  }, [dispatch]);
+  }, [dispatch,user,isAuthenticated,navigate]);
 
   useEffect(() => {
     async function getAllOrder() {
@@ -226,7 +224,7 @@ const OrderManagement = () => {
               </Button>
             </>
           )}
-          {row.orderStatus === "delivered" && row.paymentMethod != 'online payment' && !row.paymentStatus && (
+          {row.orderStatus === "delivered" && row.paymentMethod !== 'online payment' && !row.paymentStatus && (
             <Button
               onClick={(event) => {
                 event.stopPropagation();

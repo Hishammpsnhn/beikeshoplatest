@@ -1,7 +1,7 @@
 import { useTheme } from "@emotion/react";
 import { tokens } from "../../../../theme";
 import React, { useState } from "react";
-import { Avatar, Box, Button, IconButton, Typography } from "@mui/material";
+import {  Box, Button, IconButton, Typography } from "@mui/material";
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Link, useNavigate } from "react-router-dom";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
@@ -10,11 +10,10 @@ import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
 import ReceiptOutlinedIcon from "@mui/icons-material/MoneyRounded";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import DiscountIcon from "@mui/icons-material/Discount";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch} from "react-redux";
 import { logout } from "../../../../reducers/authReducers";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {

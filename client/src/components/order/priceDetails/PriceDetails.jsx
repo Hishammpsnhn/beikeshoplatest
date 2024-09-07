@@ -7,7 +7,6 @@ function PriceDetails({
   totalAmount,
   itemsCount,
   coupon,
-  offer,
   totalPrice,
   shipping,
   cart,

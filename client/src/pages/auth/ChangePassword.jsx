@@ -13,7 +13,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import logo from "../../public/images/1661417516766.webp";
 import { useDispatch, useSelector } from "react-redux";
 import { change_password } from "../../actions/authActions";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import validator from "validator";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";

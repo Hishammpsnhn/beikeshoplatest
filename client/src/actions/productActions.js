@@ -1,7 +1,6 @@
 import axios from "axios";
 import {
   fetchProductStart,
-  addProductSuccess,
   deleteProductSuccess,
   fetchProductFailure,
   fetchProductSuccess,

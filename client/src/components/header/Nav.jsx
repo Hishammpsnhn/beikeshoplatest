@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import AdbIcon from "@mui/icons-material/Adb";
+import React, { useEffect } from "react";
 import {
   AppBar,
   Avatar,
@@ -17,7 +16,6 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import SettingsIcon from "@mui/icons-material/Settings";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import LogoutIcon from "@mui/icons-material/Logout";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -34,14 +32,13 @@ import WalletIcon from "@mui/icons-material/Wallet";
 import { getProductsList } from "../../actions/productActions";
 
 const pages = ["About Us", "Latest Product", "Contact Us"];
-const productsDropdown = ["Product 1", "Product 2", "Product 3"];
 const settings = ["Profile", "Cart", "Wishlist", "Wallet", "Logout"];
 
 function Nav() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [anchorElProducts, setAnchorElProducts] = React.useState(null);
-  const { isAuthenticated,user } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
 
   const { categories } = useSelector((state) => state.category);
   const dispatch = useDispatch();

@@ -3,18 +3,15 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import image from "../../../public/images/products/n0jzl_400.webp";
 import HoverRating from "../rating/Rating";
 import { updateCart } from "../../../actions/cartActions";
 import { toast } from "react-toastify";
 import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch } from "react-redux";
-import { updateOrders } from "../../../actions/orderActions";
 import { fetchCartStart } from "../../../reducers/cartReducers";
 import { useNavigate } from "react-router-dom";
 import StarIcon from "@mui/icons-material/Star";
-import { removeItemWishlist } from "../../../actions/wishlistAction";
 function ProdcutBref({
   cart,
   order,
@@ -28,10 +25,8 @@ function ProdcutBref({
   productId,
   size,
   orderStatus,
-  finalAmount,
   paymentStatus,
   orderId,
-  handleCancelOrder,
   ratings,
   availability,
   details,
@@ -44,7 +39,7 @@ function ProdcutBref({
   const [quantity, setQuantity] = useState(qty);
   const [qtyLoading, setQtyLoading] = useState(false);
 
-  const userRating = ratings?.find((item) => item?.userId == userId);
+  const userRating = ratings?.find((item) => item?.userId === userId);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -108,7 +103,7 @@ function ProdcutBref({
                   : navigate(`/productDetails/${productId}`);
               }}
               src={image}
-              alt="image"
+              alt="image_Unknown"
               style={{
                 width: "100%",
                 height: "100%",

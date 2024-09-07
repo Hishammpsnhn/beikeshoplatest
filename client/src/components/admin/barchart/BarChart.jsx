@@ -1,12 +1,7 @@
 import { Box, CircularProgress, useTheme } from "@mui/material";
 import { ResponsiveLine } from "@nivo/line";
 import { tokens } from "../../../theme";
-// import { mockLineData as data } from '../../../mockdata'; // Assuming mockLineData is the static mock data for the line chart
-import {
-  weeklyOrdersData,
-  monthlyOrdersData,
-  yearlyOrdersData,
-} from "../../../mockdata";
+
 import { useEffect, useState } from "react";
 import { dashboardLineGraph } from "../../../actions/dashboard";
 const LineChart = ({ isDashboard, sort }) => {

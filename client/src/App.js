@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Route, Routes, useNavigate } from "react-router-dom";
-import axios from "axios";
+import React, {  useState } from "react";
+import { Route, Routes } from "react-router-dom";
 import Home from "./pages/user/Home";
 import SignupPage from "./pages/auth/SignupPage";
 import Login from "./pages/auth/LoginPage";
@@ -13,8 +12,7 @@ import AdminSidebar from "./components/admin/constant/sidebar/AdminSidebar";
 import ProductList from "./pages/admin/ProductList";
 import ProductManagement from "./pages/admin/ProductManagement";
 import UsersManagement from "./pages/admin/UsersManagement";
-import Error500Page from "./pages/Error500";
-import { useDispatch, useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
 import { createMuiTheme, ThemeProvider } from "@mui/material";
 import PlaceOrder from "./pages/user/PlaceOrder";
 import Cart from "./pages/user/Cart";
@@ -49,8 +47,7 @@ const theme = createMuiTheme({
 function App() {
   const [ForgotPassword, setForgotPassword] = useState(false);
 
-  const dispatch = useDispatch();
-  const { user, isAuthenticated, loading, error } = useSelector(
+  const { user} = useSelector(
     (state) => state.auth
   );
 

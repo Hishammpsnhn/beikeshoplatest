@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Box,
   TextField,
@@ -21,12 +21,13 @@ import {
   uploadFile,
 } from "../../actions/productActions";
 import { useLocation, useNavigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import validateFormData from "../../utils/validation";
 import CropperImg from "../../components/cropper/CropperImg";
 import TitlebarImageList from "../../components/imagelist/ImgList";
 
 function ProductManagement() {
+  const objRef = useRef(null); 
   const initialData = {
     name: "",
     // price: "",
@@ -47,7 +48,7 @@ function ProductManagement() {
   const [selectedSize, setSelectedSize] = useState();
   const [selectedFile, setSelectedFile] = useState(null);
   const { categories } = useSelector((state) => state.category);
-  const { loading, error } = useSelector((state) => state.products);
+  const { loading } = useSelector((state) => state.products);
   const { user, isAuthenticated } = useSelector((state) => state.auth);
   const [deletedImg,setDeletedImg] = useState([])
   const [imageURLs, setImageURLs] = useState([]);
@@ -89,7 +90,7 @@ function ProductManagement() {
       toast.error("At least three images are required");
       return;
     }
-    const updatedImages = formData.images.filter((item) => item != src);
+    const updatedImages = formData.images.filter((item) => item !== src);
     setDeletedImg(updatedImages)
     setFormData({ ...formData, images: updatedImages });
     console.log(updatedImages);
@@ -137,7 +138,7 @@ function ProductManagement() {
       );
 
       setImagePreviews(imagePreviews.files);
-      imagePreviews?.files?.map((item) => {
+      imagePreviews?.files?.forEach((item) => {
         console.log(item.path);
         formData.images.push(item.path);
       });
@@ -168,12 +169,14 @@ function ProductManagement() {
     }
   };
   let obj = null;
+
   useEffect(() => {
-    obj = formData.sizes.find((item) => item.size === selectedSize);
-  }, [selectedSize]);
+    objRef.current = formData.sizes.find((item) => item.size === selectedSize);
+  }, [selectedSize,formData.sizes]);
+  
   useEffect(() => {
     if (!user.isAdmin || !isAuthenticated) navigate("/");
-  }, [dispatch]);
+  }, [dispatch, navigate, isAuthenticated, user]);
 
   return (
     <Box m="20px" width={"100%"}>

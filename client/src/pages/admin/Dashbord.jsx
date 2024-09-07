@@ -16,28 +16,17 @@ import StatBox from "../../components/admin/statsBox/StatBox";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-// import BarChart from "../../components/admin/barchart/BarChart";
 import AdminSubHeader from "../../components/admin/Header/AdminSubHeader";
 import LineChart from "../../components/admin/barchart/BarChart";
 import {
-  dashboardLineGraph,
   getTopCategories,
   getTopProduct,
-  getTopProuct,
 } from "../../actions/dashboard";
 import TopModal from "../../components/admin/modalTop/TopModal";
 import PieGraph from "../../components/pieGraph/PieGraph";
 
-// import {
-//   adminDashboard,
-//   adminDashboardBooking,
-//   sellerDashboard,
-//   sellerDashboardOrders,
-// } from '../actions/dashboardAction'
-// import BasicModal from '../components/Model'
 
 const Dashboard = () => {
-  // const user = useSelector((state) => state.user.user)
   const { isAuthenticated, user } = useSelector((state) => state.auth);
 
   const theme = useTheme();
@@ -56,14 +45,7 @@ const Dashboard = () => {
     console.log(event.target.value);
     setSort(event.target.value);
   };
-  // useEffect(async() => {
-  //   console.log(sort);
-  //   const data = await dashboardLineGraph(sort);
-  //   if(data){
-  //     setData(data)
-  //   }
 
-  // }, [sort]);
   const handleStateProduct = async () => {
     setData([]);
     const data = await getTopProduct();
@@ -81,7 +63,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (!user?.isAdmin || !isAuthenticated) navigate("/");
-  }, [dispatch]);
+  }, [dispatch,user,isAuthenticated,navigate]);
 
   return (
     <>

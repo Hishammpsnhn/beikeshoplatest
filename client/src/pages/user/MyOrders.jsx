@@ -8,7 +8,7 @@ import Header1 from "../../components/header/Header1";
 
 function MyOrders() {
   const [orders, setOrders] = useState([]);
-  const { user, error } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     async function getUserOrder() {
@@ -18,7 +18,7 @@ function MyOrders() {
       setLoading(false);
     }
     getUserOrder();
-  }, []);
+  }, [user]);
 
   return (
     <>

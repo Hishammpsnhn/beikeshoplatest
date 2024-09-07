@@ -11,7 +11,7 @@ function Wishlist() {
   console.log(data);
   const handleWishlistRemove = (productId) => {
     removeItemWishlist(productId);
-    setData(data.filter((item) => item._id != productId));
+    setData(data.filter((item) => item._id !== productId));
   };
   useEffect(() => {
     const fetch = async () => {

@@ -8,12 +8,10 @@ import {
   onlinePaymentOrder,
   onlinePaymentOrderVerify,
   updateOrders,
-  updateOrdersReturn,
 } from "../../actions/orderActions";
 import {
   Box,
   Button,
-  capitalize,
   Container,
   Grid,
   Paper,
@@ -48,7 +46,7 @@ function PlaceOrderDetails() {
     order?.orderReturnStatus === "rejected"
       ? ["requested", "rejected"]
       : ["requested", "approved", "picked"];
-  const { user, error } = useSelector((state) => state.auth);
+  const { user} = useSelector((state) => state.auth);
 
   const handleCancelOrderClick = () => {
     setAlertOpen(true);
@@ -213,7 +211,7 @@ function PlaceOrderDetails() {
       }
     }
     getProductDetail();
-  }, []);
+  }, [id]);
 
   return (
     <>

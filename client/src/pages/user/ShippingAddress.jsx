@@ -15,13 +15,14 @@ import {
   addShippingAddress,
   EditShippingAddress,
 } from "../../actions/userAction";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { useLocation, useNavigate } from "react-router-dom";
 import validator from "validator";
 import GoogleMaps from "../../components/location/AutoCompleteLocation";
 function ShippingAddress() {
-  const { loading, error, user } = useSelector((state) => state.auth);
+  const { loading, user } = useSelector((state) => state.auth);
   const location = useLocation();
+  const navigate = useNavigate();
   const { action, address } = location.state || { action: "null" };
   const [distance, setDistance] = useState(address ? address.distance : null);
   const [placeDetails, setPlaceDetails] = React.useState(
@@ -44,7 +45,6 @@ function ShippingAddress() {
   };
   const [formData, setFormData] = useState(address ? address : initialState);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -62,7 +62,7 @@ function ShippingAddress() {
     formData.distance = distance;
     formData.placeDetails = placeDetails;
 
-    const { fullName, city, state, landmark, pinCode, phoneNumber } = formData;
+    const { fullName, landmark, pinCode, phoneNumber } = formData;
     console.log("Form Data:", formData);
     if (
       validator.isEmpty(fullName) ||

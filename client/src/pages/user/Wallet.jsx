@@ -82,8 +82,6 @@ function Wallet() {
               History
             </Typography>
             {info?.history.map((item) => {
-              const hours = new Date(item.date).getUTCHours().toString().padStart(2, '0');
-              const minutes = new Date(item.date).getUTCMinutes().toString().padStart(2, '0');
              return <Box margin="10px">
                 <Paper elevation={2} sx={{ padding: "20px" }}>
                   <Typography variant="body1" color="purple">

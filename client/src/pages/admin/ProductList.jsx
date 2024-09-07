@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Typography, useTheme } from "@mui/material";
+import { Box, Button,useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
-import { mockUserData as users } from "../../mockdata";
 import Header from "../../components/admin/Header/AdminSubHeader";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -32,7 +31,6 @@ const ProductList = () => {
   useEffect(() => {
     dispatch(getProductsList());
   }, [dispatch]);
-console.log(products)
   const rows = products.map((item) => ({
     id: item._id,
     name: item.name,
@@ -56,7 +54,7 @@ console.log(products)
   };
   useEffect(() => {
     if (!user?.isAdmin || !isAuthenticated) navigate("/");
-  }, [dispatch]);
+  }, [dispatch,user,isAuthenticated,navigate]);
 
   const handleView = (id) => {
     console.log("View:", id);

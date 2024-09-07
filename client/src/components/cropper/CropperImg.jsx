@@ -6,10 +6,10 @@ const CropperImg = ({ img, setCroppedImage }) => {
   const [zoom, setZoom] = useState(1);
 
   // Callback to handle cropping
-  const onCropComplete = useCallback(async (croppedArea, croppedAreaPixels) => {
+  const onCropComplete = useCallback(async ( croppedAreaPixels) => {
     const croppedImageBlob = await getCroppedImg(img, croppedAreaPixels);
     setCroppedImage(croppedImageBlob);
-  }, [img]);
+  }, [img,setCroppedImage]);
 
   return (
     <div style={{ position: 'relative', width: '50%', height: '350px' }}>
@@ -38,7 +38,6 @@ const getCroppedImg = (imageSrc, pixelCrop) => {
 
   return new Promise((resolve) => {
     image.onload = () => {
-      const { width, height } = image;
       canvas.width = pixelCrop.width;
       canvas.height = pixelCrop.height;
 

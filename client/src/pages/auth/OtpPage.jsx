@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import InputBox from "../../components/InputBox";
 import logo from "../../public/images/1661417516766.webp";
 import {
   Box,
@@ -13,12 +12,11 @@ import {
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   verifyOtp,
-  resendOtp,
   signUp,
   forgot_password_verifyOtp,
   forgotPasswordAction,
 } from "../../actions/authActions";
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import "react-toastify/dist/ReactToastify.css";
 

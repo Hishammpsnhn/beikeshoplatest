@@ -9,22 +9,20 @@ import {
   IconButton,
   Typography,
   Card,
-  Paper,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 import AddressDetails from "../../components/address/AddressDetails";
 import AddIcon from "@mui/icons-material/Add";
-import ProdcutBref from "../../components/Product/productBref/ProdcutBref";
 import Nav from "../../components/header/Nav";
 import Header1 from "../../components/header/Header1";
 import validator from "validator";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { profileUpdate } from "../../actions/userAction";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getOrders, updateOrders } from "../../actions/orderActions";
+import { getOrders } from "../../actions/orderActions";
 import { googleLogout } from "@react-oauth/google";
 import { logout } from "../../reducers/authReducers";
 import { logoutCookie } from "../../actions/authActions";
@@ -35,9 +33,9 @@ import ListAltIcon from "@mui/icons-material/ListAlt";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import profileIcon from "../../public/profile.svg";
 function Profile() {
-  const { user, error } = useSelector((state) => state.auth);
-  const [orders, setOrders] = useState([]);
-  console.log(orders);
+  const { user } = useSelector((state) => state.auth);
+  const [ setOrders] = useState([]);
+ 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [profile, setProfile] = useState({
@@ -46,16 +44,13 @@ function Profile() {
     phoneNumber: user?.phoneNumber,
     referCode: user?.refferralCode,
   });
-  console.log(user);
-  // const [alertOpen, setAlertOpen] = useState(false);
+
   const [isEditing, setIsEditing] = useState({
     userName: false,
     phoneNumber: false,
     email: false,
   });
-  // const handleCancelOrderClick = () => {
-  //   setAlertOpen(true);
-  // };
+  
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setProfile((prevProfile) => ({
@@ -81,7 +76,7 @@ function Profile() {
     } else if (field === "phoneNumber") {
       if (
         !validator.isNumeric(profile.phoneNumber) ||
-        profile.phoneNumber.length != 10
+        profile.phoneNumber.length !== 10
       ) {
         toast.error("Please enter a valid phone number");
         return;
@@ -126,7 +121,7 @@ function Profile() {
       setOrders(data?.orders);
     }
     getUserOrder();
-  }, []);
+  }, [setOrders,user]);
 
   return (
     <>

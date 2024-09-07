@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Container, Typography, Box } from "@mui/material";
+import {  Typography, Box } from "@mui/material";
 import Header from "../../components/header/Header1";
 import Nav from "../../components/header/Nav";
 import Carouse from "../../components/carousel/Carouse";
@@ -13,17 +13,15 @@ import Banner5 from '../../public/images/banner/D-1.0-MHP-08082024-emb-z10-p1-GL
 import Banner6 from '../../public/images/banner/D-1.0-MHP-08082024-emb-z10-p4-Thomasscott-Beyoung-Min50.webp';
 import strip from '../../public/images/banner/M-21072024-TrendsSIS-fallwinter24strip.jpg';
 import stripService from '../../public/images/banner/Icon Strip-Desktop.jpg';
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getCategories } from "../../actions/categoryActions";
 function Home() {
-  const { user, isAuthenticated } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
 
   const navigate = useNavigate()
-  const dispatch = useDispatch();
   useEffect(() => {
     if (user?.isAdmin ) navigate("/dashboard");
-  }, []);
+  }, [navigate,user]);
 
  
   

@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from "react";
-import Header1 from "../../components/header/Header1";
-import Nav from "../../components/header/Nav";
 import AddressDetails from "../../components/address/AddressDetails";
 import { useParams } from "react-router-dom";
 import {
   getProductDetails,
   updateOrders,
-  updateOrdersReturn,
 } from "../../actions/orderActions";
 import {
   Box,
-  Button,
-  capitalize,
   Container,
   Paper,
   Step,
@@ -37,7 +32,7 @@ function OrderDetails() {
     order?.orderReturnStatus === "rejected"
       ? ["requested", "rejected"]
       : ["requested", "approved", "picked"];
-  const { user, error } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
 
   const handleCancelOrder = async (id, name) => {
     if (window.confirm("Are you sure you want to cancel " + name + "?")) {
@@ -57,17 +52,7 @@ function OrderDetails() {
       }
     }
   };
-  const handleReturn = async () => {
-    if (window.confirm("Are you sure you want to return")) {
-      const data = await updateOrdersReturn(order._id, {
-        orderReturnStatus: "requested",
-      });
-      if (data) {
-        toast.success("Return request sent successfully");
-        setOrder(data.updatedOrder);
-      }
-    }
-  };
+
 
   const returnActiveStep =
     order?.orderReturnStatus === "requested"
@@ -90,7 +75,7 @@ function OrderDetails() {
       }
     }
     getProductDetail();
-  }, []);
+  }, [id]);
 
   return (
     <>
@@ -155,7 +140,7 @@ function OrderDetails() {
               <Typography variant="body1">
                 Order Date :{new Date(order?.createdAt).toLocaleDateString()}
               </Typography>
-              {order?.orderReturnStatus != "not requested" && (
+              {order?.orderReturnStatus !== "not requested" && (
                 <Typography
                   variant="body1"
                   sx={{ textTransform: "capitalize", color: "purple" }}
@@ -173,7 +158,7 @@ function OrderDetails() {
             )} */}
           {order?.orderStatus === "delivered" &&
             order?.paymentStatus &&
-            order?.orderReturnStatus != "not requested" && (
+            order?.orderReturnStatus !== "not requested" && (
               <>
                 <Typography variant="h6" sx={{ marginY: "20px" }}>
                   Return Status

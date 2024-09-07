@@ -5,7 +5,6 @@ import {
   Radio,
   RadioGroup,
   FormControlLabel,
-  Checkbox,
 } from "@mui/material";
 import Paper from "@mui/material/Paper";
 

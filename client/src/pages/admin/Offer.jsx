@@ -1,5 +1,5 @@
-import { Box, Container, Paper, TextField, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { Box, Container, Paper,  Typography } from "@mui/material";
+import React, {  useState } from "react";
 import OfferPick from "../../components/offer/OfferPick";
 import ApplyOffer from "../../components/offer/ApplyOffer";
 import { getProductsList } from "../../actions/productActions";
@@ -9,17 +9,12 @@ import { getCategories } from "../../actions/categoryActions";
 function Offer() {
   // const [searchQuery, setSearchQuery] = useState("");
   const [item, setItem] = useState(null);
-  const [discount, setDiscount] = useState(null);
 
   const {
     products,
-    loading: productsLoading,
-    error: productsError,
   } = useSelector((state) => state.products);
   const {
     categories,
-    loading: categoriesLoading,
-    error: categoriesError,
   } = useSelector((state) => state.category);
 
   const dispatch = useDispatch();

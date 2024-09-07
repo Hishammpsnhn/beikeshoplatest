@@ -2,15 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Box, Button, Typography, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
-import { mockUserData as users } from "../../mockdata";
 import Header from "../../components/admin/Header/AdminSubHeader";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import CategoryModal from "../../components/admin/CategoryModal/CategoryModeal";
 import {
-  deleteProduct,
   getProductsList,
-  oneProduct,
 } from "../../actions/productActions";
 import BlockIcon from "@mui/icons-material/Block";
 import { getUsers, userStatusUpdate } from "../../actions/userAction";
@@ -19,16 +16,15 @@ import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 const UsersManagement = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const { products, loading, error } = useSelector((state) => state.products);
+  const {loading, error } = useSelector((state) => state.products);
   const { user, isAuthenticated } = useSelector((state) => state.auth);
   const [users, setUsers] = useState([]);
-  console.log(users);
+
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   useEffect(() => {
@@ -58,7 +54,7 @@ const UsersManagement = () => {
 
   useEffect(() => {
     if (!user?.isAdmin || !isAuthenticated) navigate("/");
-  }, [dispatch]);
+  }, [dispatch,user,isAuthenticated,navigate]);
 
   useEffect(() => {
     async function getAllUsers() {
@@ -120,7 +116,7 @@ const UsersManagement = () => {
               )
             }
           >
-            {row.status == "Active" ? "Block" : "Unblock"}
+            {row.status === "Active" ? "Block" : "Unblock"}
           </Button>
         </Box>
       ),

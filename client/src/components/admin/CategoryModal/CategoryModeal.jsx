@@ -19,7 +19,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 function CategoryModal({ open, handleClose }) {
-  const { categories, error, loading } = useSelector((state) => state.category);
+  const { categories,loading } = useSelector((state) => state.category);
 
   const dispatch = useDispatch();
 
@@ -33,7 +33,7 @@ function CategoryModal({ open, handleClose }) {
   };
   useEffect(() => {
     dispatch(getCategories());
-  }, []);
+  }, [dispatch]);
   return (
     <Dialog
       open={open}

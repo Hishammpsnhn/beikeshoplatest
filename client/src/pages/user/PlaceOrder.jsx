@@ -9,9 +9,9 @@ import Header from "../../components/header/Header1";
 import Nav from "../../components/header/Nav";
 import AddIcon from "@mui/icons-material/Add";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { getCart } from "../../actions/cartActions";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import {
   createOrder,
   onlinePaymentOrder,
@@ -21,7 +21,7 @@ import { clearCart } from "../../reducers/cartReducers";
 
 function PlaceOrder() {
   const { user } = useSelector((state) => state.auth);
-  const { items, loading, error, totalAmount, CartId } = useSelector(
+  const { items, loading,  totalAmount, CartId } = useSelector(
     (state) => state.cart
   );
   const [disable, setDisable] = useState(false);
@@ -54,7 +54,7 @@ function PlaceOrder() {
     if (coupon && paymentOption === "wallet") {
       toast.error("Can't use coupon with Wallet");
     }
-    if (discountTotalAmount > 1000 && paymentOption == "cod") {
+    if (discountTotalAmount > 1000 && paymentOption === "cod") {
       toast.error("Order about 1000 not allowed for cod");
       return;
     }
@@ -156,15 +156,15 @@ function PlaceOrder() {
   };
   useEffect(() => {
     async function getCartUser() {
-      const data = await dispatch(getCart(user._id));
+       await dispatch(getCart(user._id));
     }
     getCartUser();
-  }, []);
+  }, [user,dispatch]);
   useEffect(() => {
     if (!user) {
       navigate("/login");
     }
-  }, []);
+  }, [user,navigate]);
   useEffect(() => {
     const anyUnavailable = items.some((item) => item.availability === false);
     setDisable(anyUnavailable);

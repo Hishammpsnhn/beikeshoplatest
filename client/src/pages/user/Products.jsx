@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import SidebarProducts from "../../components/sidebar/SidebarProducts";
-import RangeSlider from "../../components/slider/RangeSlider";
 import ProductCard from "../../components/card/ProductCard";
 import {
   Box,
@@ -17,13 +16,11 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import Nav from "../../components/header/Nav";
 import Header from "../../components/header/Header1";
-import { getProductByCategory } from "../../actions/categoryActions";
 import {
   getProductsByName,
   getProductsList,
 } from "../../actions/productActions";
 import { getWishlist } from "../../actions/wishlistAction";
-import { fetchProductSuccess } from "../../reducers/productReducers";
 import debounce from "lodash/debounce";
 
 function Products() {
@@ -32,7 +29,7 @@ function Products() {
   const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
   const [query, setQuery] = useState("");
   const isLargeScreen = useMediaQuery(theme.breakpoints.up("md"));
-  const { products, loading, error } = useSelector((state) => state.products);
+  const { products, loading} = useSelector((state) => state.products);
   const { selectedCategory } = useSelector((state) => state.products);
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -54,7 +51,7 @@ function Products() {
     if (!selectedCategory) {
       dispatch(getProductsList(sort));
     }
-  }, [sort]);
+  }, [sort,dispatch,selectedCategory]);
   useEffect(() => {
     setSort("");
   }, [selectedCategory]);
@@ -69,7 +66,7 @@ function Products() {
       }
     };
     fetch();
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     const debouncedFetch = debounce((query) => {

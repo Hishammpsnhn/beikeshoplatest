@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Container, Divider, Typography, List, ListItem, Grid } from "@mui/material";
+import { Box, Container,  Typography, List, ListItem, Grid } from "@mui/material";
 
 function Footer() {
   return (

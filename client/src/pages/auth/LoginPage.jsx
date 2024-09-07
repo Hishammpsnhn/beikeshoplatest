@@ -17,7 +17,7 @@ import {
   login,
 } from "../../actions/authActions";
 import { useDispatch, useSelector } from "react-redux";
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./auth.scss";
 import logo from "../../public/images/1661417516766.webp";
@@ -28,7 +28,7 @@ import { initial } from "../../reducers/authReducers";
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 
-function Login({ forgotPassword, setForgotPassword, otp, change }) {
+function Login({ forgotPassword, setForgotPassword}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -80,7 +80,7 @@ function Login({ forgotPassword, setForgotPassword, otp, change }) {
       const userInfo = jwtDecode(credential);
       console.log(userInfo);
       const res = await dispatch(googleAuth(userInfo));
-      if (res != undefined) {
+      if (res !== undefined) {
         navigate("/");
       }
     } catch (error) {

@@ -2,10 +2,9 @@ import React, { useState, useEffect } from "react";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
 import MenuItem from "@mui/material/MenuItem";
 import { toast } from "react-toastify";
-import { getCouponsByCode, getAllCoupons, getActiveCoupons } from "../../../actions/couponActions";
+import { getCouponsByCode,  getActiveCoupons } from "../../../actions/couponActions";
 
 function ApplyCoupon({ setCoupon, totalAmount }) {
   const [couponCode, setCouponCode] = useState("");
