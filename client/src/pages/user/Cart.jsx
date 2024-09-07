@@ -2,7 +2,6 @@ import { Box, Button, Container, Grid, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ProdcutBref from "../../components/Product/productBref/ProdcutBref";
 import PriceDetails from "../../components/order/priceDetails/PriceDetails";
-import AddressDetails from "../../components/address/AddressDetails";
 import Nav from "../../components/header/Nav";
 import Header from "../../components/header/Header1";
 import { getCart } from "../../actions/cartActions";
@@ -12,7 +11,7 @@ import BrefSkeliton from "../../components/Product/productBref/BrefSkeliton";
 function Cart() {
   const { user } = useSelector((state) => state.auth);
 
-  const { items, error, totalAmount, loading, addCartLoading } = useSelector(
+  const { items,totalAmount, loading, addCartLoading } = useSelector(
     (state) => state.cart
   );
   const [totalPrice, setTotalPrice] = useState(0);
@@ -34,13 +33,13 @@ function Cart() {
       // setItems(data?.items);
     }
     getCartUser();
-  }, []);
+  }, [addCartLoading,dispatch,user]);
 
   useEffect(() => {
     if (!user) {
       navigate("/login");
     }
-  }, []);
+  }, [navigate,user]);
   useEffect(() => {
     const anyUnavailable = items.some((item) => item.availability === false);
     setDisable(anyUnavailable);

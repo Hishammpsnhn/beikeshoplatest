@@ -10,7 +10,7 @@ import Header1 from "../../components/header/Header1";
 import Nav from "../../components/header/Nav";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import InnerImageZoom from "react-inner-image-zoom";
 import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
 
