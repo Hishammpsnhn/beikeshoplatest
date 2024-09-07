@@ -30,7 +30,7 @@
     "react-datepicker": "^7.3.0",
     "react-dom": "^18.3.1",
     "react-easy-crop": "^5.0.8",
-    "react-image-magnify": "^2.7.4",
+    "react-inner-image-zoom": "^3.0.2",
     "react-lazy-load-image-component": "^1.6.2",
     "react-material-ui-carousel": "^3.4.2",
     "react-pro-sidebar": "^1.1.0",
