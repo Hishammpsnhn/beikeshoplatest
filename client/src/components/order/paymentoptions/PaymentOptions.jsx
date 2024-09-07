@@ -13,7 +13,7 @@ function PaymentOptions({ onSelectPayment }) {
   return (
     <Paper
       elevation={5}
-      sx={{ padding: "20px", maxWidth: "300px", margin: "auto" }}
+      sx={{ padding: "20px",  margin: "auto" }}
     >
       <FormControl>
         <FormLabel>Payment Options</FormLabel>

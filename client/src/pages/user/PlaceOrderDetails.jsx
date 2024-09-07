@@ -15,6 +15,7 @@ import {
   Button,
   capitalize,
   Container,
+  Grid,
   Paper,
   Step,
   StepLabel,
@@ -216,163 +217,167 @@ function PlaceOrderDetails() {
 
   return (
     <>
-      <Header1 />
-      <Nav />
-      {loading ? (
-        <Container>
-          <CircularProgress />
-        </Container>
-      ) : (
-        <Container sx={{ marginTop: "20px" }}>
-          {order?.orderStatus === "delivered" && (
-            <Button variant="outlined" onClick={handleInvoiceDownload}>
-              Invoice Download
-            </Button>
-          )}
-          <Typography variant="h6">Delivered Address</Typography>
-          <AddressDetails
-            address={address}
-            cart={true}
-            placeOrderDetails={true}
-          />
-          <Box sx={{ width: "100%", marginY: "20px" }}>
-            {order?.paymentMethod === "online payment" &&
-            !order?.paymentStatus ? (
-              <Stepper
-                activeStep={order?.orderStatus === "payment Failed" ? 2 : 1}
-                alternativeLabel
-              >
-                {failedStep.map((label) => (
-                  <Step key={label}>
-                    <StepLabel color="red" sx={{ textTransform: "capitalize" }}>
-                      {label}
-                    </StepLabel>
-                  </Step>
-                ))}
-              </Stepper>
-            ) : (
-              <>
-                <Stepper
-                  activeStep={order?.orderStatus === "pending" ? 1 : 3}
-                  alternativeLabel
-                >
-                  {steps.map((label) => (
-                    <Step key={label}>
-                      <StepLabel sx={{ textTransform: "capitalize" }}>
-                        {label}
-                      </StepLabel>
-                    </Step>
-                  ))}
-                </Stepper>
-              </>
-            )}
-          </Box>
-          <Box
-            sx={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "space-between",
-            }}
-          >
-            <Box width="50%">
-              <ProdcutBref
-                name={order?.product[0].product?.name}
-                image={`${BASE_URL}/${order?.product[0]?.product?.images[0]}`}
-                size={order?.product[0].size}
-                qty={order?.product[0].quantity}
-                price={order?.totalAmount}
-                orderStatus={order?.orderStatus}
-                paymentStatus={order?.paymentStatus}
-                handleCancelOrder={handleCancelOrder}
-                ratings={order?.product[0].product.ratings}
-                userId={user._id}
-                productId={order?.product[0].product._id}
-                profile={true}
-                details={true}
-                handleCancelOrderClick={handleCancelOrderClick}
-              />
-            </Box>
-            <Paper elevation={6} sx={{ width: "40%", padding: "20px" }}>
-              <Typography variant="body1">
-                Applied Coupon: {order?.discount}
-              </Typography>
-              <Typography variant="body1">
-                Delivery Charge: {order?.deliveryCharge}
-              </Typography>
-              <Typography variant="body1">
-                Total Amount : {order?.finalAmount}
-              </Typography>
-              <Typography variant="body1">
-                Payment Method : {order?.paymentMethod}
-              </Typography>
-              <Typography variant="body1">
-                Order Date :{new Date(order?.createdAt).toLocaleDateString()}
-              </Typography>
-              {order?.orderReturnStatus != "not requested" && (
-                <Typography
-                  variant="body1"
-                  sx={{ textTransform: "capitalize", color: "purple" }}
-                >
-                  Return Request Status :{order?.orderReturnStatus}
-                </Typography>
-              )}
-            </Paper>
-          </Box>
-          {order?.orderStatus === "delivered" &&
-            order?.orderReturnStatus === "not requested" && (
-              <Button onClick={handleReturn} variant="contained">
-                Return
-              </Button>
-            )}
-          {order?.paymentMethod === "online payment" &&
-            !order?.paymentStatus && (
-              <Button
-                onClick={handleFailedPayment}
-                variant="contained"
-                sx={{ backgroundColor: "red" }}
-              >
-                Pay Again
-              </Button>
-            )}
-          {order?.orderStatus === "delivered" &&
-            order?.paymentStatus &&
-            order?.orderReturnStatus != "not requested" && (
-              <>
-                <Typography variant="h6" sx={{ marginY: "20px" }}>
-                  Return Status
-                </Typography>
-                {order?.orderReturnStatus && (
-                  <Typography variant="body1" sx={{ marginY: "20px" }}>
-                    Reason:{order?.returnReason}
-                  </Typography>
-                )}
-                <Stepper activeStep={returnActiveStep} alternativeLabel>
-                  {returnSteps.map((label) => (
-                    <Step key={label}>
-                      <StepLabel sx={{ textTransform: "capitalize" }}>
-                        {label}
-                      </StepLabel>
-                    </Step>
-                  ))}
-                </Stepper>
-              </>
-            )}
-          <CustomAlert
-            open={alertOpen}
-            handleClose={() => setAlertOpen(false)}
-            title="Confirm Action"
-            message={`Are you sure you want to cancel the order for?`}
-            onConfirm={handleCancelOrder} // This will receive true/false based on the user's action
-          />
-          <FormDialog
-            open={open}
-            setOpen={setOpen}
-            setOrder={setOrder}
-            orderId={order?._id}
-          />
-        </Container>
+  <Header1 />
+  <Nav />
+  {loading ? (
+    <Container>
+      <CircularProgress />
+    </Container>
+  ) : (
+    <Container sx={{ marginTop: "20px" }}>
+      {order?.orderStatus === "delivered" && (
+        <Button variant="outlined" onClick={handleInvoiceDownload}>
+          Invoice Download
+        </Button>
       )}
-    </>
+      <Typography variant="h6">Delivered Address</Typography>
+      <AddressDetails
+        address={address}
+        cart={true}
+        placeOrderDetails={true}
+      />
+
+      <Box sx={{ width: "100%", marginY: "20px" }}>
+        {order?.paymentMethod === "online payment" && !order?.paymentStatus ? (
+          <Stepper
+            activeStep={order?.orderStatus === "payment Failed" ? 2 : 1}
+            alternativeLabel
+          >
+            {failedStep.map((label) => (
+              <Step key={label}>
+                <StepLabel sx={{ textTransform: "capitalize" }}>
+                  {label}
+                </StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+        ) : (
+          <Stepper
+            activeStep={order?.orderStatus === "pending" ? 1 : 3}
+            alternativeLabel
+          >
+            {steps.map((label) => (
+              <Step key={label}>
+                <StepLabel sx={{ textTransform: "capitalize" }}>
+                  {label}
+                </StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+        )}
+      </Box>
+
+      {/* Responsive Grid Layout */}
+      <Grid container spacing={2} sx={{ width: "100%" }}>
+        {/* Product Details Section */}
+        <Grid item xs={12} md={7}>
+          <ProdcutBref
+            name={order?.product[0].product?.name}
+            image={`${BASE_URL}/${order?.product[0]?.product?.images[0]}`}
+            size={order?.product[0].size}
+            qty={order?.product[0].quantity}
+            price={order?.totalAmount}
+            orderStatus={order?.orderStatus}
+            paymentStatus={order?.paymentStatus}
+            handleCancelOrder={handleCancelOrder}
+            ratings={order?.product[0].product.ratings}
+            userId={user._id}
+            productId={order?.product[0].product._id}
+            profile={true}
+            details={true}
+            handleCancelOrderClick={handleCancelOrderClick}
+          />
+        </Grid>
+
+        {/* Order Summary Section */}
+        <Grid item xs={12} md={5}>
+          <Paper elevation={6} sx={{ padding: "20px" }}>
+            <Typography variant="body1">
+              Applied Coupon: {order?.discount}
+            </Typography>
+            <Typography variant="body1">
+              Delivery Charge: {order?.deliveryCharge}
+            </Typography>
+            <Typography variant="body1">
+              Total Amount: {order?.finalAmount}
+            </Typography>
+            <Typography variant="body1">
+              Payment Method: {order?.paymentMethod}
+            </Typography>
+            <Typography variant="body1">
+              Order Date: {new Date(order?.createdAt).toLocaleDateString()}
+            </Typography>
+
+            {order?.orderReturnStatus !== "not requested" && (
+              <Typography
+                variant="body1"
+                sx={{ textTransform: "capitalize", color: "purple" }}
+              >
+                Return Request Status: {order?.orderReturnStatus}
+              </Typography>
+            )}
+          </Paper>
+        </Grid>
+      </Grid>
+
+      {/* Conditional Return Button */}
+      {order?.orderStatus === "delivered" && order?.orderReturnStatus === "not requested" && (
+        <Button onClick={handleReturn} variant="contained" sx={{ marginTop: '20px' }}>
+          Return
+        </Button>
+      )}
+
+      {/* Conditional Pay Again Button */}
+      {order?.paymentMethod === "online payment" && !order?.paymentStatus && (
+        <Button
+          onClick={handleFailedPayment}
+          variant="contained"
+          sx={{ backgroundColor: "red", marginTop: "20px" }}
+        >
+          Pay Again
+        </Button>
+      )}
+
+      {/* Return Status and Stepper */}
+      {order?.orderStatus === "delivered" && order?.paymentStatus && order?.orderReturnStatus !== "not requested" && (
+        <>
+          <Typography variant="h6" sx={{ marginY: "20px" }}>
+            Return Status
+          </Typography>
+          {order?.orderReturnStatus && (
+            <Typography variant="body1" sx={{ marginY: "20px" }}>
+              Reason: {order?.returnReason}
+            </Typography>
+          )}
+          <Stepper activeStep={returnActiveStep} alternativeLabel>
+            {returnSteps.map((label) => (
+              <Step key={label}>
+                <StepLabel sx={{ textTransform: "capitalize" }}>
+                  {label}
+                </StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+        </>
+      )}
+
+      {/* Alert and Dialog Components */}
+      <CustomAlert
+        open={alertOpen}
+        handleClose={() => setAlertOpen(false)}
+        title="Confirm Action"
+        message={`Are you sure you want to cancel the order?`}
+        onConfirm={handleCancelOrder}
+      />
+      <FormDialog
+        open={open}
+        setOpen={setOpen}
+        setOrder={setOrder}
+        orderId={order?._id}
+      />
+    </Container>
+  )}
+</>
   );
 }
 

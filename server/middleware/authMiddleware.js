@@ -3,6 +3,7 @@ import User from "../model/userSchema.js";
 
 function verifyToken(req, res, next) {
   const token = req.cookies.token;
+  console.log(token,process.env.SECRET)
   if (token) {
     jwt.verify(token, process.env.SECRET, async (err, decoded) => {
       if (err) return res.status(401).send("Invalid Token");

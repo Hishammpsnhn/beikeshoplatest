@@ -96,7 +96,6 @@ function ProdcutBref({
           padding: "10px",
           display: "flex",
           justifyContent: "space-between",
-          minWidth: "100%",
           alignItems: "center",
         }}
       >

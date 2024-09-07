@@ -54,16 +54,16 @@ function PlaceOrder() {
     if (coupon && paymentOption === "wallet") {
       toast.error("Can't use coupon with Wallet");
     }
-     if(discountTotalAmount > 1000 && paymentOption == "cod") {
-       toast.error("Order about 1000 not allowed for cod");
-       return;
-     }
+    if (discountTotalAmount > 1000 && paymentOption == "cod") {
+      toast.error("Order about 1000 not allowed for cod");
+      return;
+    }
 
     if (paymentOption === "online payment") {
-      const data = await onlinePaymentOrder(discountTotalAmount+shipping);
+      const data = await onlinePaymentOrder(discountTotalAmount + shipping);
       var options = {
         key: process.env.RAZORPAPY_KEY_ID,
-        amount: totalAmount+shipping,
+        amount: totalAmount + shipping,
         currency: "INR",
         name: "Beike shop",
         description: "Test Transaction",
@@ -200,8 +200,13 @@ function PlaceOrder() {
         {loading ? (
           <CircularProgress />
         ) : (
-          <Box display="flex" justifyContent="space-between" marginTop="20px">
-            <Box width="50%">
+          <Box
+            display={{ xs: "block", md: "flex" }} // Block display on small screens, flex on medium and up
+            justifyContent={{ md: "space-between" }} // Apply space-between only on medium and up screens
+            flexDirection={{ xs: "column", md: "row" }} // Stack vertically on small screens, horizontally on larger screens
+            marginTop="20px"
+          >
+            <Box width={{sx:'100%',md:'50%',}} >
               {items?.map((item) => (
                 <ProdcutBref
                   // cart={true}
@@ -217,7 +222,7 @@ function PlaceOrder() {
                 />
               ))}
             </Box>
-            <Box>
+            <Box width={{sx:'100%',md:'40%',}}>
               <PriceDetails
                 totalAmount={totalAmount}
                 coupon={coupon}

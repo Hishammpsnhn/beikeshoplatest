@@ -69,10 +69,10 @@ app.use('/api/wallet',walletRoute)
 app.use("/api/dashboard",dashboardRoute)
 
 app.get('/',(req, res) => {
-  res.send("welcome to the service")
+  res.send("welcome to the service v 1.4")
 })
 app.get("/api/check-server", (req, res) => {
-  res.status(200).send({ message: "Server is running" });
+  res.status(200).send({ message: "Server is running " });
 });
 // app.use('/admin',adminRoute)
 

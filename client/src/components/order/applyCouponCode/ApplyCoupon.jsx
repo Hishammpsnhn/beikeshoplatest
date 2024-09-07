@@ -50,7 +50,6 @@ function ApplyCoupon({ setCoupon, totalAmount }) {
       elevation={3}
       sx={{
         padding: "20px",
-        maxWidth: "300px",
         marginX: "auto",
         display: "flex",
         flexDirection: "column",

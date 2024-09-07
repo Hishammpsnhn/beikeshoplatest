@@ -118,34 +118,7 @@ function Profile() {
     navigate("/login");
   };
 
-  // const handleCancelOrder = async (orderId, name, paymentStatus, amount) => {
-  //   if (
-  //     window.confirm(
-  //       "Are you sure you want to cancel " + name + "?" + paymentStatus + amount
-  //     )
-  //   ) {
-  //     try {
-  //       const data = await updateOrders(orderId, {
-  //         orderStatus: "cancelled",
-  //         paymentStatus,
-  //         amount,
-  //       });
-  //       if (data.updatedOrder) {
-  //         toast.success("Order cancelled successfully");
 
-  //         // Update the orders state
-  //         setOrders(
-  //           orders?.map((order) =>
-  //             order._id === orderId ? data.updatedOrder : order
-  //           )
-  //         );
-  //       }
-  //     } catch (error) {
-  //       toast.error("Failed to cancel the order");
-  //       console.error("Error cancelling order:", error);
-  //     }
-  //   }
-  // };
 
   useEffect(() => {
     async function getUserOrder() {
@@ -162,9 +135,11 @@ function Profile() {
       <Container sx={{ display: "flex", justifyContent: "space-between" }}>
         <Box
           sx={{
+
             width: "25%",
             marginTop: "20px",
           }}
+          display={{xs:"none",md:"block"}}
         >
           <Card
             sx={{
@@ -260,7 +235,7 @@ function Profile() {
           </Card>
         </Box>
 
-        <Box width="70%">
+        <Box width={{xs:"100%",md:"70%"}}>
           <Typography
             variant="h4"
             sx={{ fontWeight: "medium", marginTop: "30px" }}

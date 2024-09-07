@@ -1,4 +1,4 @@
-import { Box, Button, Container, Typography } from "@mui/material";
+import { Box, Button, Container, Grid, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ProdcutBref from "../../components/Product/productBref/ProdcutBref";
 import PriceDetails from "../../components/order/priceDetails/PriceDetails";
@@ -25,7 +25,7 @@ function Cart() {
   const dispatch = useDispatch();
   useEffect(() => {
     async function getCartUser() {
-      if (user) {
+      if (user && !addCartLoading ) {
         console.log(addCartLoading);
         const data = await dispatch(getCart(user._id));
         console.log(data);
@@ -52,57 +52,68 @@ function Cart() {
 
   return (
     <>
-      <Header />
-      <Nav />
-      {loading || addCartLoading ? (
-        <BrefSkeliton />
-      ) : (
-        <Container sx={{ marginTop: "20px" }}>
-          {items?.length > 0 ? (
-            <Box display="flex" justifyContent="space-between" marginTop="20px">
-              <Box width="50%">
-                {items?.map((item) => (
-                  <ProdcutBref
-                    cart={true}
-                    userId={user._id}
-                    productId={item.productId}
-                    name={item?.productId?.name}
-                    image={item?.productId?.images[0]}
-                    price={item?.price}
-                    qty={item?.quantity}
-                    size={item?.productSizeDetails}
-                    availability={item?.availability}
-                  />
-                ))}
-              </Box>
+  <Header />
+  <Nav />
+  {loading || addCartLoading ? (
+    <BrefSkeliton />
+  ) : (
+    <Container sx={{ marginTop: "20px" }}>
+      {items?.length > 0 ? (
+        <Grid container spacing={5} sx={{ marginTop: "20px" }} >
+          {/* Product Section */}
+          <Grid item xs={12} md={7}>
+            {items?.map((item) => (
+              <ProdcutBref
+                key={item.productId}
+                cart={true}
+                userId={user._id}
+                productId={item.productId}
+                name={item?.productId?.name}
+                image={item?.productId?.images[0]}
+                price={item?.price}
+                qty={item?.quantity}
+                size={item?.productSizeDetails}
+                availability={item?.availability}
+              />
+            ))}
+          </Grid>
 
-              <Box width="40%">
-                {/* <AddressDetails cart={true} /> */}
-                <Box marginTop="10px">
-                  <PriceDetails
-                    cart={true}
-                    totalPrice={totalPrice}
-                    totalAmount={totalAmount}
-                    itemsCount={items.length}
-                    offer={items?.productId?.offer}
-                  />
-                </Box>
-                <Button
-                  variant="contained"
-                  sx={{ width: "100%", marginY: "30px" }}
-                  onClick={handleOrder}
-                  disabled={disable}
-                >
-                  Place Order
-                </Button>
-              </Box>
+          {/* Price and Checkout Section */}
+          <Grid item xs={12} md={5}>
+            {/* AddressDetails Component (if needed) */}
+            {/* <AddressDetails cart={true} /> */}
+
+            <Box marginTop="10px">
+              <PriceDetails
+                cart={true}
+                totalPrice={totalPrice}
+                totalAmount={totalAmount}
+                itemsCount={items.length}
+                offer={items?.productId?.offer}
+              />
             </Box>
-          ) : (
-            <Typography>Your cart is Empty</Typography>
-          )}
-        </Container>
+
+            <Button
+              variant="contained"
+              sx={{
+                width: "100%",
+                marginTop: "30px",
+              }}
+              onClick={handleOrder}
+              disabled={disable}
+            >
+              Place Order
+            </Button>
+          </Grid>
+        </Grid>
+      ) : (
+        <Typography variant="h6" sx={{ textAlign: 'center', marginTop: "20px" }}>
+          Your cart is Empty
+        </Typography>
       )}
-    </>
+    </Container>
+  )}
+</>
   );
 }
 

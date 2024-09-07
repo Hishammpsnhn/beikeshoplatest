@@ -23,8 +23,10 @@ function ShippingAddress() {
   const { loading, error, user } = useSelector((state) => state.auth);
   const location = useLocation();
   const { action, address } = location.state || { action: "null" };
-  const [distance, setDistance] = useState(null);
-  const [placeDetails, setPlaceDetails] = React.useState(null);
+  const [distance, setDistance] = useState(address ? address.distance : null);
+  const [placeDetails, setPlaceDetails] = React.useState(
+    address ? address.placeDetails : null
+  );
   if (!action) {
     navigate("/profile");
   }
@@ -51,8 +53,9 @@ function ShippingAddress() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    console.log(formData, dispatch, placeDetails);
 
-    if (!distance || !placeDetails  ) {
+    if (!distance || !placeDetails) {
       toast.error("Please fill all fields");
       return;
     }
@@ -66,7 +69,7 @@ function ShippingAddress() {
       // validator.isEmpty(city) ||
       // validator.isEmpty(state) ||
       validator.isEmpty(landmark) ||
-      validator.isEmpty(placeDetails)
+      validator.isEmpty(formData.placeDetails)
     ) {
       toast.error("Please fill all fields");
       return;

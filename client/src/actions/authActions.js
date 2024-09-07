@@ -1,5 +1,5 @@
 import axios from "axios";
-import {toast} from 'react-toastify'
+import { toast } from "react-toastify";
 import {
   initial,
   loginFailure,
@@ -7,7 +7,7 @@ import {
   loginSuccess,
 } from "../reducers/authReducers";
 
-const url = "http://localhost:4000";
+const url = process.env.REACT_APP_SERVER_API;
 axios.defaults.withCredentials = true;
 export const login = (email, password) => async (dispatch) => {
   dispatch(loginStart());
@@ -33,7 +33,15 @@ export const login = (email, password) => async (dispatch) => {
 };
 
 export const signUp =
-  ({ confirmPassword, dob, email, password, phoneNumber, userName,referralCode }) =>
+  ({
+    confirmPassword,
+    dob,
+    email,
+    password,
+    phoneNumber,
+    userName,
+    referralCode,
+  }) =>
   async (dispatch) => {
     dispatch(loginStart());
     try {
@@ -44,7 +52,7 @@ export const signUp =
         dob,
         phoneNumber,
         userName,
-        referralCode
+        referralCode,
       });
       console.log(data);
       dispatch(initial());
@@ -77,7 +85,7 @@ export const verifyOtp = (otp, formData) => async (dispatch) => {
     if (error.response && error.response.data) {
       const errorMessage = error.response.data.message;
       console.error("Server Error Message:", errorMessage);
-      toast.error(errorMessage)
+      toast.error(errorMessage);
       dispatch(loginFailure(errorMessage));
     } else {
       console.error("Generic Error");
@@ -172,9 +180,9 @@ export const change_password = (id, password) => async (dispatch) => {
     const { data } = await axios.post(`${url}/api/auth/${id}/change_password`, {
       password,
     });
-    dispatch(loginSuccess(data));
-    console.log(data);
-    localStorage.setItem("userInfo", JSON.stringify(data));
+    dispatch(initial(data));
+    // console.log(data);
+    // localStorage.setItem("userInfo", JSON.stringify(data));
     return data;
   } catch (error) {
     console.error("Error:", error);

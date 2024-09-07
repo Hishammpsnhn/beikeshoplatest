@@ -10,7 +10,7 @@ import {
   updateProduct,
 } from "../reducers/productReducers";
 
-const url = "http://localhost:4000";
+const url = process.env.REACT_APP_SERVER_API;
 
 export const getProductsList = (sort) => async (dispatch) => {
   console.log(sort);

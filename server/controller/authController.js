@@ -42,13 +42,13 @@ export const login = async (req, res) => {
     }
 
     bcrypt.compare(password, existingUser.password, function (err, result) {
-      if (err) res.status(500).json({ message: "invalid crediantial!" });
+      if (err) return res.status(500).json({ message: "invalid crediantial!" });
       if (result) {
         const token = generateToken(existingUser);
         res.cookie("token", token, {
           httpOnly: true,
-          secure: false,
-          sameSite: "Strict",
+          secure: true,
+          sameSite: "None",
           maxAge: 86400000,
         });
 
@@ -58,11 +58,11 @@ export const login = async (req, res) => {
           user: existingUser,
         });
       } else {
-        res.status(400).json({ message: "0invalid  credentials" });
+        return res.status(400).json({ message: "0invalid  credentials" });
       }
     });
   } catch (error) {
-    res.status(500).json({ message: "server error" });
+    return res.status(500).json({ message: "server error" });
   }
 };
 
@@ -156,7 +156,7 @@ export const verifyOtp = async (req, res) => {
           amount: 200,
           transactionType: "credit",
           description: "refferal ",
-          date:Date.now(),
+          date: Date.now(),
         });
         await wallet.save();
       } else {
@@ -168,7 +168,7 @@ export const verifyOtp = async (req, res) => {
               amount: 200,
               transactionType: "credit",
               description: "referal",
-              date:Date.now(),
+              date: Date.now(),
             },
           ],
         });
@@ -205,7 +205,7 @@ export const verifyOtp = async (req, res) => {
               amount: 150,
               transactionType: "credit",
               description: "referal",
-              date:Date.now(),
+              date: Date.now(),
             },
           ],
         });
@@ -214,8 +214,8 @@ export const verifyOtp = async (req, res) => {
       const token = generateToken(newUser._id);
       res.cookie("token", token, {
         httpOnly: false,
-        secure: false,
-        sameSite: "Strict",
+        secure: true,
+        sameSite: "None",
         maxAge: 86400000,
       });
 
@@ -256,8 +256,8 @@ export const googleLogin = async (req, res) => {
     const token = generateToken(user._id);
     res.cookie("token", token, {
       httpOnly: false,
-      secure: false,
-      sameSite: "Strict",
+      secure: true,
+      sameSite: "None",
       maxAge: 86400000,
     });
 
@@ -298,7 +298,7 @@ export const forgotPassword = async (req, res) => {
       `Your OTP is ${otp}`
     );
     if (!otpToMail) {
-      res.status(403).json({ message: "something went wrong!" });
+      return res.status(403).json({ message: "something went wrong!" });
     }
 
     const expiresAt = new Date(Date.now() + 120 * 1000);
@@ -373,7 +373,7 @@ export const change_password = async (req, res) => {
 
     await user.save();
 
-    const token = generateToken(user);
+    // const token = generateToken(user);
 
     res
       .status(200)

@@ -1,20 +1,16 @@
 import React, { useState, useEffect } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import CardActionArea from "@mui/material/CardActionArea";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import {
-  addToWishlist,
-  removeItemWishlist,
-} from "../../actions/wishlistAction";
-import "./productCard.css";
+import { Link } from "react-router-dom";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css"; // Import blur effect
+import "./productCard.css"; // Your CSS styles
 
 function ProductCard({ name, price, image, id, wishlist, offer }) {
   const [wishlistAction, setWishlistAction] = useState(wishlist);
@@ -24,77 +20,73 @@ function ProductCard({ name, price, image, id, wishlist, offer }) {
   }, [wishlist]);
 
   const handleWishlist = () => {
-    addToWishlist(id);
     setWishlistAction(true);
+    // Add your add to wishlist logic here
   };
 
   const handleWishlistRemove = () => {
-    removeItemWishlist(id);
     setWishlistAction(false);
+    // Add your remove from wishlist logic here
   };
 
   return (
-    <Card sx={{ maxWidth: 300, m: 2, position: "relative" }}>
+    <Card sx={{ maxWidth: { xs: "100%", sm: 300 }, m: { xs: 1, sm: 2 }, position: "relative" }}>
       <CardActionArea>
         <Box
           sx={{
-            display: "flex",
+            display: { xs: "none", sm: "flex" },
             justifyContent: "flex-end",
             alignItems: "center",
             position: "absolute",
             top: 8,
             right: 8,
             zIndex: 1,
-            display: "none",
-            "&:hover": {
-              display: "flex",
-            },
           }}
-          className="wishlist-icon"
         >
-          <IconButton
-            onClick={wishlistAction ? handleWishlistRemove : handleWishlist}
-          >
-            {wishlistAction ? (
-              <FavoriteIcon sx={{ color: "#461246" }} />
-            ) : (
-              <FavoriteBorderIcon sx={{ color: "#461246" }} />
-            )}
+          <IconButton onClick={wishlistAction ? handleWishlistRemove : handleWishlist}>
+            {wishlistAction ? <FavoriteIcon sx={{ color: "#461246" }} /> : <FavoriteBorderIcon sx={{ color: "#461246" }} />}
           </IconButton>
         </Box>
 
+        {/* Product Image with Lazy Loading */}
         <Link to={`/productDetails/${id}`}>
-          <CardMedia
-            component="img"
-            height="250"
-            sx={{ objectFit: "contain" }}
-            image={image}
-            alt="Product image"
+          <LazyLoadImage
+            alt={name}
+            effect="blur" // Blur effect after the image is loaded
+            src={image} // The main image
+            height={250} // Fixed height for the image
+            width="100%" // Full width
+            placeholderSrc="path/to/your/placeholder.png" // Low-res or loading spinner
+            style={{
+              objectFit: "contain",
+            }}
+            // Optional styling for placeholder to give it a defined background or spinner while loading
+            beforeLoad={() => (
+              <div className="loading-placeholder" style={{ height: 250, backgroundColor: '#f0f0f0' }} />
+            )}
           />
         </Link>
+
+        {/* Card Content */}
         <CardContent>
-          <Typography gutterBottom variant="subtitle1" component="div">
+          <Typography
+            gutterBottom
+            variant="subtitle1"
+            component="div"
+            sx={{ fontSize: { xs: "0.875rem", sm: "1rem" } }}
+          >
             {name.length > 32 ? `${name.substring(0, 32)}...` : name}
           </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
+
+          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
             <Typography
-              sx={{
-                color: "primary.main",
-                fontWeight: "bold",
-                mr: 1,
-              }}
+              sx={{ color: "primary.main", fontWeight: "bold", mr: 1, fontSize: { xs: "0.875rem", sm: "1rem" } }}
               variant="body1"
             >
               {Math.floor(price - price * (offer / 100))}
             </Typography>
             {offer > 0 && (
-              <Typography sx={{ textDecoration: "line-through" }}>
+              <Typography sx={{ textDecoration: "line-through", fontSize: { xs: "0.75rem", sm: "0.875rem" } }}>
                 {price}
               </Typography>
             )}

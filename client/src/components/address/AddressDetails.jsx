@@ -47,73 +47,83 @@ function AddressDetails({
 
   return (
     <Box sx={{ marginY: "10px" }}>
-      <Paper
-        elevation={2}
+    <Paper
+      elevation={2}
+      sx={{
+        padding: "10px",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        //flexDirection: { xs: "column", sm: "row" }, // Stack on small screens, row on larger
+      }}
+    >
+      {placeOrder && (
+        <FormControlLabel
+          control={
+            <Radio
+              checked={selectedAddress == address._id}
+              onChange={() => {
+                onSelect(address._id, address?.distance);
+              }}
+              value={address._id}
+            />
+          }
+          label=""
+        />
+      )}
+      <Box sx={{ flex: placeOrder ? 1 : "initial", textAlign: { xs: "center", sm: "left" } }}>
+        <Typography variant="body1">{address?.fullName}</Typography>
+        <Typography variant="body2">
+          {address?.placeDetails || address?.location},
+        </Typography>
+        <Typography variant="body2">{address?.landmark}</Typography>
+        <Typography variant="body2">
+          {address?.pinCode}, {address?.phoneNumber}
+        </Typography>
+        {user.isAdmin && (
+          <Typography variant="body2">Distance: {address?.distance} KM</Typography>
+        )}
+      </Box>
+      <Box
+        display="flex"
+        alignItems="center"
         sx={{
-          padding: "10px",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
+          flexDirection: { xs: "column", sm: "row" }, // Stack buttons on small screens
+          mt: { xs: "10px", sm: "0" }, // Add top margin on small screens
         }}
       >
-        {placeOrder && (
-          <FormControlLabel
-            control={
-              <Radio
-                checked={selectedAddress == address._id}
-                onChange={() => {
-                  onSelect(address._id, address?.distance);
-                  // setSelectedAddress(address._id);
+        {!placeOrderDetails &&
+          (cart ? (
+            <Button variant="outlined" sx={{ width: { xs: "80%", sm: "100px" } }}>
+              Change
+            </Button>
+          ) : (
+            <>
+              <Button
+                variant="outlined"
+                sx={{
+                  width: { xs: "80%", sm: "100px" },
+                  marginRight: { xs: "0", sm: "10px" }, // Remove margin on small screens
+                  mb: { xs: "10px", sm: "0" }, // Add bottom margin on small screens
                 }}
-                value={address._id}
-              />
-            }
-            label=""
-          />
-        )}
-        <Box sx={{ flex: placeOrder ? 1 : "initial" }}>
-          <Typography variant="body1">{address?.fullName}</Typography>
-          <Typography variant="body2">
-            {address?.placeDetails || address?.location},
-          </Typography>
-          <Typography variant="body2">{address?.landmark}</Typography>
-          {/* <Typography variant="body2">{address?.state}</Typography> */}
-          <Typography variant="body2">
-            {address?.pinCode}, {address?.phoneNumber}
-          </Typography>
-          {user.isAdmin && (
-            <Typography variant="body2">Distance: {address?.distance} KM</Typography>
-          )}
-        </Box>
-        <Box display="flex" alignItems="center">
-          {!placeOrderDetails &&
-            (cart ? (
-              <Button variant="outlined" sx={{ width: "100px" }}>
-                Change
+                startIcon={<EditBtn sx={{ color: "#902F90" }} />}
+                onClick={handleEdit}
+              >
+                Edit
               </Button>
-            ) : (
-              <>
-                <Button
-                  variant="outlined"
-                  sx={{ width: "100px", marginRight: "10px" }}
-                  startIcon={<EditBtn sx={{ color: "#902F90" }} />}
-                  onClick={handleEdit}
-                >
-                  Edit
-                </Button>
-                <Button
-                  variant="outlined"
-                  sx={{ width: "100px" }}
-                  startIcon={<DeleteBtn sx={{ color: "#902F90" }} />}
-                  onClick={handleDelete}
-                >
-                  Delete
-                </Button>
-              </>
-            ))}
-        </Box>
-      </Paper>
-    </Box>
+              <Button
+                variant="outlined"
+                sx={{ width: { xs: "80%", sm: "100px" } }}
+                startIcon={<DeleteBtn sx={{ color: "#902F90" }} />}
+                onClick={handleDelete}
+              >
+                Delete
+              </Button>
+            </>
+          ))}
+      </Box>
+    </Paper>
+  </Box>
   );
 }
 

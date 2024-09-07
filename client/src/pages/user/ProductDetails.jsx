@@ -52,96 +52,122 @@ function ProductDetails() {
   }
 
   return (
-    <>
-      <Header1 />
-      <Nav />
-      <Container maxWidth="lg" sx={{ marginTop: "22px" }}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={6}>
-            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-              <Box>
-                {product?.images.map((item, index) => (
-                  <div key={index}>
-                    <img
-                      style={{
-                        width: "70px",
-                        height: "70px",
-                        objectFit: "contain",
-                        marginBottom: "10px",
-                      }}
-                      src={`${BASE_URL}${item}`}
-                      alt={item}
-                    />
-                  </div>
-                ))}
-              </Box>
-              <Box sx={{ flex: 1 }}>
-                <ReactImageMagnify
-                  {...{
-                    smallImage: {
-                      alt: "Wristwatch by Ted Baker London",
-                      isFluidWidth: true,
-                      src: `${BASE_URL}${product?.images[0]}`,
-                    },
-                    largeImage: {
-                      src: `${BASE_URL}${product?.images[0]}`,
-                      width: 1200,
-                      height: 1800,
-                    },
+<>
+  <Header1 />
+  <Nav />
+  <Container maxWidth="lg" sx={{ marginTop: "22px" }}>
+    <Grid container spacing={2}>
+      {/* Left Grid - Images and Buttons */}
+      <Grid item xs={12} md={6}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", md: "row" }, // Stack vertically on small screens, row on larger screens
+            justifyContent: "space-between",
+            gap: { xs: "10px", md: "0" }, // Add gap between boxes on small screens
+          }}
+        >
+          {/* Product Thumbnails */}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: { xs: "row", md: "column" }, // Thumbnails row on small, column on large
+              gap: { xs: "10px", md: "0" }, // Horizontal gap on small screens
+              overflowX: "auto", // Scroll on small screens if thumbnails overflow
+            }}
+          >
+            {product?.images.map((item, index) => (
+              <div key={index}>
+                <img
+                  style={{
+                    width: "70px",
+                    height: "70px",
+                    objectFit: "contain",
+                    marginBottom: "10px",
                   }}
+                  src={`${BASE_URL}${item}`}
+                  alt={item}
                 />
-              </Box>
-            </Box>
-            <Box
-              justifyContent="space-between"
-              display="flex"
-              marginTop="10px"
-              gap={isMobile ? "10px" : "150px"}
-              flexDirection={isMobile ? "column" : "row"}
-            >
-              <Button
-                variant="outlined"
-                startIcon={<AddShoppingCartIcon />}
-                onClick={handleCart}
-                sx={{
-                  padding: "15px",
-                  flexGrow: 1,
-                  minWidth: "150px",
-                }}
-              >
-                ADD to cart
-              </Button>
-              <Button
-                variant="contained"
-                onClick={handleCart}
-                startIcon={<ShoppingBagIcon />}
-                sx={{
-                  padding: "15px",
-                  flexGrow: 1,
-                  minWidth: "150px",
-                }}
-              >
-                BUY NOW
-              </Button>
-            </Box>
-            <SelectSize
-              sizes={product?.sizes}
-              setSelectedSize={setSelectedSize}
+              </div>
+            ))}
+          </Box>
+
+          {/* Main Image with Magnification */}
+          <Box sx={{ flex: 1 }}>
+          
+            <ReactImageMagnify
+              {...{
+                smallImage: {
+                  alt: "Wristwatch by Ted Baker London",
+                  isFluidWidth: true,
+                  src: `${BASE_URL}${product?.images[0]}`,
+                },
+                largeImage: {
+                  src: `${BASE_URL}${product?.images[0]}`,
+                  width: 1200,
+                  height: 1800,
+                },
+              }}
             />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <ProductName
-              name={product?.name}
-              price={product?.sizes[0]?.price}
-              offer={product?.offer}
-              rating={product?.averageRating}
-              selectedSize={selectedSize}
-            />
-            <ProductDetailsSection />
-          </Grid>
-        </Grid>
-      </Container>
-    </>
+          </Box>
+        </Box>
+
+        {/* Add to Cart and Buy Now Buttons */}
+        <Box
+          justifyContent="space-between"
+          display="flex"
+          marginTop="10px"
+          gap={isMobile ? "10px" : "150px"}
+          flexDirection={isMobile ? "column" : "row"}
+        >
+          <Button
+            variant="outlined"
+            startIcon={<AddShoppingCartIcon />}
+            onClick={handleCart}
+            sx={{
+              padding: "15px",
+              flexGrow: 1,
+              minWidth: "150px",
+            }}
+          >
+            ADD to cart
+          </Button>
+          <Button
+            variant="contained"
+            onClick={handleCart}
+            startIcon={<ShoppingBagIcon />}
+            sx={{
+              padding: "15px",
+              flexGrow: 1,
+              minWidth: "150px",
+            }}
+          >
+            BUY NOW
+          </Button>
+        </Box>
+
+        {/* Select Size Component */}
+        <SelectSize
+          sizes={product?.sizes}
+          setSelectedSize={setSelectedSize}
+        />
+      </Grid>
+
+      {/* Right Grid - Product Details */}
+      <Grid item xs={12} md={6}>
+        <ProductName
+          name={product?.name}
+          price={product?.sizes[0]?.price}
+          offer={product?.offer}
+          rating={product?.averageRating}
+          selectedSize={selectedSize}
+        />
+        <ProductDetailsSection />
+      </Grid>
+    </Grid>
+  </Container>
+</>
+
   );
 }
 

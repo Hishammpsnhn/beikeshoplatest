@@ -54,8 +54,7 @@ function ChangePassword() {
       return toast.error("Password not equal to confirm password");
     }
     dispatch(change_password(data._id, password));
-
-    //navigate("/login");
+    navigate("/login");
   };
   const handleClickShowPassword = () => {
     setShowPassword((prev) => !prev);

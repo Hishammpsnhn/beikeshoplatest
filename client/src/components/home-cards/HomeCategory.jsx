@@ -89,7 +89,11 @@ function HomeCategory() {
             component="img"
             src={two}
             alt="Category 6"
-            sx={{ width: "80%", display: "block", margin: "auto" }}
+            sx={{ width: "80%", display: "block", margin: "auto",cursor: 'pointer' }}
+            onClick={() => {
+              //dispatch(getProductByCategory(12));
+              navigate("/products");
+            }}
           />
         </Grid>
         <Grid item xs={2} sm={4} md={4}>
@@ -98,7 +102,11 @@ function HomeCategory() {
             loading="lazy"
             src={three}
             alt="Category 6"
-            sx={{ width: "80%", display: "block", margin: "auto" }}
+            sx={{ width: "80%", display: "block", margin: "auto",cursor: 'pointer' }}
+            onClick={() => {
+              //dispatch(getProductByCategory(12));
+              navigate("/products");
+            }}
           />
         </Grid>
         <Grid item xs={2} sm={4} md={4}>
@@ -107,7 +115,11 @@ function HomeCategory() {
             loading="lazy"
             src={four}
             alt="Category 6"
-            sx={{ width: "80%", display: "block", margin: "auto" }}
+            sx={{ width: "80%", display: "block", margin: "auto",cursor: 'pointer' }}
+            onClick={() => {
+              //dispatch(getProductByCategory(12));
+              navigate("/products");
+            }}
           />
         </Grid>
         <Grid item xs={2} sm={4} md={4}>
@@ -116,7 +128,11 @@ function HomeCategory() {
             loading="lazy"
             src={five}
             alt="Category 6"
-            sx={{ width: "80%", display: "block", margin: "auto" }}
+            sx={{ width: "80%", display: "block", margin: "auto", cursor: 'pointer'}}
+            onClick={() => {
+              //dispatch(getProductByCategory(12));
+              navigate("/products");
+            }}
           />
         </Grid>
         <Grid item xs={2} sm={4} md={4}>
@@ -125,7 +141,11 @@ function HomeCategory() {
             loading="lazy"
             src={six}
             alt="Category 6"
-            sx={{ width: "80%", display: "block", margin: "auto" }}
+            sx={{ width: "80%", display: "block", margin: "auto",cursor: 'pointer' }}
+            onClick={() => {
+              //dispatch(getProductByCategory(12));
+              navigate("/products?category=shirt");
+            }}
           />
         </Grid>
       </Grid>

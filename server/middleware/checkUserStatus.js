@@ -15,7 +15,7 @@ const checkUserStatus = async (req, res, next) => {
     req.user = decoded.id;
     next();
   } catch (error) {
-    res.status(500).json({ message: "Authentication failed." });
+    return res.status(500).json({ message: "Authentication failed." });
   }
 };
 

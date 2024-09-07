@@ -4,21 +4,26 @@ const transporter = nodemailer.createTransport({
   secure: true,
   host: "smtp.gmail.com",
   port: 465,
-
   auth: {
-    user: process.env.EMAIL_ID,
-    pass: process.env.PASS_KEY, 
+    user: process.env.EMAIL_ID, // Environment variable for the email ID
+    pass: process.env.PASS_KEY, // Environment variable for the password
   },
 });
-export default function sentOtpToMail(to, sub, msg) {
+
+export default async function sendOtpToMail(to, sub, msg) {
+
   try {
-    transporter.sendMail({
+    // Await the sendMail function as it's asynchronous
+    await transporter.sendMail({
+      from: process.env.EMAIL_ID, // Ensure the email sender is specified
       to: to,
       subject: sub,
       html: msg,
     });
-    return true;
+    return true; // Return true on success
   } catch (error) {
-    return false;
+    console.error("Failed to send email:", error); // Log the error for debugging
+    return false; // Return false on failure
   }
 }
+

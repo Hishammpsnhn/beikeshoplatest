@@ -29,22 +29,64 @@ function Home() {
   
   return (
     <>
-      <Header />
-      <Nav  />
-      <Carouse Banner1={Banner3} Banner2={Banner2} Banner3={ExampleCarouselImage} />
-      <Box sx={{ bgcolor: 'black', color: 'white', textAlign: 'center', py: 2, mt: 2, borderBottom: 5 }}>
-        <Typography variant="h6">New Today, Gone Tomorrow</Typography>
-      </Box>
-      <Carouse Banner1={Banner6} Banner2={Banner4} Banner3={Banner5} />
-      <Box sx={{ width: '100%', mt: 2 }}>
-        <img className='w-100' src={strip} alt="banner" loading="lazy" />
-      </Box>
-      <HomeCategory />
-      <Box sx={{ width: '100%', mt: 2 }}>
-        <img className='w-100' src={stripService} alt="banner" loading="lazy" />
-      </Box>
-      <Footer />
-    </>
+  <Header />
+  <Nav />
+  
+  {/* Carousel Section */}
+  <Carouse 
+    Banner1={Banner3} 
+    Banner2={Banner2} 
+    Banner3={ExampleCarouselImage} 
+  />
+  
+  {/* Responsive Box with Typography */}
+  <Box
+    sx={{
+      bgcolor: 'black',
+      color: 'white',
+      textAlign: 'center',
+      py: 2,
+      mt: 2,
+      borderBottom: 5,
+      fontSize: { xs: '1rem', md: '1.5rem' },  // Responsive font size
+    }}
+  >
+    <Typography variant="h6">New Today, Gone Tomorrow</Typography>
+  </Box>
+  
+  {/* Second Carousel */}
+  <Carouse 
+    Banner1={Banner6} 
+    Banner2={Banner4} 
+    Banner3={Banner5} 
+  />
+  
+  {/* Responsive Image */}
+  <Box sx={{ width: '100%', mt: 2 }}>
+    <img 
+      className="w-100" 
+      src={strip} 
+      alt="banner" 
+      loading="lazy" 
+      style={{ maxWidth: '100%', height: 'auto' }} // Responsive image styling
+    />
+  </Box>
+  
+  <HomeCategory />
+  
+  {/* Second Responsive Image */}
+  <Box sx={{ width: '100%', mt: 2 }}>
+    <img 
+      className="w-100" 
+      src={stripService} 
+      alt="banner" 
+      loading="lazy" 
+      style={{ maxWidth: '100%', height: 'auto' }} // Responsive image styling
+    />
+  </Box>
+  
+  <Footer />
+</>
   );
 }
 

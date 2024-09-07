@@ -7,7 +7,7 @@ import {
   fetchCartSuccess,
 } from "../reducers/cartReducers";
 
-const url = "http://localhost:4000";
+const url = process.env.REACT_APP_SERVER_API;
 axios.defaults.withCredentials = true;
 
 

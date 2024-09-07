@@ -41,7 +41,7 @@ function Nav() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [anchorElProducts, setAnchorElProducts] = React.useState(null);
-  const { isAuthenticated } = useSelector((state) => state.auth);
+  const { isAuthenticated,user } = useSelector((state) => state.auth);
 
   const { categories } = useSelector((state) => state.category);
   const dispatch = useDispatch();
@@ -229,7 +229,7 @@ function Nav() {
               </Button>
             ))}
           </Box>
-          {isAuthenticated ? (
+          {user ? (
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

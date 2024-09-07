@@ -6,7 +6,7 @@ import {
 } from "../reducers/authReducers";
 import { toast } from "react-toastify";
 
-const url = "http://localhost:4000";
+const url = process.env.REACT_APP_SERVER_API;
 
 export const getUsers = async () => {
   //dispatch(fetchCategoryStart());
