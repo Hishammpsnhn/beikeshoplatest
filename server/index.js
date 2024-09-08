@@ -31,8 +31,7 @@ dotenv.config();
 const app = express();
 app.use(cookieParser());
 
-// Apply CORS middleware
-const cors = require('cors');
+
 
 const allowedOrigins = [
   "https://beikeshop.shop/",
