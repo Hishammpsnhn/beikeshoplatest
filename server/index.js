@@ -32,12 +32,26 @@ const app = express();
 app.use(cookieParser());
 
 // Apply CORS middleware
+const cors = require('cors');
+
+const allowedOrigins = [
+  "https://beikeshop.shop/",
+  "https://beikeshop.netlify.app/",
+];
+
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true,
   })
 );
+
 
 // Middleware
 app.use(bodyParser.json());
