@@ -34,8 +34,8 @@ app.use(cookieParser());
 
 
 const allowedOrigins = [
-  "https://beikeshop.shop/",
-  "https://beikeshop.netlify.app/",
+  "https://beikeshop.shop",
+  "https://beikeshop.netlify.app",
 ];
 
 app.use(
@@ -50,6 +50,7 @@ app.use(
     credentials: true,
   })
 );
+
 
 
 // Middleware
