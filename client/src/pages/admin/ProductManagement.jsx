@@ -129,7 +129,7 @@ function ProductManagement() {
         return;
       }
       console.log(selectedFile, croppedImage);
-      selectedFile[0] = croppedImage;
+      //selectedFile[0] = croppedImage;
       console.log(selectedFile);
       const imagePreviews = await uploadFile(
         formData,

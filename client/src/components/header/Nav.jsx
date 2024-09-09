@@ -267,8 +267,9 @@ function Nav() {
                       {index === 0 && <AccountCircleIcon />}{" "}
                       {index === 1 && <ShoppingCartIcon />}{" "}
                       {index === 2 && <FavoriteIcon />}{" "}
-                      {index === 3 && <WalletIcon />}{" "}
-                      {index === 4 && <LogoutIcon />}{" "}
+                      {index === 3 && <ShoppingCartIcon />}{" "}
+                      {index === 4 && <WalletIcon />}{" "}
+                      {index === 5 && <LogoutIcon />}{" "}
                     </ListItemIcon>
                     <Typography textAlign="center" sx={{ color: "black" }}>
                       {setting}

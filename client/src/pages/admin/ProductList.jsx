@@ -131,6 +131,7 @@ const ProductList = () => {
           <Button
             variant="contained"
             color="primary"
+            onClick={()=> navigate("/admin/product_management")}
             sx={{
               backgroundColor: "#461246",
               display: "flex",

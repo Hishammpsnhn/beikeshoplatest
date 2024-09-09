@@ -5,11 +5,11 @@ const CropperImg = ({ img, setCroppedImage }) => {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
 
-  // Callback to handle cropping
-  const onCropComplete = useCallback(async ( croppedAreaPixels) => {
+  // Callback to handle cropping after user manually selects the area
+  const onCropComplete = useCallback(async (croppedAreaPixels) => {
     const croppedImageBlob = await getCroppedImg(img, croppedAreaPixels);
     setCroppedImage(croppedImageBlob);
-  }, [img,setCroppedImage]);
+  }, [img, setCroppedImage]);
 
   return (
     <div style={{ position: 'relative', width: '50%', height: '350px' }}>
@@ -17,9 +17,9 @@ const CropperImg = ({ img, setCroppedImage }) => {
         image={img}
         crop={crop}
         zoom={zoom}
-        aspect={4 / 5} // Increased aspect ratio for a wider crop
-        onCropChange={setCrop}
-        onCropComplete={onCropComplete}
+        aspect={4 / 5} // Aspect ratio remains controlled
+        onCropChange={setCrop} // User manually changes crop
+        onCropComplete={onCropComplete} // Only triggers when crop action completes
         onZoomChange={setZoom}
         style={{ zIndex: 1 }}
       />
@@ -29,6 +29,7 @@ const CropperImg = ({ img, setCroppedImage }) => {
 
 export default CropperImg;
 
+// Function to get cropped image
 const getCroppedImg = (imageSrc, pixelCrop) => {
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
@@ -55,12 +56,10 @@ const getCroppedImg = (imageSrc, pixelCrop) => {
 
       canvas.toBlob((blob) => {
         if (blob) {
-          // Create a File object from the Blob
           const file = new File([blob], 'cropped-image.jpg', {
             type: blob.type,
             lastModified: new Date().getTime(),
           });
-
           resolve(file);
         }
       }, 'image/jpeg');
