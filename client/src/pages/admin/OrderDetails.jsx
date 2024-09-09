@@ -19,7 +19,7 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import CircularProgress from "@mui/material/CircularProgress";
 
-const BASE_URL = "http://localhost:3000/";
+const BASE_URL = "https://app.beikeshop.shop/";
 function OrderDetails() {
   const { id } = useParams();
 

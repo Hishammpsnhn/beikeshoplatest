@@ -36,6 +36,7 @@ app.use(cookieParser());
 const allowedOrigins = [
   "https://beikeshop.shop",
   "https://beikeshop.netlify.app",
+  "http://localhost:3000"
 ];
 
 app.use(

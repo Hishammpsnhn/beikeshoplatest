@@ -28,7 +28,7 @@ import CustomAlert from "../../components/alert/CustomAlert";
 import FormDialog from "../../components/FormDialog/FormDialog";
 import jsPDF from "jspdf";
 
-const BASE_URL = "http://localhost:3000/";
+const BASE_URL = "https://app.beikeshop.shop/";
 function PlaceOrderDetails() {
   const { id } = useParams();
 
