@@ -271,7 +271,7 @@ function PlaceOrderDetails() {
         <Grid item xs={12} md={7}>
           <ProdcutBref
             name={order?.product[0].product?.name}
-            image={`${BASE_URL}/${order?.product[0]?.product?.images[0]}`}
+            image={`${order?.product[0]?.product?.images[0]}`}
             size={order?.product[0].size}
             qty={order?.product[0].quantity}
             price={order?.totalAmount}
