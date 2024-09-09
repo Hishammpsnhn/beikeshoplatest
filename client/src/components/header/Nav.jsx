@@ -32,7 +32,14 @@ import WalletIcon from "@mui/icons-material/Wallet";
 import { getProductsList } from "../../actions/productActions";
 
 const pages = ["About Us", "Latest Product", "Contact Us"];
-const settings = ["Profile", "Cart", "Wishlist", "Wallet", "Logout"];
+const settings = [
+  "Profile",
+  "Cart",
+  "Wishlist",
+  "My orders",
+  "Wallet",
+  "Logout",
+];
 
 function Nav() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -76,6 +83,8 @@ function Nav() {
       navigate("/wishlist");
     } else if (setting === "Wallet") {
       navigate("/wallet");
+    } else if (setting === "My orders") {
+      navigate("/my_orders");
     }
   };
 
