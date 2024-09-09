@@ -102,7 +102,7 @@ function ProdcutBref({
                   ? navigate(`/productDetails/${productId._id}`)
                   : navigate(`/productDetails/${productId}`);
               }}
-              src={image}
+              src={`${BASE_URL}${image}`} 
               alt="image_Unknown"
               style={{
                 width: "100%",

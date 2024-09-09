@@ -14,7 +14,7 @@ import "./productCard.css"; // Your CSS styles
 
 function ProductCard({ name, price, image, id, wishlist, offer }) {
   const [wishlistAction, setWishlistAction] = useState(wishlist);
-
+  const BASE_URL = "https://app.beikeshop.shop/";
   useEffect(() => {
     setWishlistAction(wishlist);
   }, [wishlist]);
@@ -30,7 +30,13 @@ function ProductCard({ name, price, image, id, wishlist, offer }) {
   };
 
   return (
-    <Card sx={{ maxWidth: { xs: "100%", sm: 300 }, m: { xs: 1, sm: 2 }, position: "relative" }}>
+    <Card
+      sx={{
+        maxWidth: { xs: "100%", sm: 300 },
+        m: { xs: 1, sm: 2 },
+        position: "relative",
+      }}
+    >
       <CardActionArea>
         <Box
           sx={{
@@ -43,8 +49,14 @@ function ProductCard({ name, price, image, id, wishlist, offer }) {
             zIndex: 1,
           }}
         >
-          <IconButton onClick={wishlistAction ? handleWishlistRemove : handleWishlist}>
-            {wishlistAction ? <FavoriteIcon sx={{ color: "#461246" }} /> : <FavoriteBorderIcon sx={{ color: "#461246" }} />}
+          <IconButton
+            onClick={wishlistAction ? handleWishlistRemove : handleWishlist}
+          >
+            {wishlistAction ? (
+              <FavoriteIcon sx={{ color: "#461246" }} />
+            ) : (
+              <FavoriteBorderIcon sx={{ color: "#461246" }} />
+            )}
           </IconButton>
         </Box>
 
@@ -53,7 +65,7 @@ function ProductCard({ name, price, image, id, wishlist, offer }) {
           <LazyLoadImage
             alt={name}
             effect="blur" // Blur effect after the image is loaded
-            src={image} // The main image
+            src={`${BASE_URL}${image}`} // The main image
             height={250} // Fixed height for the image
             width="100%" // Full width
             placeholderSrc="path/to/your/placeholder.png" // Low-res or loading spinner
@@ -62,7 +74,10 @@ function ProductCard({ name, price, image, id, wishlist, offer }) {
             }}
             // Optional styling for placeholder to give it a defined background or spinner while loading
             beforeLoad={() => (
-              <div className="loading-placeholder" style={{ height: 250, backgroundColor: '#f0f0f0' }} />
+              <div
+                className="loading-placeholder"
+                style={{ height: 250, backgroundColor: "#f0f0f0" }}
+              />
             )}
           />
         </Link>
@@ -78,15 +93,31 @@ function ProductCard({ name, price, image, id, wishlist, offer }) {
             {name.length > 32 ? `${name.substring(0, 32)}...` : name}
           </Typography>
 
-          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             <Typography
-              sx={{ color: "primary.main", fontWeight: "bold", mr: 1, fontSize: { xs: "0.875rem", sm: "1rem" } }}
+              sx={{
+                color: "primary.main",
+                fontWeight: "bold",
+                mr: 1,
+                fontSize: { xs: "0.875rem", sm: "1rem" },
+              }}
               variant="body1"
             >
               {Math.floor(price - price * (offer / 100))}
             </Typography>
             {offer > 0 && (
-              <Typography sx={{ textDecoration: "line-through", fontSize: { xs: "0.75rem", sm: "0.875rem" } }}>
+              <Typography
+                sx={{
+                  textDecoration: "line-through",
+                  fontSize: { xs: "0.75rem", sm: "0.875rem" },
+                }}
+              >
                 {price}
               </Typography>
             )}
