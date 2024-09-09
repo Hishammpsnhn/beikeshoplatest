@@ -16,7 +16,7 @@ import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
 
 import { addCart } from "../../actions/cartActions";
 
-const BASE_URL = "http://localhost:3000/";
+const BASE_URL = "https://app.beikeshop.shop/";
 
 function ProductDetails() {
   const { product, loading } = useSelector((state) => state.products);
