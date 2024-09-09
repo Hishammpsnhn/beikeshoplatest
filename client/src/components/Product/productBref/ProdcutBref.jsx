@@ -38,7 +38,7 @@ function ProdcutBref({
 }) {
   const [quantity, setQuantity] = useState(qty);
   const [qtyLoading, setQtyLoading] = useState(false);
-
+  const BASE_URL = "https://app.beikeshop.shop/";
   const userRating = ratings?.find((item) => item?.userId === userId);
 
   const dispatch = useDispatch();
