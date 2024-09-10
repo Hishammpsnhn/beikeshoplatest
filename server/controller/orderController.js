@@ -272,10 +272,10 @@ export const updateOrder = async (req, res) => {
       }
     }
     if (orderStatus === "cancelled") {
-      const product =await Products.findOne(order.product[0].product._id);
+      const product = await Products.findOne(order.product[0].product._id);
       product.sizes.forEach((size) => {
         if (size.size === order.product[0].size) {
-          size.stock++;
+          size.stock = order.product[0].quantity;
           product.save();
         }
       });
