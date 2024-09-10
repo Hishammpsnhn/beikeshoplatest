@@ -38,7 +38,6 @@ function ProdcutBref({
 }) {
   const [quantity, setQuantity] = useState(qty);
   const [qtyLoading, setQtyLoading] = useState(false);
-  const BASE_URL = "https://app.beikeshop.shop/";
   const userRating = ratings?.find((item) => item?.userId === userId);
 
   const dispatch = useDispatch();
@@ -102,7 +101,7 @@ function ProdcutBref({
                   ? navigate(`/productDetails/${productId._id}`)
                   : navigate(`/productDetails/${productId}`);
               }}
-              src={`${BASE_URL}${image}`} 
+              src={`${image}`} 
               alt="image_Unknown"
               style={{
                 width: "100%",

@@ -57,7 +57,10 @@ export const createOrder = async (req, res) => {
     if (wallet.amount < finalPrice) {
       return res.status(404).json({ message: "Wallet has no enough money" });
     }
-    const deliveryCharge = address.distance > 20 ? parseInt(address.distance * 0.5/items.length) : 0;
+    const deliveryCharge =
+      address.distance > 20
+        ? parseInt((address.distance * 0.5) / items.length)
+        : 0;
     wallet.amount -= finalPrice + deliveryCharge;
     wallet.history.push({
       amount: finalPrice,
@@ -67,7 +70,7 @@ export const createOrder = async (req, res) => {
     });
     await wallet.save();
   }
-  console.log(items)
+  console.log(items);
 
   try {
     const orders = await Promise.all(
@@ -100,11 +103,15 @@ export const createOrder = async (req, res) => {
         } else {
           lastdiscount = 0;
         }
-        const deliveryCharge = address.distance > 20 ? parseInt(address.distance * 0.5/items.length) : 0;
+        const deliveryCharge =
+          address.distance > 20
+            ? parseInt((address.distance * 0.5) / items.length)
+            : 0;
 
-        const finalAmount = (item.price*item.quantity) - lastdiscount + deliveryCharge;
-        console.log("finalAmount",finalAmount)
-        console.log("totalAmount",totalAmount);
+        const finalAmount =
+          item.price * item.quantity - lastdiscount + deliveryCharge;
+        console.log("finalAmount", finalAmount);
+        console.log("totalAmount", totalAmount);
         // console.log("itemTotal",itemTotal)
         const newOrder = new Orders({
           userId: userId,
@@ -119,8 +126,8 @@ export const createOrder = async (req, res) => {
             phoneNumber: address.phoneNumber,
           },
           deliveryCharge: deliveryCharge,
-          totalAmount:item.price,
-          finalAmount: finalAmount ,
+          totalAmount: item.price,
+          finalAmount: finalAmount,
           discount: lastdiscount,
           product: [
             {
@@ -229,7 +236,6 @@ export const updateOrder = async (req, res) => {
     }
 
     if (orderStatus === "cancelled" && order.paymentStatus) {
-      console.log("walletUserID", walletUserId);
       paymentStatus = order.paymentStatus;
       amount = order.finalAmount;
       try {
@@ -264,6 +270,15 @@ export const updateOrder = async (req, res) => {
           .status(500)
           .json({ message: "Error updating wallet", error });
       }
+    }
+    if (orderStatus === "cancelled") {
+      const product =await Products.findOne(order.product[0].product._id);
+      product.sizes.forEach((size) => {
+        if (size.size === order.product[0].size) {
+          size.stock++;
+          product.save();
+        }
+      });
     }
 
     if (orderStatus !== undefined) {

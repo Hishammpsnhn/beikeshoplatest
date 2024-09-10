@@ -34,8 +34,7 @@ import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import profileIcon from "../../public/profile.svg";
 function Profile() {
   const { user } = useSelector((state) => state.auth);
-  const [ setOrders] = useState([]);
- 
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [profile, setProfile] = useState({
@@ -112,16 +111,6 @@ function Profile() {
     localStorage.removeItem("userInfo");
     navigate("/login");
   };
-
-
-
-  useEffect(() => {
-    async function getUserOrder() {
-      const data = await getOrders(user?._id);
-      setOrders(data?.orders);
-    }
-    getUserOrder();
-  }, [setOrders,user]);
 
   return (
     <>
@@ -295,13 +284,13 @@ function Profile() {
 
                   <Grid item xs={12}>
                     <Box display="flex" justifyContent="space-between" mt={2}>
-                      <Button
+                      {/* <Button
                         variant="outlined"
                         color="secondary"
                         onClick={handleChangePassword}
                       >
                         Change Password
-                      </Button>
+                      </Button> */}
                       <Button
                         variant="contained"
                         color="error"
