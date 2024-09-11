@@ -107,7 +107,7 @@ export const editProduct = (formdata, id) => async (dispatch) => {
     if (error.response && error.response.data) {
       const errorMessage = error.response.data.message;
       console.error("Server Error Message:", errorMessage);
-      toast.error("Error:", errorMessage);
+      toast.error("Error:", "Name Already Exists");
       //dispatch(fetchCategoryFailure(errorMessage));
     } else {
       console.error("Generic Error");
