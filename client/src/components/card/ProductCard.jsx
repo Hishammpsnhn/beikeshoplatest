@@ -9,8 +9,12 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { Link } from "react-router-dom";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import "react-lazy-load-image-component/src/effects/blur.css"; // Import blur effect
+import "react-lazy-load-image-component/src/effects/blur.css";
 import "./productCard.css"; // Your CSS styles
+import {
+  addToWishlist,
+  removeItemWishlist,
+} from "../../actions/wishlistAction";
 
 function ProductCard({ name, price, image, id, wishlist, offer }) {
   const [wishlistAction, setWishlistAction] = useState(wishlist);
@@ -20,13 +24,13 @@ function ProductCard({ name, price, image, id, wishlist, offer }) {
   }, [wishlist]);
 
   const handleWishlist = () => {
+    addToWishlist(id);
     setWishlistAction(true);
-    // Add your add to wishlist logic here
   };
 
   const handleWishlistRemove = () => {
+    removeItemWishlist(id);
     setWishlistAction(false);
-    // Add your remove from wishlist logic here
   };
 
   return (
