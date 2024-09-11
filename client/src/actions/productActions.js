@@ -8,6 +8,7 @@ import {
   oneProductSuccess,
   updateProduct,
 } from "../reducers/productReducers";
+import { toast } from "react-toastify";
 
 const url = process.env.REACT_APP_SERVER_API;
 
@@ -106,10 +107,12 @@ export const editProduct = (formdata, id) => async (dispatch) => {
     if (error.response && error.response.data) {
       const errorMessage = error.response.data.message;
       console.error("Server Error Message:", errorMessage);
+      toast.error("Error:", errorMessage);
       //dispatch(fetchCategoryFailure(errorMessage));
     } else {
       console.error("Generic Error");
       //dispatch(fetchCategoryFailure("Something went wrong"));
+      toast.error("Error:", "something went wrong")
     }
   }
 };
