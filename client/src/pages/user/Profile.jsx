@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Avatar,
   Box,
@@ -22,7 +22,6 @@ import { useSelector } from "react-redux";
 import { profileUpdate } from "../../actions/userAction";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getOrders } from "../../actions/orderActions";
 import { googleLogout } from "@react-oauth/google";
 import { logout } from "../../reducers/authReducers";
 import { logoutCookie } from "../../actions/authActions";
@@ -99,9 +98,7 @@ function Profile() {
     }
   };
 
-  const handleChangePassword = () => {
-    console.log("change password");
-  };
+
 
   const handleLogout = () => {
     console.log("Logout clicked");

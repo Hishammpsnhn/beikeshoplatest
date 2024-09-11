@@ -2,7 +2,6 @@ import Order from "../model/orderSchema.js";
 import Products from "../model/ProductSchema.js";
 import getDateRange from "../utils/dateCalc.js";
 
-
 export const getSalesReport = async (req, res) => {
   const { startDate, endDate, sort } = req.query;
 
@@ -20,22 +19,26 @@ export const getSalesReport = async (req, res) => {
       model: Products,
       select: "name images ratings",
     });
-    console.log(orders);
+
+    const totalPrice = orders.reduce((acc, order) => {
+      return (
+        acc +
+        order.product.reduce((sum, item) => {
+          return sum + item.price * item.quantity;
+        }, 0)
+      );
+    }, 0);
 
     const overallAmount = orders.reduce(
       (acc, order) => acc + order.totalAmount,
-      0
-    );
-    const overallDisAmount = orders.reduce(
-      (acc, order) => acc + order.finalAmount,
       0
     );
 
     const numberOfOrders = orders.length;
 
     const report = {
-      overallAmount,
-      overallDiscount: overallAmount - overallDisAmount,
+      overallAmount:totalPrice,
+      overallDiscount: totalPrice - overallAmount,
       numberOfOrders,
       startDate: start.toISOString(),
       endDate: end.toISOString(),
