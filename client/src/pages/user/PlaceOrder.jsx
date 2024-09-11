@@ -9,7 +9,7 @@ import Header from "../../components/header/Header1";
 import Nav from "../../components/header/Nav";
 import AddIcon from "@mui/icons-material/Add";
 import { useDispatch, useSelector } from "react-redux";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getCart } from "../../actions/cartActions";
 import { toast } from "react-toastify";
 import {
@@ -21,7 +21,7 @@ import { clearCart } from "../../reducers/cartReducers";
 
 function PlaceOrder() {
   const { user } = useSelector((state) => state.auth);
-  const { items, loading,  totalAmount, CartId } = useSelector(
+  const { items, loading, totalAmount, CartId } = useSelector(
     (state) => state.cart
   );
   const [disable, setDisable] = useState(false);
@@ -30,6 +30,7 @@ function PlaceOrder() {
   const [coupon, setCoupon] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
   const [shipping, setShipping] = useState(0);
+  const [orderLoading, setOrderLoading] = useState(false);
   // const [wallet, setWallet] = useState(null);
   // const [offer, setOffer] = useState(items);
 
@@ -37,6 +38,7 @@ function PlaceOrder() {
   const dispatch = useDispatch();
 
   const handlePlaceOrder = async () => {
+    setOrderLoading(true);
     if (!selectedAddress) {
       toast.error("selected address");
       return;
@@ -119,6 +121,7 @@ function PlaceOrder() {
           false
         );
         if (data) {
+          setOrderLoading(false);
           navigate("/success", { state: { order: true } });
           dispatch(clearCart());
         }
@@ -137,6 +140,7 @@ function PlaceOrder() {
         paymentOption === "wallet" ? true : false
       );
       if (data) {
+        setOrderLoading(false);
         navigate("/success", { state: { order: true } });
         dispatch(clearCart());
       }
@@ -156,15 +160,15 @@ function PlaceOrder() {
   };
   useEffect(() => {
     async function getCartUser() {
-       await dispatch(getCart(user._id));
+      await dispatch(getCart(user._id));
     }
     getCartUser();
-  }, [user,dispatch]);
+  }, [user, dispatch]);
   useEffect(() => {
     if (!user) {
       navigate("/login");
     }
-  }, [user,navigate]);
+  }, [user, navigate]);
   useEffect(() => {
     const anyUnavailable = items.some((item) => item.availability === false);
     setDisable(anyUnavailable);
@@ -206,7 +210,7 @@ function PlaceOrder() {
             flexDirection={{ xs: "column", md: "row" }} // Stack vertically on small screens, horizontally on larger screens
             marginTop="20px"
           >
-            <Box width={{sx:'100%',md:'50%',}} >
+            <Box width={{ sx: "100%", md: "50%" }}>
               {items?.map((item) => (
                 <ProdcutBref
                   // cart={true}
@@ -222,7 +226,7 @@ function PlaceOrder() {
                 />
               ))}
             </Box>
-            <Box width={{sx:'100%',md:'40%',}}>
+            <Box width={{ sx: "100%", md: "40%" }}>
               <PriceDetails
                 totalAmount={totalAmount}
                 coupon={coupon}
@@ -235,10 +239,14 @@ function PlaceOrder() {
               <Button
                 onClick={handlePlaceOrder}
                 variant="contained"
-                disabled={disable}
+                disabled={disable || orderLoading}
                 sx={{ width: "100%", marginY: "30px" }}
               >
-                Place Order
+                {orderLoading ? (
+                  <CircularProgress size={24} color="inherit" />
+                ) : (
+                  "Place Order"
+                )}
               </Button>
             </Box>
           </Box>
