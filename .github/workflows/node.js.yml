@@ -20,7 +20,7 @@ jobs:
 
     # Debug: Ensure correct folder structure
     - name: Debug folder structure
-      run: ls -la /home/ubuntu/actions-runner-backend/_work/beikeshoplatest/beikeshoplates
+      run: ls -la /home/ubuntu/actions-runner-backend/_work/beikeshoplatest/beikeshoplatest
 
     # Set up Node.js
     - name: Use Node.js ${{ matrix.node-version }}
@@ -32,18 +32,18 @@ jobs:
     # Install dependencies in server folder
     - name: Install dependencies
       run: npm ci
-      working-directory: /home/ubuntu/actions-runner-backend/_work/beikeshoplatest/beikeshoplates/server
+      working-directory: /home/ubuntu/actions-runner-backend/_work/beikeshoplatest/beikeshoplatest/server
 
     # Set up environment variables
     - name: Set up environment variables
       run: |
         touch /home/ubuntu/actions-runner-backend/_work/beikeshoplatest/beikeshoplates/server/.env
-        echo "${{ secrets.PROD_ENV_FILE }}" > /home/ubuntu/actions-runner-backend/_work/beikeshoplatest/beikeshoplates/server/.env
+        echo "${{ secrets.PROD_ENV_FILE }}" > /home/ubuntu/actions-runner-backend/_work/beikeshoplatest/beikeshoplatest/server/.env
 
     # Run tests
     - name: Run tests
       run: npm test
-      working-directory: /home/ubuntu/actions-runner-backend/_work/beikeshoplatest/beikeshoplates/server
+      working-directory: /home/ubuntu/actions-runner-backend/_work/beikeshoplatest/beikeshoplatest/server
 
 
 
