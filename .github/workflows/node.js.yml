@@ -20,7 +20,7 @@ jobs:
 
     # Debug: Ensure correct folder structure
     - name: Debug folder structure
-      run: ls -la /home/ubuntu/actions-runner-backend/_work/beikeshoplatest/beikeshoplatest
+      run: ls -la /home/ubuntu/actions-runner-backend/_work/beikeshoplatest/beikeshoplatest/server
 
     # Set up Node.js
     - name: Use Node.js ${{ matrix.node-version }}
