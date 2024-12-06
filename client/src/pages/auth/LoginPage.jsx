@@ -17,7 +17,7 @@ import {
   login,
 } from "../../actions/authActions";
 import { useDispatch, useSelector } from "react-redux";
-import {  toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./auth.scss";
 import logo from "../../public/images/1661417516766.webp";
@@ -25,12 +25,12 @@ import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import validator from "validator";
 import { initial } from "../../reducers/authReducers";
-import Visibility from '@mui/icons-material/Visibility'
-import VisibilityOff from '@mui/icons-material/VisibilityOff'
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
-function Login({ forgotPassword, setForgotPassword}) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+function Login({ forgotPassword, setForgotPassword }) {
+  const [email, setEmail] = useState("demo@gmail.com");
+  const [password, setPassword] = useState("123456789@Abc");
   const [showPassword, setShowPassword] = useState(false);
 
   const { user, isAuthenticated, loading, error } = useSelector(
@@ -71,6 +71,10 @@ function Login({ forgotPassword, setForgotPassword}) {
         toast.error("Enter valid email address");
       }
     }
+  };
+  const handleDemo = () => {
+    
+    dispatch(login('admin@gmail.com', '123456789@Abc'));
   };
 
   const handleGoogleSuccess = async (response) => {
@@ -202,27 +206,45 @@ function Login({ forgotPassword, setForgotPassword}) {
                 </Link>
               </Typography>
             )}
-            <Button
-              variant="contained"
-              color="secondary"
-              type="submit"
-              sx={{ marginY: 2, paddingX: 8 }}
-            >
-              {loading ? (
-                <>
-                  <CircularProgress
-                    size={24}
-                    color="inherit"
-                    sx={{ marginRight: 2 }}
-                  />
-                  {forgotPassword ? `Sending OTP...` : `Logging in...`}
-                </>
-              ) : forgotPassword ? (
-                `Send OTP`
-              ) : (
-                `LOGIN`
+            <Box display="flex" flexDirection="column">
+              <Button
+                variant="contained"
+                color="secondary"
+                type="submit"
+                sx={{ marginY: 2, paddingX: 8 }}
+              >
+                {loading ? (
+                  <>
+                    <CircularProgress
+                      size={24}
+                      color="inherit"
+                      sx={{ marginRight: 2 }}
+                    />
+                    {forgotPassword ? `Sending OTP...` : `Logging in...`}
+                  </>
+                ) : forgotPassword ? (
+                  `Send OTP`
+                ) : (
+                  `LOGIN`
+                )}
+              </Button>
+              {!forgotPassword && (
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={handleDemo}
+                  sx={{ marginY: 2, paddingX: 8 }}
+                >
+                 
+                    ADMIN DEMO LOGIN
+                
+                </Button>
               )}
-            </Button>
+            </Box>
+
+            {/* <Button variant="primary" onClick={handleDemo}>
+              ADMIN LOGIN DEMO
+            </Button> */}
             {!forgotPassword && (
               <GoogleLogin
                 size="large"
