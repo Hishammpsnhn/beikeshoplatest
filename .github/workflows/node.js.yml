@@ -28,7 +28,7 @@ jobs:
       # Step 4: Copy or touch the production environment file
       - name: Set up environment variables
         run: |
-          cp ./server/prod_env_file ./server/.env  # Copy prod_env_file to .env
+          cp ./server/.env ./server/.env  # Copy prod_env_file to .env
           # OR, you can use `touch` if you only want to create the .env file
           # touch ./server/.env
           echo "{{secrets.PROD_ENV-FILE}}"
