@@ -1,0 +1,42 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: self-hosted  # Run on the self-hosted runner
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      # Step 3: Install dependencies for the server
+      - name: Install server dependencies
+        working-directory: ./server
+        run: npm install
+
+      
+
+      # Step 4: Set up environment variables
+      - name: Set up environment variables
+        run: |
+          if [ -f ./server/.env ]; then
+            echo ".env file found."
+          else
+            echo ".env file not found! Creating one."
+            echo "NODE_ENV=production" > ./server/.env
+          fi
+
+      # Step 5: Build server (if necessary)
+   
+
