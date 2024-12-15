@@ -6,7 +6,7 @@ import InfoIcon from "@mui/icons-material/Delete";
 
 export default function TitlebarImageList({ src, handleDelete }) {
   const [clicked, setClicked] = React.useState(false);
-  const BASE_URL = "https://app.beikeshop.shop/";
+  const BASE_URL = "";
 
   const handleClick = () => {
     setClicked(true);

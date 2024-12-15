@@ -1,11 +1,21 @@
-FROM node:20-alpine
-WORKDIR /app
-COPY package.json .
+# FROM node:alpine 
 
-RUN npm install --force
+# WORKDIR /app
 
-COPY . .
+# # COPY package*.json .
+# COPY public/ /app/public
+# COPY src/ /app/src
+# COPY .env/ /app/.env
+# COPY package.json .
+# COPY package-lock.json /app/
 
-EXPOSE 3000
+# RUN npm install
+# # COPY . .
 
-CMD [ "npm","start" ]
+# EXPOSE 3000
+# CMD [ "npm", "start"]
+
+FROM nginx:stable-alpine
+
+COPY build /usr/share/nginx/html
+

@@ -18,8 +18,7 @@ import ProdcutBref from "../../components/Product/productBref/ProdcutBref";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import CircularProgress from "@mui/material/CircularProgress";
-
-const BASE_URL = "https://app.beikeshop.shop/";
+const BASE_URL = process.env.REACT_APP_SERVER_API;
 function OrderDetails() {
   const { id } = useParams();
 

@@ -1,0 +1,248 @@
+
+==> Audit <==
+|---------|--------------------------|----------|-----------------------|---------|---------------------|---------------------|
+| Command |           Args           | Profile  |         User          | Version |     Start Time      |      End Time       |
+|---------|--------------------------|----------|-----------------------|---------|---------------------|---------------------|
+| delete  |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 09 Dec 24 16:22 IST | 09 Dec 24 16:23 IST |
+| start   |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 09 Dec 24 17:24 IST | 09 Dec 24 17:26 IST |
+| stop    |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 09 Dec 24 17:29 IST | 09 Dec 24 17:29 IST |
+| delete  |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 09 Dec 24 17:29 IST | 09 Dec 24 17:29 IST |
+| start   |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 09 Dec 24 17:29 IST | 09 Dec 24 17:31 IST |
+| service | olx-service              | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 09 Dec 24 17:39 IST |                     |
+| start   |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 09 Dec 24 18:21 IST | 09 Dec 24 18:21 IST |
+| stop    |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 09 Dec 24 18:25 IST | 09 Dec 24 18:27 IST |
+| delete  |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 09 Dec 24 18:29 IST | 09 Dec 24 18:29 IST |
+| start   |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 09 Dec 24 18:30 IST | 09 Dec 24 18:31 IST |
+| stop    |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 09 Dec 24 18:34 IST | 09 Dec 24 18:34 IST |
+| start   |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 09 Dec 24 18:34 IST | 09 Dec 24 18:35 IST |
+| stop    |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 09 Dec 24 18:50 IST | 09 Dec 24 18:51 IST |
+| delete  |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 09 Dec 24 18:55 IST | 09 Dec 24 18:56 IST |
+| start   |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 09 Dec 24 18:56 IST | 09 Dec 24 18:57 IST |
+| service |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 09 Dec 24 19:02 IST |                     |
+| service | beikeshop-client-service | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 09 Dec 24 19:08 IST | 09 Dec 24 19:56 IST |
+| start   |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 10 Dec 24 14:30 IST | 10 Dec 24 14:31 IST |
+| stop    |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 10 Dec 24 14:42 IST | 10 Dec 24 14:43 IST |
+| delete  |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 10 Dec 24 14:44 IST | 10 Dec 24 14:44 IST |
+| start   |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 10 Dec 24 14:44 IST | 10 Dec 24 14:46 IST |
+| service | beikeshop-client-service | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 10 Dec 24 15:16 IST | 10 Dec 24 15:27 IST |
+| start   |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 10 Dec 24 17:14 IST | 10 Dec 24 17:15 IST |
+| delete  |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 10 Dec 24 17:20 IST | 10 Dec 24 17:20 IST |
+| start   |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 10 Dec 24 17:20 IST | 10 Dec 24 17:21 IST |
+| ip      |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 10 Dec 24 17:28 IST | 10 Dec 24 17:28 IST |
+| service | api-server-service       | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 10 Dec 24 17:28 IST | 10 Dec 24 18:08 IST |
+| service | api-server-service       | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 10 Dec 24 18:08 IST | 10 Dec 24 18:10 IST |
+| tunnel  |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 10 Dec 24 18:10 IST | 10 Dec 24 18:13 IST |
+| service | api-server-service --url | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 10 Dec 24 18:13 IST | 10 Dec 24 18:16 IST |
+| tunnel  |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 10 Dec 24 18:16 IST | 10 Dec 24 18:26 IST |
+| ip      |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 10 Dec 24 18:17 IST | 10 Dec 24 18:17 IST |
+| ssh     |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 10 Dec 24 18:49 IST |                     |
+| ip      |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 10 Dec 24 18:51 IST | 10 Dec 24 18:51 IST |
+| ssh     |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 10 Dec 24 18:52 IST |                     |
+| service | api-server-service       | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 10 Dec 24 19:18 IST | 10 Dec 24 19:55 IST |
+| ip      |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 10 Dec 24 20:07 IST | 10 Dec 24 20:07 IST |
+| service | api-server-service       | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 10 Dec 24 20:29 IST |                     |
+| start   |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 14 Dec 24 09:51 IST | 14 Dec 24 09:52 IST |
+| stop    |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 14 Dec 24 11:32 IST | 14 Dec 24 11:32 IST |
+| delete  |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 14 Dec 24 11:32 IST | 14 Dec 24 11:32 IST |
+| start   |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 14 Dec 24 11:33 IST | 14 Dec 24 11:34 IST |
+| ip      |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 14 Dec 24 11:57 IST | 14 Dec 24 11:57 IST |
+| service | beikeshop-api-service    | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 14 Dec 24 11:59 IST | 14 Dec 24 12:02 IST |
+| stop    |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 14 Dec 24 13:34 IST | 14 Dec 24 13:37 IST |
+| start   |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 14 Dec 24 13:38 IST | 14 Dec 24 13:39 IST |
+| stop    |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 14 Dec 24 13:44 IST | 14 Dec 24 13:45 IST |
+| start   |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 14 Dec 24 13:46 IST | 14 Dec 24 13:47 IST |
+| start   |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 14 Dec 24 13:55 IST | 14 Dec 24 13:56 IST |
+| stop    |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 14 Dec 24 14:01 IST | 14 Dec 24 14:04 IST |
+| start   | --cpus=4 --memory=8192   | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 14 Dec 24 14:05 IST |                     |
+| start   | --cpus=4 --memory=7520   | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 14 Dec 24 14:06 IST |                     |
+| start   | --cpus=4 --memory=4000   | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 14 Dec 24 14:06 IST |                     |
+| start   | --cpus=4 --memory=3651   | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 14 Dec 24 14:06 IST | 14 Dec 24 14:07 IST |
+| stop    |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 14 Dec 24 14:12 IST | 14 Dec 24 14:14 IST |
+| delete  |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 14 Dec 24 15:44 IST | 14 Dec 24 15:44 IST |
+| start   |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 14 Dec 24 15:44 IST |                     |
+| start   |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 14 Dec 24 16:10 IST |                     |
+| start   |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 14 Dec 24 16:12 IST |                     |
+| start   |                          | minikube | LAPTOP-07IJ82MV\hisha | v1.34.0 | 14 Dec 24 16:15 IST |                     |
+|---------|--------------------------|----------|-----------------------|---------|---------------------|---------------------|
+
+
+==> Last Start <==
+Log file created at: 2024/12/14 16:15:36
+Running on machine: LAPTOP-07IJ82MV
+Binary: Built with gc go1.22.5 for windows/amd64
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I1214 16:15:36.745356    2024 out.go:345] Setting OutFile to fd 96 ...
+I1214 16:15:36.746382    2024 out.go:397] isatty.IsTerminal(96) = true
+I1214 16:15:36.746382    2024 out.go:358] Setting ErrFile to fd 100...
+I1214 16:15:36.746382    2024 out.go:397] isatty.IsTerminal(100) = true
+I1214 16:15:36.769685    2024 out.go:352] Setting JSON to false
+I1214 16:15:36.774722    2024 start.go:129] hostinfo: {"hostname":"LAPTOP-07IJ82MV","uptime":8542,"bootTime":1734164594,"procs":280,"os":"windows","platform":"Microsoft Windows 11 Home Single Language","platformFamily":"Standalone Workstation","platformVersion":"10.0.22631.4602 Build 22631.4602","kernelVersion":"10.0.22631.4602 Build 22631.4602","kernelArch":"x86_64","virtualizationSystem":"","virtualizationRole":"","hostId":"583ab2cc-ab95-4232-9cf3-dd7267e623da"}
+W1214 16:15:36.774722    2024 start.go:137] gopshost.Virtualization returned error: not implemented yet
+I1214 16:15:36.778622    2024 out.go:177] 😄  minikube v1.34.0 on Microsoft Windows 11 Home Single Language 10.0.22631.4602 Build 22631.4602
+I1214 16:15:36.783044    2024 notify.go:220] Checking for updates...
+I1214 16:15:36.784184    2024 config.go:182] Loaded profile config "minikube": Driver=docker, ContainerRuntime=docker, KubernetesVersion=v1.31.0
+I1214 16:15:36.784184    2024 driver.go:394] Setting default libvirt URI to qemu:///system
+I1214 16:15:36.891885    2024 docker.go:123] docker version: linux-27.1.1:Docker Desktop 4.33.1 (161083)
+I1214 16:15:36.900025    2024 cli_runner.go:164] Run: docker system info --format "{{json .}}"
+I1214 16:15:37.269361    2024 info.go:266] docker info: {ID:98a6cf2e-9738-4698-bf8b-b904f0e102da Containers:1 ContainersRunning:1 ContainersPaused:0 ContainersStopped:0 Images:5 Driver:overlay2 DriverStatus:[[Backing Filesystem extfs] [Supports d_type true] [Using metacopy false] [Native Overlay Diff true] [userxattr false]] SystemStatus:<nil> Plugins:{Volume:[local] Network:[bridge host ipvlan macvlan null overlay] Authorization:<nil> Log:[awslogs fluentd gcplogs gelf journald json-file local splunk syslog]} MemoryLimit:true SwapLimit:true KernelMemory:false KernelMemoryTCP:true CPUCfsPeriod:true CPUCfsQuota:true CPUShares:true CPUSet:true PidsLimit:true IPv4Forwarding:true BridgeNfIptables:true BridgeNfIP6Tables:true Debug:false NFd:47 OomKillDisable:true NGoroutines:64 SystemTime:2024-12-14 10:45:37.221361723 +0000 UTC LoggingDriver:json-file CgroupDriver:cgroupfs NEventsListener:10 KernelVersion:5.15.167.4-microsoft-standard-WSL2 OperatingSystem:Docker Desktop OSType:linux Architecture:x86_64 IndexServerAddress:https://index.docker.io/v1/ RegistryConfig:{AllowNondistributableArtifactsCIDRs:[] AllowNondistributableArtifactsHostnames:[] InsecureRegistryCIDRs:[127.0.0.0/8] IndexConfigs:{DockerIo:{Name:docker.io Mirrors:[] Secure:true Official:true}} Mirrors:[]} NCPU:12 MemTotal:3829321728 GenericResources:<nil> DockerRootDir:/var/lib/docker HTTPProxy:http.docker.internal:3128 HTTPSProxy:http.docker.internal:3128 NoProxy:hubproxy.docker.internal Name:docker-desktop Labels:[com.docker.desktop.address=npipe://\\.\pipe\docker_cli] ExperimentalBuild:false ServerVersion:27.1.1 ClusterStore: ClusterAdvertise: Runtimes:{Runc:{Path:runc}} DefaultRuntime:runc Swarm:{NodeID: NodeAddr: LocalNodeState:inactive ControlAvailable:false Error: RemoteManagers:<nil>} LiveRestoreEnabled:false Isolation: InitBinary:docker-init ContainerdCommit:{ID:2bf793ef6dc9a18e00cb12efb64355c2c9d5eb41 Expected:2bf793ef6dc9a18e00cb12efb64355c2c9d5eb41} RuncCommit:{ID:v1.1.13-0-g58aa920 Expected:v1.1.13-0-g58aa920} InitCommit:{ID:de40ad0 Expected:de40ad0} SecurityOptions:[name=seccomp,profile=unconfined] ProductLicense: Warnings:[WARNING: No blkio throttle.read_bps_device support WARNING: No blkio throttle.write_bps_device support WARNING: No blkio throttle.read_iops_device support WARNING: No blkio throttle.write_iops_device support WARNING: daemon is not using the default seccomp profile] ServerErrors:[] ClientInfo:{Debug:false Plugins:[map[Name:buildx Path:C:\Program Files\Docker\cli-plugins\docker-buildx.exe SchemaVersion:0.1.0 ShortDescription:Docker Buildx Vendor:Docker Inc. Version:v0.16.1-desktop.1] map[Name:compose Path:C:\Program Files\Docker\cli-plugins\docker-compose.exe SchemaVersion:0.1.0 ShortDescription:Docker Compose Vendor:Docker Inc. Version:v2.29.1-desktop.1] map[Name:debug Path:C:\Program Files\Docker\cli-plugins\docker-debug.exe SchemaVersion:0.1.0 ShortDescription:Get a shell into any image or container Vendor:Docker Inc. Version:0.0.34] map[Name:desktop Path:C:\Program Files\Docker\cli-plugins\docker-desktop.exe SchemaVersion:0.1.0 ShortDescription:Docker Desktop commands (Alpha) Vendor:Docker Inc. Version:v0.0.14] map[Name:dev Path:C:\Program Files\Docker\cli-plugins\docker-dev.exe SchemaVersion:0.1.0 ShortDescription:Docker Dev Environments Vendor:Docker Inc. Version:v0.1.2] map[Name:extension Path:C:\Program Files\Docker\cli-plugins\docker-extension.exe SchemaVersion:0.1.0 ShortDescription:Manages Docker extensions Vendor:Docker Inc. Version:v0.2.25] map[Name:feedback Path:C:\Program Files\Docker\cli-plugins\docker-feedback.exe SchemaVersion:0.1.0 ShortDescription:Provide feedback, right in your terminal! Vendor:Docker Inc. Version:v1.0.5] map[Name:init Path:C:\Program Files\Docker\cli-plugins\docker-init.exe SchemaVersion:0.1.0 ShortDescription:Creates Docker-related starter files for your project Vendor:Docker Inc. Version:v1.3.0] map[Name:sbom Path:C:\Program Files\Docker\cli-plugins\docker-sbom.exe SchemaVersion:0.1.0 ShortDescription:View the packaged-based Software Bill Of Materials (SBOM) for an image URL:https://github.com/docker/sbom-cli-plugin Vendor:Anchore Inc. Version:0.6.0] map[Name:scout Path:C:\Program Files\Docker\cli-plugins\docker-scout.exe SchemaVersion:0.1.0 ShortDescription:Docker Scout Vendor:Docker Inc. Version:v1.11.0]] Warnings:<nil>}}
+I1214 16:15:37.274895    2024 out.go:177] ✨  Using the docker driver based on existing profile
+I1214 16:15:37.278239    2024 start.go:297] selected driver: docker
+I1214 16:15:37.278239    2024 start.go:901] validating driver "docker" against &{Name:minikube KeepContext:false EmbedCerts:false MinikubeISO: KicBaseImage:gcr.io/k8s-minikube/kicbase:v0.0.45@sha256:81df288595202a317b1a4dc2506ca2e4ed5f22373c19a441b88cfbf4b9867c85 Memory:2200 CPUs:2 DiskSize:20000 Driver:docker HyperkitVpnKitSock: HyperkitVSockPorts:[] DockerEnv:[] ContainerVolumeMounts:[] InsecureRegistry:[] RegistryMirror:[] HostOnlyCIDR:192.168.59.1/24 HypervVirtualSwitch: HypervUseExternalSwitch:false HypervExternalAdapter: KVMNetwork:default KVMQemuURI:qemu:///system KVMGPU:false KVMHidden:false KVMNUMACount:1 APIServerPort:8443 DockerOpt:[] DisableDriverMounts:false NFSShare:[] NFSSharesRoot:/nfsshares UUID: NoVTXCheck:false DNSProxy:false HostDNSResolver:true HostOnlyNicType:virtio NatNicType:virtio SSHIPAddress: SSHUser:root SSHKey: SSHPort:22 KubernetesConfig:{KubernetesVersion:v1.31.0 ClusterName:minikube Namespace:default APIServerHAVIP: APIServerName:minikubeCA APIServerNames:[] APIServerIPs:[] DNSDomain:cluster.local ContainerRuntime:docker CRISocket: NetworkPlugin:cni FeatureGates: ServiceCIDR:10.96.0.0/12 ImageRepository: LoadBalancerStartIP: LoadBalancerEndIP: CustomIngressCert: RegistryAliases: ExtraOptions:[] ShouldLoadCachedImages:true EnableDefaultCNI:false CNI:} Nodes:[{Name: IP: Port:8443 KubernetesVersion:v1.31.0 ContainerRuntime:docker ControlPlane:true Worker:true}] Addons:map[] CustomAddonImages:map[] CustomAddonRegistries:map[] VerifyComponents:map[apiserver:true system_pods:true] StartHostTimeout:6m0s ScheduledStop:<nil> ExposedPorts:[] ListenAddress: Network: Subnet: MultiNodeRequested:false ExtraDisks:0 CertExpiration:26280h0m0s Mount:false MountString:C:\Users\hisha:/minikube-host Mount9PVersion:9p2000.L MountGID:docker MountIP: MountMSize:262144 MountOptions:[] MountPort:0 MountType:9p MountUID:docker BinaryMirror: DisableOptimizations:false DisableMetrics:false CustomQemuFirmwarePath: SocketVMnetClientPath: SocketVMnetPath: StaticIP: SSHAuthSock: SSHAgentPID:0 GPUs: AutoPauseInterval:1m0s}
+I1214 16:15:37.278239    2024 start.go:912] status for docker: {Installed:true Healthy:true Running:false NeedsImprovement:false Error:<nil> Reason: Fix: Doc: Version:}
+I1214 16:15:37.286406    2024 cli_runner.go:164] Run: docker system info --format "{{json .}}"
+I1214 16:15:37.523189    2024 info.go:266] docker info: {ID:98a6cf2e-9738-4698-bf8b-b904f0e102da Containers:1 ContainersRunning:1 ContainersPaused:0 ContainersStopped:0 Images:5 Driver:overlay2 DriverStatus:[[Backing Filesystem extfs] [Supports d_type true] [Using metacopy false] [Native Overlay Diff true] [userxattr false]] SystemStatus:<nil> Plugins:{Volume:[local] Network:[bridge host ipvlan macvlan null overlay] Authorization:<nil> Log:[awslogs fluentd gcplogs gelf journald json-file local splunk syslog]} MemoryLimit:true SwapLimit:true KernelMemory:false KernelMemoryTCP:true CPUCfsPeriod:true CPUCfsQuota:true CPUShares:true CPUSet:true PidsLimit:true IPv4Forwarding:true BridgeNfIptables:true BridgeNfIP6Tables:true Debug:false NFd:47 OomKillDisable:true NGoroutines:64 SystemTime:2024-12-14 10:45:37.484640107 +0000 UTC LoggingDriver:json-file CgroupDriver:cgroupfs NEventsListener:10 KernelVersion:5.15.167.4-microsoft-standard-WSL2 OperatingSystem:Docker Desktop OSType:linux Architecture:x86_64 IndexServerAddress:https://index.docker.io/v1/ RegistryConfig:{AllowNondistributableArtifactsCIDRs:[] AllowNondistributableArtifactsHostnames:[] InsecureRegistryCIDRs:[127.0.0.0/8] IndexConfigs:{DockerIo:{Name:docker.io Mirrors:[] Secure:true Official:true}} Mirrors:[]} NCPU:12 MemTotal:3829321728 GenericResources:<nil> DockerRootDir:/var/lib/docker HTTPProxy:http.docker.internal:3128 HTTPSProxy:http.docker.internal:3128 NoProxy:hubproxy.docker.internal Name:docker-desktop Labels:[com.docker.desktop.address=npipe://\\.\pipe\docker_cli] ExperimentalBuild:false ServerVersion:27.1.1 ClusterStore: ClusterAdvertise: Runtimes:{Runc:{Path:runc}} DefaultRuntime:runc Swarm:{NodeID: NodeAddr: LocalNodeState:inactive ControlAvailable:false Error: RemoteManagers:<nil>} LiveRestoreEnabled:false Isolation: InitBinary:docker-init ContainerdCommit:{ID:2bf793ef6dc9a18e00cb12efb64355c2c9d5eb41 Expected:2bf793ef6dc9a18e00cb12efb64355c2c9d5eb41} RuncCommit:{ID:v1.1.13-0-g58aa920 Expected:v1.1.13-0-g58aa920} InitCommit:{ID:de40ad0 Expected:de40ad0} SecurityOptions:[name=seccomp,profile=unconfined] ProductLicense: Warnings:[WARNING: No blkio throttle.read_bps_device support WARNING: No blkio throttle.write_bps_device support WARNING: No blkio throttle.read_iops_device support WARNING: No blkio throttle.write_iops_device support WARNING: daemon is not using the default seccomp profile] ServerErrors:[] ClientInfo:{Debug:false Plugins:[map[Name:buildx Path:C:\Program Files\Docker\cli-plugins\docker-buildx.exe SchemaVersion:0.1.0 ShortDescription:Docker Buildx Vendor:Docker Inc. Version:v0.16.1-desktop.1] map[Name:compose Path:C:\Program Files\Docker\cli-plugins\docker-compose.exe SchemaVersion:0.1.0 ShortDescription:Docker Compose Vendor:Docker Inc. Version:v2.29.1-desktop.1] map[Name:debug Path:C:\Program Files\Docker\cli-plugins\docker-debug.exe SchemaVersion:0.1.0 ShortDescription:Get a shell into any image or container Vendor:Docker Inc. Version:0.0.34] map[Name:desktop Path:C:\Program Files\Docker\cli-plugins\docker-desktop.exe SchemaVersion:0.1.0 ShortDescription:Docker Desktop commands (Alpha) Vendor:Docker Inc. Version:v0.0.14] map[Name:dev Path:C:\Program Files\Docker\cli-plugins\docker-dev.exe SchemaVersion:0.1.0 ShortDescription:Docker Dev Environments Vendor:Docker Inc. Version:v0.1.2] map[Name:extension Path:C:\Program Files\Docker\cli-plugins\docker-extension.exe SchemaVersion:0.1.0 ShortDescription:Manages Docker extensions Vendor:Docker Inc. Version:v0.2.25] map[Name:feedback Path:C:\Program Files\Docker\cli-plugins\docker-feedback.exe SchemaVersion:0.1.0 ShortDescription:Provide feedback, right in your terminal! Vendor:Docker Inc. Version:v1.0.5] map[Name:init Path:C:\Program Files\Docker\cli-plugins\docker-init.exe SchemaVersion:0.1.0 ShortDescription:Creates Docker-related starter files for your project Vendor:Docker Inc. Version:v1.3.0] map[Name:sbom Path:C:\Program Files\Docker\cli-plugins\docker-sbom.exe SchemaVersion:0.1.0 ShortDescription:View the packaged-based Software Bill Of Materials (SBOM) for an image URL:https://github.com/docker/sbom-cli-plugin Vendor:Anchore Inc. Version:0.6.0] map[Name:scout Path:C:\Program Files\Docker\cli-plugins\docker-scout.exe SchemaVersion:0.1.0 ShortDescription:Docker Scout Vendor:Docker Inc. Version:v1.11.0]] Warnings:<nil>}}
+I1214 16:15:37.584569    2024 cni.go:84] Creating CNI manager for ""
+I1214 16:15:37.584569    2024 cni.go:158] "docker" driver + "docker" container runtime found on kubernetes v1.24+, recommending bridge
+I1214 16:15:37.586957    2024 start.go:340] cluster config:
+{Name:minikube KeepContext:false EmbedCerts:false MinikubeISO: KicBaseImage:gcr.io/k8s-minikube/kicbase:v0.0.45@sha256:81df288595202a317b1a4dc2506ca2e4ed5f22373c19a441b88cfbf4b9867c85 Memory:2200 CPUs:2 DiskSize:20000 Driver:docker HyperkitVpnKitSock: HyperkitVSockPorts:[] DockerEnv:[] ContainerVolumeMounts:[] InsecureRegistry:[] RegistryMirror:[] HostOnlyCIDR:192.168.59.1/24 HypervVirtualSwitch: HypervUseExternalSwitch:false HypervExternalAdapter: KVMNetwork:default KVMQemuURI:qemu:///system KVMGPU:false KVMHidden:false KVMNUMACount:1 APIServerPort:8443 DockerOpt:[] DisableDriverMounts:false NFSShare:[] NFSSharesRoot:/nfsshares UUID: NoVTXCheck:false DNSProxy:false HostDNSResolver:true HostOnlyNicType:virtio NatNicType:virtio SSHIPAddress: SSHUser:root SSHKey: SSHPort:22 KubernetesConfig:{KubernetesVersion:v1.31.0 ClusterName:minikube Namespace:default APIServerHAVIP: APIServerName:minikubeCA APIServerNames:[] APIServerIPs:[] DNSDomain:cluster.local ContainerRuntime:docker CRISocket: NetworkPlugin:cni FeatureGates: ServiceCIDR:10.96.0.0/12 ImageRepository: LoadBalancerStartIP: LoadBalancerEndIP: CustomIngressCert: RegistryAliases: ExtraOptions:[] ShouldLoadCachedImages:true EnableDefaultCNI:false CNI:} Nodes:[{Name: IP: Port:8443 KubernetesVersion:v1.31.0 ContainerRuntime:docker ControlPlane:true Worker:true}] Addons:map[] CustomAddonImages:map[] CustomAddonRegistries:map[] VerifyComponents:map[apiserver:true system_pods:true] StartHostTimeout:6m0s ScheduledStop:<nil> ExposedPorts:[] ListenAddress: Network: Subnet: MultiNodeRequested:false ExtraDisks:0 CertExpiration:26280h0m0s Mount:false MountString:C:\Users\hisha:/minikube-host Mount9PVersion:9p2000.L MountGID:docker MountIP: MountMSize:262144 MountOptions:[] MountPort:0 MountType:9p MountUID:docker BinaryMirror: DisableOptimizations:false DisableMetrics:false CustomQemuFirmwarePath: SocketVMnetClientPath: SocketVMnetPath: StaticIP: SSHAuthSock: SSHAgentPID:0 GPUs: AutoPauseInterval:1m0s}
+I1214 16:15:37.590268    2024 out.go:177] 👍  Starting "minikube" primary control-plane node in "minikube" cluster
+I1214 16:15:37.595904    2024 cache.go:121] Beginning downloading kic base image for docker with docker
+I1214 16:15:37.598039    2024 out.go:177] 🚜  Pulling base image v0.0.45 ...
+I1214 16:15:37.604129    2024 preload.go:131] Checking if preload exists for k8s version v1.31.0 and runtime docker
+I1214 16:15:37.604129    2024 image.go:79] Checking for gcr.io/k8s-minikube/kicbase:v0.0.45@sha256:81df288595202a317b1a4dc2506ca2e4ed5f22373c19a441b88cfbf4b9867c85 in local docker daemon
+I1214 16:15:37.605129    2024 preload.go:146] Found local preload: C:\Users\hisha\.minikube\cache\preloaded-tarball\preloaded-images-k8s-v18-v1.31.0-docker-overlay2-amd64.tar.lz4
+I1214 16:15:37.605129    2024 cache.go:56] Caching tarball of preloaded images
+I1214 16:15:37.606129    2024 preload.go:172] Found C:\Users\hisha\.minikube\cache\preloaded-tarball\preloaded-images-k8s-v18-v1.31.0-docker-overlay2-amd64.tar.lz4 in cache, skipping download
+I1214 16:15:37.606129    2024 cache.go:59] Finished verifying existence of preloaded tar for v1.31.0 on docker
+I1214 16:15:37.607487    2024 profile.go:143] Saving config to C:\Users\hisha\.minikube\profiles\minikube\config.json ...
+W1214 16:15:37.714066    2024 image.go:95] image gcr.io/k8s-minikube/kicbase:v0.0.45@sha256:81df288595202a317b1a4dc2506ca2e4ed5f22373c19a441b88cfbf4b9867c85 is of wrong architecture
+I1214 16:15:37.714066    2024 cache.go:149] Downloading gcr.io/k8s-minikube/kicbase:v0.0.45@sha256:81df288595202a317b1a4dc2506ca2e4ed5f22373c19a441b88cfbf4b9867c85 to local cache
+I1214 16:15:37.715752    2024 localpath.go:151] windows sanitize: C:\Users\hisha\.minikube\cache\kic\amd64\kicbase:v0.0.45@sha256:81df288595202a317b1a4dc2506ca2e4ed5f22373c19a441b88cfbf4b9867c85.tar -> C:\Users\hisha\.minikube\cache\kic\amd64\kicbase_v0.0.45@sha256_81df288595202a317b1a4dc2506ca2e4ed5f22373c19a441b88cfbf4b9867c85.tar
+I1214 16:15:37.716366    2024 localpath.go:151] windows sanitize: C:\Users\hisha\.minikube\cache\kic\amd64\kicbase:v0.0.45@sha256:81df288595202a317b1a4dc2506ca2e4ed5f22373c19a441b88cfbf4b9867c85.tar -> C:\Users\hisha\.minikube\cache\kic\amd64\kicbase_v0.0.45@sha256_81df288595202a317b1a4dc2506ca2e4ed5f22373c19a441b88cfbf4b9867c85.tar
+I1214 16:15:37.716366    2024 image.go:63] Checking for gcr.io/k8s-minikube/kicbase:v0.0.45@sha256:81df288595202a317b1a4dc2506ca2e4ed5f22373c19a441b88cfbf4b9867c85 in local cache directory
+I1214 16:15:37.719738    2024 image.go:66] Found gcr.io/k8s-minikube/kicbase:v0.0.45@sha256:81df288595202a317b1a4dc2506ca2e4ed5f22373c19a441b88cfbf4b9867c85 in local cache directory, skipping pull
+I1214 16:15:37.719738    2024 image.go:135] gcr.io/k8s-minikube/kicbase:v0.0.45@sha256:81df288595202a317b1a4dc2506ca2e4ed5f22373c19a441b88cfbf4b9867c85 exists in cache, skipping pull
+I1214 16:15:37.719738    2024 cache.go:152] successfully saved gcr.io/k8s-minikube/kicbase:v0.0.45@sha256:81df288595202a317b1a4dc2506ca2e4ed5f22373c19a441b88cfbf4b9867c85 as a tarball
+I1214 16:15:37.719738    2024 cache.go:162] Loading gcr.io/k8s-minikube/kicbase:v0.0.45@sha256:81df288595202a317b1a4dc2506ca2e4ed5f22373c19a441b88cfbf4b9867c85 from local cache
+I1214 16:15:37.720281    2024 localpath.go:151] windows sanitize: C:\Users\hisha\.minikube\cache\kic\amd64\kicbase:v0.0.45@sha256:81df288595202a317b1a4dc2506ca2e4ed5f22373c19a441b88cfbf4b9867c85.tar -> C:\Users\hisha\.minikube\cache\kic\amd64\kicbase_v0.0.45@sha256_81df288595202a317b1a4dc2506ca2e4ed5f22373c19a441b88cfbf4b9867c85.tar
+I1214 16:15:38.867022    2024 cache.go:164] successfully loaded and using gcr.io/k8s-minikube/kicbase:v0.0.45@sha256:81df288595202a317b1a4dc2506ca2e4ed5f22373c19a441b88cfbf4b9867c85 from cached tarball
+I1214 16:15:38.867022    2024 cache.go:194] Successfully downloaded all kic artifacts
+I1214 16:15:38.867570    2024 start.go:360] acquireMachinesLock for minikube: {Name:mkf91e9a2de98ef3aeeb3854c0553de021a7cc86 Clock:{} Delay:500ms Timeout:10m0s Cancel:<nil>}
+I1214 16:15:38.867570    2024 start.go:364] duration metric: took 0s to acquireMachinesLock for "minikube"
+I1214 16:15:38.868096    2024 start.go:96] Skipping create...Using existing machine configuration
+I1214 16:15:38.868096    2024 fix.go:54] fixHost starting: 
+I1214 16:15:38.889284    2024 cli_runner.go:164] Run: docker container inspect minikube --format={{.State.Status}}
+I1214 16:15:38.977939    2024 fix.go:112] recreateIfNeeded on minikube: state=Stopped err=<nil>
+W1214 16:15:38.977939    2024 fix.go:138] unexpected machine state, will restart: <nil>
+I1214 16:15:38.980694    2024 out.go:177] 🔄  Restarting existing docker container for "minikube" ...
+I1214 16:15:38.988180    2024 cli_runner.go:164] Run: docker start minikube
+I1214 16:15:39.834970    2024 cli_runner.go:164] Run: docker container inspect minikube --format={{.State.Status}}
+I1214 16:15:39.907878    2024 kic.go:430] container "minikube" state is running.
+I1214 16:15:39.916052    2024 cli_runner.go:164] Run: docker container inspect -f "{{range .NetworkSettings.Networks}}{{.IPAddress}},{{.GlobalIPv6Address}}{{end}}" minikube
+I1214 16:15:40.005685    2024 profile.go:143] Saving config to C:\Users\hisha\.minikube\profiles\minikube\config.json ...
+I1214 16:15:40.009651    2024 machine.go:93] provisionDockerMachine start ...
+I1214 16:15:40.015376    2024 cli_runner.go:164] Run: docker container inspect -f "'{{(index (index .NetworkSettings.Ports "22/tcp") 0).HostPort}}'" minikube
+I1214 16:15:40.109158    2024 main.go:141] libmachine: Using SSH client type: native
+I1214 16:15:40.109685    2024 main.go:141] libmachine: <nil>
+I1214 16:15:40.110288    2024 ubuntu.go:169] provisioning hostname "minikube"
+I1214 16:15:40.114083    2024 cli_runner.go:164] Run: docker container inspect -f "'{{(index (index .NetworkSettings.Ports "22/tcp") 0).HostPort}}'" minikube
+I1214 16:15:40.196858    2024 main.go:141] libmachine: Using SSH client type: native
+I1214 16:15:40.196858    2024 main.go:141] libmachine: <nil>
+I1214 16:15:40.197374    2024 machine.go:96] duration metric: took 187.2075ms to provisionDockerMachine
+I1214 16:15:40.208785    2024 ssh_runner.go:195] Run: sh -c "df -h /var | awk 'NR==2{print $5}'"
+I1214 16:15:40.213073    2024 cli_runner.go:164] Run: docker container inspect -f "'{{(index (index .NetworkSettings.Ports "22/tcp") 0).HostPort}}'" minikube
+I1214 16:15:40.294853    2024 sshutil.go:53] new ssh client: &{IP:127.0.0.1 Port:52876 SSHKeyPath:C:\Users\hisha\.minikube\machines\minikube\id_rsa Username:docker}
+I1214 16:15:40.295394    2024 retry.go:31] will retry after 141.914212ms: new client: new client: Error creating new native config from ssh using: docker, &{[] [C:\Users\hisha\.minikube\machines\minikube\id_rsa]}: open C:\Users\hisha\.minikube\machines\minikube\id_rsa: The system cannot find the file specified.
+I1214 16:15:40.444975    2024 cli_runner.go:164] Run: docker container inspect -f "'{{(index (index .NetworkSettings.Ports "22/tcp") 0).HostPort}}'" minikube
+I1214 16:15:40.516492    2024 sshutil.go:53] new ssh client: &{IP:127.0.0.1 Port:52876 SSHKeyPath:C:\Users\hisha\.minikube\machines\minikube\id_rsa Username:docker}
+I1214 16:15:40.517104    2024 retry.go:31] will retry after 348.867458ms: new client: new client: Error creating new native config from ssh using: docker, &{[] [C:\Users\hisha\.minikube\machines\minikube\id_rsa]}: open C:\Users\hisha\.minikube\machines\minikube\id_rsa: The system cannot find the file specified.
+I1214 16:15:40.878380    2024 cli_runner.go:164] Run: docker container inspect -f "'{{(index (index .NetworkSettings.Ports "22/tcp") 0).HostPort}}'" minikube
+I1214 16:15:40.949701    2024 sshutil.go:53] new ssh client: &{IP:127.0.0.1 Port:52876 SSHKeyPath:C:\Users\hisha\.minikube\machines\minikube\id_rsa Username:docker}
+I1214 16:15:40.949701    2024 retry.go:31] will retry after 329.268435ms: new client: new client: Error creating new native config from ssh using: docker, &{[] [C:\Users\hisha\.minikube\machines\minikube\id_rsa]}: open C:\Users\hisha\.minikube\machines\minikube\id_rsa: The system cannot find the file specified.
+I1214 16:15:41.282222    2024 cli_runner.go:164] Run: docker container inspect -f "'{{(index (index .NetworkSettings.Ports "22/tcp") 0).HostPort}}'" minikube
+I1214 16:15:41.415137    2024 sshutil.go:53] new ssh client: &{IP:127.0.0.1 Port:52876 SSHKeyPath:C:\Users\hisha\.minikube\machines\minikube\id_rsa Username:docker}
+W1214 16:15:41.415137    2024 start.go:268] error running df -h /var: NewSession: new client: new client: Error creating new native config from ssh using: docker, &{[] [C:\Users\hisha\.minikube\machines\minikube\id_rsa]}: open C:\Users\hisha\.minikube\machines\minikube\id_rsa: The system cannot find the file specified.
+W1214 16:15:41.441740    2024 start.go:235] error getting percentage of /var that is free: NewSession: new client: new client: Error creating new native config from ssh using: docker, &{[] [C:\Users\hisha\.minikube\machines\minikube\id_rsa]}: open C:\Users\hisha\.minikube\machines\minikube\id_rsa: The system cannot find the file specified.
+I1214 16:15:41.450306    2024 ssh_runner.go:195] Run: sh -c "df -BG /var | awk 'NR==2{print $4}'"
+I1214 16:15:41.454423    2024 cli_runner.go:164] Run: docker container inspect -f "'{{(index (index .NetworkSettings.Ports "22/tcp") 0).HostPort}}'" minikube
+I1214 16:15:41.710060    2024 sshutil.go:53] new ssh client: &{IP:127.0.0.1 Port:52876 SSHKeyPath:C:\Users\hisha\.minikube\machines\minikube\id_rsa Username:docker}
+I1214 16:15:41.710060    2024 retry.go:31] will retry after 365.471549ms: new client: new client: Error creating new native config from ssh using: docker, &{[] [C:\Users\hisha\.minikube\machines\minikube\id_rsa]}: open C:\Users\hisha\.minikube\machines\minikube\id_rsa: The system cannot find the file specified.
+I1214 16:15:42.093256    2024 cli_runner.go:164] Run: docker container inspect -f "'{{(index (index .NetworkSettings.Ports "22/tcp") 0).HostPort}}'" minikube
+I1214 16:15:44.250479    2024 cli_runner.go:217] Completed: docker container inspect -f "'{{(index (index .NetworkSettings.Ports "22/tcp") 0).HostPort}}'" minikube: (2.1572228s)
+I1214 16:15:44.251320    2024 sshutil.go:53] new ssh client: &{IP:127.0.0.1 Port:52876 SSHKeyPath:C:\Users\hisha\.minikube\machines\minikube\id_rsa Username:docker}
+W1214 16:15:44.251320    2024 start.go:283] error running df -BG /var: NewSession: new client: new client: Error creating new native config from ssh using: docker, &{[] [C:\Users\hisha\.minikube\machines\minikube\id_rsa]}: open C:\Users\hisha\.minikube\machines\minikube\id_rsa: The system cannot find the file specified.
+W1214 16:15:44.251320    2024 start.go:240] error getting GiB of /var that is available: NewSession: new client: new client: Error creating new native config from ssh using: docker, &{[] [C:\Users\hisha\.minikube\machines\minikube\id_rsa]}: open C:\Users\hisha\.minikube\machines\minikube\id_rsa: The system cannot find the file specified.
+I1214 16:15:44.251320    2024 fix.go:56] duration metric: took 5.3832239s for fixHost
+I1214 16:15:44.251320    2024 start.go:83] releasing machines lock for "minikube", held for 5.3837495s
+W1214 16:15:44.253995    2024 start.go:714] error starting host: provision: Error getting config for native Go SSH: open C:\Users\hisha\.minikube\machines\minikube\id_rsa: The system cannot find the file specified.
+W1214 16:15:44.256860    2024 out.go:270] 🤦  StartHost failed, but will try again: provision: Error getting config for native Go SSH: open C:\Users\hisha\.minikube\machines\minikube\id_rsa: The system cannot find the file specified.
+I1214 16:15:44.257399    2024 start.go:729] Will try again in 5 seconds ...
+I1214 16:15:49.258196    2024 start.go:360] acquireMachinesLock for minikube: {Name:mkf91e9a2de98ef3aeeb3854c0553de021a7cc86 Clock:{} Delay:500ms Timeout:10m0s Cancel:<nil>}
+I1214 16:15:49.258196    2024 start.go:364] duration metric: took 0s to acquireMachinesLock for "minikube"
+I1214 16:15:49.258196    2024 start.go:96] Skipping create...Using existing machine configuration
+I1214 16:15:49.258196    2024 fix.go:54] fixHost starting: 
+I1214 16:15:49.268997    2024 cli_runner.go:164] Run: docker container inspect minikube --format={{.State.Status}}
+I1214 16:15:49.377796    2024 fix.go:112] recreateIfNeeded on minikube: state=Running err=<nil>
+W1214 16:15:49.378326    2024 fix.go:138] unexpected machine state, will restart: <nil>
+I1214 16:15:49.381609    2024 out.go:177] 🏃  Updating the running docker "minikube" container ...
+I1214 16:15:49.432103    2024 machine.go:93] provisionDockerMachine start ...
+I1214 16:15:49.436464    2024 cli_runner.go:164] Run: docker container inspect -f "'{{(index (index .NetworkSettings.Ports "22/tcp") 0).HostPort}}'" minikube
+I1214 16:15:49.865805    2024 main.go:141] libmachine: Using SSH client type: native
+I1214 16:15:49.866395    2024 main.go:141] libmachine: <nil>
+I1214 16:15:49.866395    2024 ubuntu.go:169] provisioning hostname "minikube"
+I1214 16:15:49.869744    2024 cli_runner.go:164] Run: docker container inspect -f "'{{(index (index .NetworkSettings.Ports "22/tcp") 0).HostPort}}'" minikube
+I1214 16:15:49.971345    2024 main.go:141] libmachine: Using SSH client type: native
+I1214 16:15:49.971345    2024 main.go:141] libmachine: <nil>
+I1214 16:15:49.971345    2024 machine.go:96] duration metric: took 539.2424ms to provisionDockerMachine
+I1214 16:15:49.986316    2024 ssh_runner.go:195] Run: sh -c "df -h /var | awk 'NR==2{print $5}'"
+I1214 16:15:49.989673    2024 cli_runner.go:164] Run: docker container inspect -f "'{{(index (index .NetworkSettings.Ports "22/tcp") 0).HostPort}}'" minikube
+I1214 16:15:50.059052    2024 sshutil.go:53] new ssh client: &{IP:127.0.0.1 Port:52876 SSHKeyPath:C:\Users\hisha\.minikube\machines\minikube\id_rsa Username:docker}
+I1214 16:15:50.059052    2024 retry.go:31] will retry after 215.97003ms: new client: new client: Error creating new native config from ssh using: docker, &{[] [C:\Users\hisha\.minikube\machines\minikube\id_rsa]}: open C:\Users\hisha\.minikube\machines\minikube\id_rsa: The system cannot find the file specified.
+I1214 16:15:50.291158    2024 cli_runner.go:164] Run: docker container inspect -f "'{{(index (index .NetworkSettings.Ports "22/tcp") 0).HostPort}}'" minikube
+I1214 16:15:50.373406    2024 sshutil.go:53] new ssh client: &{IP:127.0.0.1 Port:52876 SSHKeyPath:C:\Users\hisha\.minikube\machines\minikube\id_rsa Username:docker}
+I1214 16:15:50.373943    2024 retry.go:31] will retry after 377.214441ms: new client: new client: Error creating new native config from ssh using: docker, &{[] [C:\Users\hisha\.minikube\machines\minikube\id_rsa]}: open C:\Users\hisha\.minikube\machines\minikube\id_rsa: The system cannot find the file specified.
+I1214 16:15:50.773849    2024 cli_runner.go:164] Run: docker container inspect -f "'{{(index (index .NetworkSettings.Ports "22/tcp") 0).HostPort}}'" minikube
+I1214 16:15:51.178770    2024 sshutil.go:53] new ssh client: &{IP:127.0.0.1 Port:52876 SSHKeyPath:C:\Users\hisha\.minikube\machines\minikube\id_rsa Username:docker}
+I1214 16:15:51.178770    2024 retry.go:31] will retry after 355.480067ms: new client: new client: Error creating new native config from ssh using: docker, &{[] [C:\Users\hisha\.minikube\machines\minikube\id_rsa]}: open C:\Users\hisha\.minikube\machines\minikube\id_rsa: The system cannot find the file specified.
+I1214 16:15:51.548999    2024 cli_runner.go:164] Run: docker container inspect -f "'{{(index (index .NetworkSettings.Ports "22/tcp") 0).HostPort}}'" minikube
+I1214 16:15:51.908318    2024 sshutil.go:53] new ssh client: &{IP:127.0.0.1 Port:52876 SSHKeyPath:C:\Users\hisha\.minikube\machines\minikube\id_rsa Username:docker}
+W1214 16:15:51.908318    2024 start.go:268] error running df -h /var: NewSession: new client: new client: Error creating new native config from ssh using: docker, &{[] [C:\Users\hisha\.minikube\machines\minikube\id_rsa]}: open C:\Users\hisha\.minikube\machines\minikube\id_rsa: The system cannot find the file specified.
+W1214 16:15:51.908318    2024 start.go:235] error getting percentage of /var that is free: NewSession: new client: new client: Error creating new native config from ssh using: docker, &{[] [C:\Users\hisha\.minikube\machines\minikube\id_rsa]}: open C:\Users\hisha\.minikube\machines\minikube\id_rsa: The system cannot find the file specified.
+I1214 16:15:51.916052    2024 ssh_runner.go:195] Run: sh -c "df -BG /var | awk 'NR==2{print $4}'"
+I1214 16:15:51.920037    2024 cli_runner.go:164] Run: docker container inspect -f "'{{(index (index .NetworkSettings.Ports "22/tcp") 0).HostPort}}'" minikube
+I1214 16:15:51.985941    2024 sshutil.go:53] new ssh client: &{IP:127.0.0.1 Port:52876 SSHKeyPath:C:\Users\hisha\.minikube\machines\minikube\id_rsa Username:docker}
+I1214 16:15:51.985941    2024 retry.go:31] will retry after 269.399464ms: new client: new client: Error creating new native config from ssh using: docker, &{[] [C:\Users\hisha\.minikube\machines\minikube\id_rsa]}: open C:\Users\hisha\.minikube\machines\minikube\id_rsa: The system cannot find the file specified.
+I1214 16:15:52.262394    2024 cli_runner.go:164] Run: docker container inspect -f "'{{(index (index .NetworkSettings.Ports "22/tcp") 0).HostPort}}'" minikube
+I1214 16:15:52.587524    2024 sshutil.go:53] new ssh client: &{IP:127.0.0.1 Port:52876 SSHKeyPath:C:\Users\hisha\.minikube\machines\minikube\id_rsa Username:docker}
+I1214 16:15:52.587524    2024 retry.go:31] will retry after 244.938091ms: new client: new client: Error creating new native config from ssh using: docker, &{[] [C:\Users\hisha\.minikube\machines\minikube\id_rsa]}: open C:\Users\hisha\.minikube\machines\minikube\id_rsa: The system cannot find the file specified.
+I1214 16:15:52.860069    2024 cli_runner.go:164] Run: docker container inspect -f "'{{(index (index .NetworkSettings.Ports "22/tcp") 0).HostPort}}'" minikube
+I1214 16:15:53.019307    2024 sshutil.go:53] new ssh client: &{IP:127.0.0.1 Port:52876 SSHKeyPath:C:\Users\hisha\.minikube\machines\minikube\id_rsa Username:docker}
+I1214 16:15:53.019307    2024 retry.go:31] will retry after 759.462669ms: new client: new client: Error creating new native config from ssh using: docker, &{[] [C:\Users\hisha\.minikube\machines\minikube\id_rsa]}: open C:\Users\hisha\.minikube\machines\minikube\id_rsa: The system cannot find the file specified.
+I1214 16:15:53.795833    2024 cli_runner.go:164] Run: docker container inspect -f "'{{(index (index .NetworkSettings.Ports "22/tcp") 0).HostPort}}'" minikube
+I1214 16:15:53.939066    2024 sshutil.go:53] new ssh client: &{IP:127.0.0.1 Port:52876 SSHKeyPath:C:\Users\hisha\.minikube\machines\minikube\id_rsa Username:docker}
+W1214 16:15:53.939066    2024 start.go:283] error running df -BG /var: NewSession: new client: new client: Error creating new native config from ssh using: docker, &{[] [C:\Users\hisha\.minikube\machines\minikube\id_rsa]}: open C:\Users\hisha\.minikube\machines\minikube\id_rsa: The system cannot find the file specified.
+W1214 16:15:53.939066    2024 start.go:240] error getting GiB of /var that is available: NewSession: new client: new client: Error creating new native config from ssh using: docker, &{[] [C:\Users\hisha\.minikube\machines\minikube\id_rsa]}: open C:\Users\hisha\.minikube\machines\minikube\id_rsa: The system cannot find the file specified.
+I1214 16:15:53.939066    2024 fix.go:56] duration metric: took 4.68087s for fixHost
+I1214 16:15:53.939066    2024 start.go:83] releasing machines lock for "minikube", held for 4.68087s
+W1214 16:15:53.939066    2024 out.go:270] 😿  Failed to start docker container. Running "minikube delete" may fix it: provision: Error getting config for native Go SSH: open C:\Users\hisha\.minikube\machines\minikube\id_rsa: The system cannot find the file specified.
+I1214 16:15:54.101980    2024 out.go:201] 
+W1214 16:15:54.107903    2024 out.go:270] ❌  Exiting due to GUEST_PROVISION: error provisioning guest: Failed to start host: provision: Error getting config for native Go SSH: open C:\Users\hisha\.minikube\machines\minikube\id_rsa: The system cannot find the file specified.
+W1214 16:15:54.108685    2024 out.go:270] 
+W1214 16:15:54.127184    2024 out.go:293] [31m╭───────────────────────────────────────────────────────────────────────────────────────────╮[0m
+[31m│[0m                                                                                           [31m│[0m
+[31m│[0m    😿  If the above advice does not help, please let us know:                             [31m│[0m
+[31m│[0m    👉  https://github.com/kubernetes/minikube/issues/new/choose                           [31m│[0m
+[31m│[0m                                                                                           [31m│[0m
+[31m│[0m    Please run `minikube logs --file=logs.txt` and attach logs.txt to the GitHub issue.    [31m│[0m
+[31m│[0m                                                                                           [31m│[0m
+[31m╰───────────────────────────────────────────────────────────────────────────────────────────╯[0m
+I1214 16:15:54.133693    2024 out.go:201] 
+
+
+==> Docker <==
+command /bin/bash -c "sudo journalctl -u docker -u cri-docker -n 60" failed with error: NewSession: new client: new client: Error creating new native config from ssh using: docker, &{[] [C:\Users\hisha\.minikube\machines\minikube\id_rsa]}: open C:\Users\hisha\.minikube\machines\minikube\id_rsa: The system cannot find the file specified.
+
+==> container status <==
+command /bin/bash -c "sudo `which crictl || echo crictl` ps -a || sudo docker ps -a" failed with error: NewSession: new client: new client: Error creating new native config from ssh using: docker, &{[] [C:\Users\hisha\.minikube\machines\minikube\id_rsa]}: open C:\Users\hisha\.minikube\machines\minikube\id_rsa: The system cannot find the file specified.
+
+==> describe nodes <==
+command /bin/bash -c "sudo /var/lib/minikube/binaries/v1.31.0/kubectl describe nodes --kubeconfig=/var/lib/minikube/kubeconfig" failed with error: NewSession: new client: new client: Error creating new native config from ssh using: docker, &{[] [C:\Users\hisha\.minikube\machines\minikube\id_rsa]}: open C:\Users\hisha\.minikube\machines\minikube\id_rsa: The system cannot find the file specified.
+
+==> dmesg <==
+command /bin/bash -c "sudo dmesg -PH -L=never --level warn,err,crit,alert,emerg | tail -n 60" failed with error: NewSession: new client: new client: Error creating new native config from ssh using: docker, &{[] [C:\Users\hisha\.minikube\machines\minikube\id_rsa]}: open C:\Users\hisha\.minikube\machines\minikube\id_rsa: The system cannot find the file specified.
+
+==> kernel <==
+command /bin/bash -c "uptime && uname -a && grep PRETTY /etc/os-release" failed with error: NewSession: new client: new client: Error creating new native config from ssh using: docker, &{[] [C:\Users\hisha\.minikube\machines\minikube\id_rsa]}: open C:\Users\hisha\.minikube\machines\minikube\id_rsa: The system cannot find the file specified.
+
+==> kubelet <==
+command /bin/bash -c "sudo journalctl -u kubelet -n 60" failed with error: NewSession: new client: new client: Error creating new native config from ssh using: docker, &{[] [C:\Users\hisha\.minikube\machines\minikube\id_rsa]}: open C:\Users\hisha\.minikube\machines\minikube\id_rsa: The system cannot find the file specified.

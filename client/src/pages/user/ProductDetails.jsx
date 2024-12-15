@@ -16,7 +16,7 @@ import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
 
 import { addCart } from "../../actions/cartActions";
 
-const BASE_URL = "https://app.beikeshop.shop/";
+const BASE_URL = process.env.REACT_APP_SERVER_API;
 
 function ProductDetails() {
   const { product, loading } = useSelector((state) => state.products);
@@ -86,7 +86,7 @@ function ProductDetails() {
                         objectFit: "contain",
                         marginBottom: "10px",
                       }}
-                      src={`${BASE_URL}${item}`}
+                      src={`${BASE_URL}/${item}`}
                       alt={item}
                     />
                   </div>
@@ -96,7 +96,7 @@ function ProductDetails() {
               {/* Main Image with Magnification */}
               <Box sx={{ flex: 1 }}>
                 <InnerImageZoom
-                  src={`${BASE_URL}${product?.images[0]}`}
+                  src={`${BASE_URL}/${product?.images[0]}`}
                   zoomSrc={`${BASE_URL}${product?.images[0]}`}
                   alt="Product Image"
                   zoomType="hover"

@@ -1,0 +1,29 @@
+#what we are creating
+apiVersion: apps/v1
+kind: Deployment
+
+
+# 1 matedata is user to identify resource by name
+metadata:
+  name: beikeshop-client
+
+
+# 2 specification deployment have it's own attributes and service has their own attributes
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: beikeshop-client
+  template:
+  #this is applicble to pod
+    metadata:
+      labels:
+        app: beikeshop-client
+    spec:
+      containers:
+      - name: beikeshop-client
+        image: hishammpsn/beikeshop_web:1.0.8
+        ports:
+        - containerPort: 3000
+#3 status (desigred state and actual state if it not match then self healing)
+#etcd for store the current status of k8 deployment

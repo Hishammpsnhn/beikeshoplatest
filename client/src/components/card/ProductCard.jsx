@@ -18,7 +18,7 @@ import {
 
 function ProductCard({ name, price, image, id, wishlist, offer }) {
   const [wishlistAction, setWishlistAction] = useState(wishlist);
-  const BASE_URL = "https://app.beikeshop.shop/";
+  const BASE_URL = process.env.REACT_APP_SERVER_API;
   useEffect(() => {
     setWishlistAction(wishlist);
   }, [wishlist]);
@@ -69,7 +69,7 @@ function ProductCard({ name, price, image, id, wishlist, offer }) {
           <LazyLoadImage
             alt={name}
             effect="blur" // Blur effect after the image is loaded
-            src={`${BASE_URL}${image}`} // The main image
+            src={`${BASE_URL}/${image}`} // The main image
             height={250} // Fixed height for the image
             width="100%" // Full width
             placeholderSrc="path/to/your/placeholder.png" // Low-res or loading spinner

@@ -42,7 +42,7 @@ function ProdcutBref({
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const BASE_URL = "https://app.beikeshop.shop/";
+  const BASE_URL = process.env.REACT_APP_SERVER_API;
 
   const handleIncrement = async () => {
     setQtyLoading(true);
@@ -102,7 +102,7 @@ function ProdcutBref({
                   ? navigate(`/productDetails/${productId._id}`)
                   : navigate(`/productDetails/${productId}`);
               }}
-              src={`${BASE_URL}${image}`} 
+              src={`${BASE_URL}/${image}`} 
               alt="image_Unknown"
               style={{
                 width: "100%",
