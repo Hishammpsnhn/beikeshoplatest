@@ -27,8 +27,8 @@ spec:
      app: beikeshop-api 
   ports:
     - protocol: TCP
-      port: 80           # Internal cluster port for the service
-      targetPort: 4000   # The port the pod's container listens on
-      nodePort: 31000    #  External access port (expost to the external world)
-  type: NodePort          # Makes the service accessible outside the cluster
+      port: 80           
+      targetPort: 4000   
+      nodePort: 31000    
+  type: NodePort        
 

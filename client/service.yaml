@@ -5,7 +5,7 @@ metadata:
 spec:
   type: NodePort
   selector:
-    app: beikeshop-client # Name of the application. 
+    app: beikeshop-client # Name of the application. (pod)
   ports:
       # By default and for convenience, the `targetPort` is set to the same value as the `port` field.
     - port: 80

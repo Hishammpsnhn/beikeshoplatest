@@ -20,6 +20,7 @@ export const getProductsList = (sort) => async (dispatch) => {
       params: { sort },
     });
     console.log(data);
+    
     dispatch(fetchProductSuccess(data));
   } catch (error) {
     console.error("Error:", error);

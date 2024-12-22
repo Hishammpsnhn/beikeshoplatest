@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: self-hosted  # Run on the self-hosted runner
+     runs-on: ubuntu-latest # Run on the self-hosted runner
 
     steps:
       # Step 1: Checkout the repository
@@ -27,16 +27,6 @@ jobs:
 
       
 
-      # Step 4: Set up environment variables
-      - name: Set up environment variables
-        run: |
-          if [ -f ./server/.env ]; then
-            echo ".env file found."
-          else
-            echo ".env file not found! Creating one."
-            echo "NODE_ENV=production" > ./server/.env
-          fi
-
-      # Step 5: Build server (if necessary)
+      
    
 
