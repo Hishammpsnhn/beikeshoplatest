@@ -25,7 +25,7 @@ jobs:
         working-directory: ./server
         run: npm install
 
-      # # Step 4: Deploy to EC2
+      # Step 4: Deploy to EC2
       - name: Deploy to EC2
         env:
           EC2_PRIVATE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}  # Private key stored in GitHub Secrets
@@ -44,6 +44,6 @@ jobs:
             pm2 restart app  # Restart the application using PM2 (or use your process manager)
           EOF
 
-      Optional: Clean up the private key file after deployment
+      # Clean up the private key after deployment
       - name: Clean up private key
         run: rm private_key.pem
