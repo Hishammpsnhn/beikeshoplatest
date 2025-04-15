@@ -38,16 +38,18 @@ function PlaceOrder() {
   const dispatch = useDispatch();
 
   const handlePlaceOrder = async () => {
-    setOrderLoading(true);
+    console.log("11111111111111", paymentOption);
+
     if (!selectedAddress) {
       toast.error("selected address");
       return;
     }
 
-    if (!paymentOption) {
+    if (paymentOption === null) {
       toast.error("Selected Payement Option");
       return;
     }
+
     let discountTotalAmount = totalAmount;
     if (coupon) {
       const discountedAmount = coupon.discount;
@@ -60,11 +62,14 @@ function PlaceOrder() {
       toast.error("Order about 1000 not allowed for cod");
       return;
     }
-
+    setOrderLoading(true);
+    
     if (paymentOption === "online payment") {
+
       const data = await onlinePaymentOrder(discountTotalAmount + shipping);
+
       var options = {
-        key: process.env.RAZORPAPY_KEY_ID,
+        key: process.env.REACT_APP_RAZORPAY_KEY_ID,
         amount: totalAmount + shipping,
         currency: "INR",
         name: "Beike shop",
@@ -91,6 +96,8 @@ function PlaceOrder() {
             if (data) {
               navigate("/success", { state: { order: true } });
               dispatch(clearCart());
+            }else{
+              setOrderLoading(false)
             }
           }
         },
@@ -143,6 +150,8 @@ function PlaceOrder() {
         setOrderLoading(false);
         navigate("/success", { state: { order: true } });
         dispatch(clearCart());
+      }else{
+        setOrderLoading(false)
       }
     }
   };
