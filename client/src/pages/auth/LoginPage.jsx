@@ -30,7 +30,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 function Login({ forgotPassword, setForgotPassword }) {
   const [email, setEmail] = useState("demo@gmail.com");
-  const [password, setPassword] = useState("123456789@Abc");
+  const [password, setPassword] = useState("His@3610");
   const [showPassword, setShowPassword] = useState(false);
 
   const { user, isAuthenticated, loading, error } = useSelector(
